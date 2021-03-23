@@ -15,11 +15,19 @@ CREATE TABLE user (
     FOREIGN KEY (role_name) REFERENCES user_role (role_name)
 );
 
+CREATE TABLE category (
+    PRIMARY KEY (id),
+    id           CHAR(36)     NOT NULL,
+    name         VARCHAR(30)  NOT NULL UNIQUE
+);
+
 CREATE TABLE channel (
     PRIMARY KEY (id),
     id            CHAR(36)     NOT NULL,
     title         VARCHAR(30)  NOT NULL,
     link          VARCHAR(255) NOT NULL UNIQUE,
     description   VARCHAR(255) NOT NULL,
-    img_url       VARCHAR(255)
+    img_url       VARCHAR(255),
+    category      VARCHAR(36) NOT NULL,
+    FOREIGN KEY (category) REFERENCES category (id)
 );
