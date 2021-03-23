@@ -12,7 +12,7 @@ public class StringValueObject {
 
   protected StringValueObject(String value, Pattern pattern) {
     if (!pattern.matcher(value).matches()) {
-      throw new IllegalArgumentException("The string does not match the validation pattern: " + pattern);
+      throw new IllegalArgumentException("Value does not match pattern: " + pattern);
     }
     this.value = value;
   }
