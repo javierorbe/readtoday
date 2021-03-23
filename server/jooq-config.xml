@@ -1,0 +1,19 @@
+<configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.14.0.xsd">
+  <jdbc>
+    <driver>com.mysql.cj.jdbc.Driver</driver>
+    <url>jdbc:mysql://127.0.0.1:3306/readtoday?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC</url>
+    <user>readtoday_user</user>
+    <password>s3curep4ssw0rd</password>
+  </jdbc>
+  <generator>
+    <database>
+      <name>org.jooq.meta.mysql.MySQLDatabase</name>
+      <includes>.*</includes>
+      <inputSchema>readtoday</inputSchema>
+    </database>
+    <target>
+      <packageName>dev.team.readtoday.server.shared.infrastructure.jooq</packageName>
+      <directory>target/generated-sources/jooq</directory>
+    </target>
+  </generator>
+</configuration>

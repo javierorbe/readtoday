@@ -1,0 +1,42 @@
+---
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+        mysql:
+            image: mysql:8.0
+            env:
+                MYSQL_USER: ${{ secrets.DB_USER }}
+                MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+                MYSQL_ROOT_PASSWORD: S3CURE_P4SSW0RD
+                MYSQL_DATABASE: readtoday
+            ports:
+                - '3306:3306'
+            options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v1
+        with:
+          java-version: 16
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Create database schema
+        run: mysql -h 127.0.0.1 --port 3306 -u ${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }} readtoday < server/src/main/sql/schema.sql
+      - name: Build with Maven (server)
+        run: |
+          cd server
+          mvn --batch-mode --update-snapshots verify
+      - name: Build with Maven (client)
+        run: |
+          cd client
+          mvn --batch-mode --update-snapshots verify
