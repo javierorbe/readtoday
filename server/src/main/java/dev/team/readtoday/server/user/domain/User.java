@@ -7,7 +7,7 @@ public final class User {
   private final UserId id;
   private final Username username;
   private final EmailAddress emailAddress;
-  private final Role role;
+  private Role role;
 
   public User(UserId id,
               Username username,
@@ -42,6 +42,10 @@ public final class User {
 
   public Role getRole() {
     return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
   }
 
   @Override
