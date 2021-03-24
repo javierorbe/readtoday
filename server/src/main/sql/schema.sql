@@ -31,8 +31,8 @@ CREATE TABLE channel (
 );
 
 CREATE TABLE channel_categories (
-    channel_id  VARCHAR(36) NOT NULL,
-    category_id VARCHAR(36) NOT NULL,
+    channel_id  CHAR(36) NOT NULL,
+    category_id CHAR(36) NOT NULL,
     FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (channel_id, category_id)
