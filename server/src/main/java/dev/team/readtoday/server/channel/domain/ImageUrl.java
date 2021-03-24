@@ -1,4 +1,5 @@
 package dev.team.readtoday.server.channel.domain;
+
 import dev.team.readtoday.server.shared.domain.StringValueObject;
 import org.apache.commons.validator.routines.UrlValidator;
 

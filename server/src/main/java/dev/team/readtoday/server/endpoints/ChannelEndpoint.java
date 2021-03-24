@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Root resource (exposed at "channel" path)
+ * Root resource (exposed at "channel" path).
  */
 @Path("channel")
 public class ChannelEndpoint {
