@@ -22,15 +22,15 @@ public final class JooqUserRepository implements UserRepository {
       Role.ADMIN, "admin"
   ));
 
-  private final DSLContext dsl;
+  private final DSLContext ctx;
 
-  public JooqUserRepository(DSLContext dsl) {
-    this.dsl = dsl;
+  public JooqUserRepository(DSLContext ctx) {
+    this.ctx = ctx;
   }
 
   @Override
   public void save(User user) {
-    dsl.insertInto(USER, USER.ID, USER.USERNAME, USER.EMAIL, USER.ROLE_NAME)
+    ctx.insertInto(USER, USER.ID, USER.USERNAME, USER.EMAIL, USER.ROLE_NAME)
         .values(
             user.getId().toString(),
             user.getUsername().toString(),
@@ -44,7 +44,7 @@ public final class JooqUserRepository implements UserRepository {
   @Override
   public Optional<User> getByEmailAddress(EmailAddress email) {
     Record3<String, String, String> record =
-        dsl.select(USER.ID, USER.USERNAME, USER.ROLE_NAME)
+        ctx.select(USER.ID, USER.USERNAME, USER.ROLE_NAME)
             .from(USER)
             .where(USER.EMAIL.eq(email.toString()))
             .fetchOne();
