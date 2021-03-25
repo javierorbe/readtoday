@@ -1,22 +1,20 @@
 package dev.team.readtoday.server.category.domain;
 
-import java.util.UUID;
-
 public class Category {
 
-  private final UUID id;
-  private final String name;
+  private final CategoryId id;
+  private final CategoryName name;
 
-  public Category(UUID id, String name) {
+  public Category(CategoryId id, CategoryName name) {
     this.id = id;
     this.name = name;
   }
 
-  public UUID getId() {
+  public CategoryId getId() {
     return id;
   }
 
-  public String getName() {
+  public CategoryName getName() {
     return name;
   }
 }
