@@ -6,7 +6,7 @@ public class ChannelTitle extends StringValueObject {
 
   private static final int MAX_LENGTH = 30;
 
-  protected ChannelTitle(String value) {
+  public ChannelTitle(String value) {
     super(value);
     if (!isValidTitleChannel(value)) {
       throw new InvalidChannelTitle("Invalid channel title: " + value);
