@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.shared.infrastructure.JooqConnectionBuilder;
+import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.EmailAddressMother;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
@@ -29,12 +30,17 @@ final class JooqUserRepositoryTest {
   private static UserRepository repository;
 
   @BeforeAll
-  static void setup() {
+  static void setUp() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     repository = new JooqUserRepository(jooq.getContext());
 
     DSLContext ctx = jooq.getContext();
     ctx.deleteFrom(USER).execute();
+  }
+
+  @AfterAll
+  static void cleanUp() {
+    jooq.close();
   }
 
   @Test
@@ -47,13 +53,10 @@ final class JooqUserRepositoryTest {
   @Test
   void shouldUpdateAnExistingUser() {
     User originalUser = UserMother.random();
-
     repository.save(originalUser);
 
     Optional<User> optUser = repository.getByEmailAddress(originalUser.getEmailAddress());
-    assertTrue(optUser.isPresent());
-    User user = optUser.get();
-
+    User user = optUser.orElseThrow();
     user.setRole(Role.ADMIN);
 
     assertDoesNotThrow(() -> repository.save(user));
@@ -62,12 +65,10 @@ final class JooqUserRepositoryTest {
   @Test
   void shouldReturnAnExistingUser() {
     User originalUser = UserMother.random();
-
     repository.save(originalUser);
 
     Optional<User> optUser = repository.getByEmailAddress(originalUser.getEmailAddress());
-    assertTrue(optUser.isPresent());
-    User user = optUser.get();
+    User user = optUser.orElseThrow();
 
     assertEquals(originalUser.getId(), user.getId());
     assertEquals(originalUser.getUsername(), user.getUsername());
@@ -77,12 +78,10 @@ final class JooqUserRepositoryTest {
 
   @Test
   void shouldNotReturnANonExistingUser() {
-    Optional<User> optUser = repository.getByEmailAddress(EmailAddressMother.random());
-    assertTrue(optUser.isEmpty());
-  }
+    EmailAddress email = EmailAddressMother.random();
 
-  @AfterAll
-  static void clean() {
-    jooq.close();
+    Optional<User> optUser = repository.getByEmailAddress(email);
+
+    assertTrue(optUser.isEmpty());
   }
 }
