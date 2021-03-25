@@ -9,7 +9,7 @@ public final class UserId extends Identifier {
     super(value);
   }
 
-  public static UserId random() {
+  static UserId random() {
     return new UserId(UUID.randomUUID());
   }
 
