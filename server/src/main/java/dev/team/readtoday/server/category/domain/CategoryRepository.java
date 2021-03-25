@@ -3,7 +3,7 @@ package dev.team.readtoday.server.category.domain;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ICategoryRepository {
+public interface CategoryRepository {
 
   void save(Category category);
 

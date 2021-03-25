@@ -5,16 +5,16 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGO
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryId;
 import dev.team.readtoday.server.category.domain.CategoryName;
-import dev.team.readtoday.server.category.domain.ICategoryRepository;
+import dev.team.readtoday.server.category.domain.CategoryRepository;
 import java.util.Optional;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
 
-public class CategoryRepository implements ICategoryRepository {
+public class JooqCategoryRepository implements CategoryRepository {
 
   private final DSLContext dsl;
 
-  public CategoryRepository(DSLContext dsl) {
+  public JooqCategoryRepository(DSLContext dsl) {
     this.dsl = dsl;
   }
 

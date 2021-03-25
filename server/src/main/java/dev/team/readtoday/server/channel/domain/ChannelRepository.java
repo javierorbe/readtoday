@@ -4,7 +4,7 @@ import dev.team.readtoday.server.category.domain.CategoryId;
 import java.util.List;
 import java.util.Optional;
 
-public interface IChannelRepository {
+public interface ChannelRepository {
 
   void save(Channel channel);
 

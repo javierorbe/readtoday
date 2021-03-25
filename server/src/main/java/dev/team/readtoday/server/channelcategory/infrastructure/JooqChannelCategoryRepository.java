@@ -7,18 +7,18 @@ import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryId;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.domain.ChannelId;
-import dev.team.readtoday.server.channelcategory.domain.IChannelCategoryRepository;
+import dev.team.readtoday.server.channelcategory.domain.ChannelCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.jooq.Result;
 
-public class ChannelCategoryRepository implements IChannelCategoryRepository {
+public class JooqChannelCategoryRepository implements ChannelCategoryRepository {
 
   private final DSLContext dsl;
 
-  public ChannelCategoryRepository(DSLContext dsl) {
+  public JooqChannelCategoryRepository(DSLContext dsl) {
     this.dsl = dsl;
   }
 
@@ -48,9 +48,9 @@ public class ChannelCategoryRepository implements IChannelCategoryRepository {
 
     List<Category> categories = new ArrayList<>();
 
-    for (Record2<String, String> rCategory : resultCategories) {
-      CategoryId id = CategoryId.fromString(rCategory.getValue(CATEGORY.ID));
-      CategoryName name = new CategoryName(rCategory.getValue(CATEGORY.NAME));
+    for (Record2<String, String> resultCategory : resultCategories) {
+      CategoryId id = CategoryId.fromString(resultCategory.getValue(CATEGORY.ID));
+      CategoryName name = new CategoryName(resultCategory.getValue(CATEGORY.NAME));
       // Add a category of a channel
       categories.add(new Category(id, name));
     }

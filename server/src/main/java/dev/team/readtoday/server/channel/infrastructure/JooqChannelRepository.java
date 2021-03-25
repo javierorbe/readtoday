@@ -10,10 +10,9 @@ import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
-import dev.team.readtoday.server.channel.domain.IChannelRepository;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
-import dev.team.readtoday.server.channelcategory.infrastructure.ChannelCategoryRepository;
+import dev.team.readtoday.server.channelcategory.infrastructure.JooqChannelCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,11 +20,12 @@ import org.jooq.DSLContext;
 import org.jooq.Record5;
 import org.jooq.Result;
 
-public class ChannelRepository implements IChannelRepository {
+public class JooqChannelRepository implements
+    dev.team.readtoday.server.channel.domain.ChannelRepository {
 
   private final DSLContext dsl;
 
-  public ChannelRepository(DSLContext dsl) {
+  public JooqChannelRepository(DSLContext dsl) {
     this.dsl = dsl;
   }
 
@@ -39,10 +39,10 @@ public class ChannelRepository implements IChannelRepository {
             channel.getImageUrl().toString()
         ).execute();
 
-    ChannelCategoryRepository channelCategoryRepository = new ChannelCategoryRepository(dsl);
+    JooqChannelCategoryRepository channelCategoryRep = new JooqChannelCategoryRepository(dsl);
     // Create rows in (many-to-many) channel-category.
     channel.getCategories().forEach(
-        category -> channelCategoryRepository.save(channel.getId(), category.getId()));
+        category -> channelCategoryRep.save(channel.getId(), category.getId()));
   }
 
   /**
@@ -66,8 +66,8 @@ public class ChannelRepository implements IChannelRepository {
     List<Channel> channels = new ArrayList<>();
 
     // Go over all result Channels
-    for (Record5<String, String, String, String, String> rChannel : resultChannels) {
-      Channel channel = createChannelFromResult(rChannel);
+    for (Record5<String, String, String, String, String> resultChannel : resultChannels) {
+      Channel channel = createChannelFromResult(resultChannel);
       channels.add(channel);
     }
 
@@ -91,8 +91,8 @@ public class ChannelRepository implements IChannelRepository {
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
     ImageUrl imageUrl = new ImageUrl(result.get(CHANNEL.IMG_URL));
 
-    ChannelCategoryRepository channelCategoryRepository = new ChannelCategoryRepository(dsl);
-    List<Category> categories = channelCategoryRepository.getCategoriesFromChannelId(id);
+    JooqChannelCategoryRepository channelCategoryRep = new JooqChannelCategoryRepository(dsl);
+    List<Category> categories = channelCategoryRep.getCategoriesFromChannelId(id);
 
     return new Channel(id, title, rssUrl, description, imageUrl, categories);
   }

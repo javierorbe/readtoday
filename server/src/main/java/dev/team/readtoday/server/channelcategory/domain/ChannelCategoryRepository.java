@@ -5,7 +5,7 @@ import dev.team.readtoday.server.category.domain.CategoryId;
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import java.util.List;
 
-public interface IChannelCategoryRepository {
+public interface ChannelCategoryRepository {
 
   void save(ChannelId channelId, CategoryId categoryId);
 
