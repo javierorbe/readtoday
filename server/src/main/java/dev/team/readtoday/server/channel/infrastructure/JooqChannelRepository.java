@@ -6,17 +6,18 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNE
 
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryId;
+import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
-import dev.team.readtoday.server.channelcategory.infrastructure.JooqChannelCategoryRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.jooq.DSLContext;
+import org.jooq.Record2;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -39,10 +40,9 @@ public class JooqChannelRepository implements
             channel.getImageUrl().toString()
         ).execute();
 
-    JooqChannelCategoryRepository channelCategoryRep = new JooqChannelCategoryRepository(dsl);
     // Create rows in (many-to-many) channel-category.
-    channel.getCategories().forEach(
-        category -> channelCategoryRep.save(channel.getId(), category.getId()));
+    channel.getCategories()
+        .forEach(category -> bindWithCategories(channel.getId(), category.getId()));
   }
 
   /**
@@ -91,9 +91,42 @@ public class JooqChannelRepository implements
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
     ImageUrl imageUrl = new ImageUrl(result.get(CHANNEL.IMG_URL));
 
-    JooqChannelCategoryRepository channelCategoryRep = new JooqChannelCategoryRepository(dsl);
-    List<Category> categories = channelCategoryRep.getCategoriesFromChannelId(id);
+    List<Category> categories = getCategoriesFromChannelId(id);
 
     return new Channel(id, title, rssUrl, description, imageUrl, categories);
+  }
+
+  /**
+   * Returns categories of a channel.
+   *
+   * @param channelId Channel id
+   * @return List of categories
+   */
+  public List<Category> getCategoriesFromChannelId(ChannelId channelId) {
+    // Get categories from a channel
+    Result<Record2<String, String>> resultCategories = dsl.select(CATEGORY.ID, CATEGORY.NAME)
+        .from(CATEGORY)
+        .join(CHANNEL_CATEGORIES).on(CATEGORY.ID.eq(CHANNEL_CATEGORIES.CATEGORY_ID))
+        .where(CATEGORY.ID.eq(channelId.toString()))
+        .fetch();
+
+    List<Category> categories = new ArrayList<>();
+
+    for (Record2<String, String> resultCategory : resultCategories) {
+      CategoryId id = CategoryId.fromString(resultCategory.getValue(CATEGORY.ID));
+      CategoryName name = new CategoryName(resultCategory.getValue(CATEGORY.NAME));
+      // Add a category of a channel
+      categories.add(new Category(id, name));
+    }
+
+    return categories;
+  }
+
+  private void bindWithCategories(ChannelId channelId, CategoryId categoryId) {
+    dsl.insertInto(CHANNEL_CATEGORIES,
+        CHANNEL_CATEGORIES.CHANNEL_ID,
+        CHANNEL_CATEGORIES.CATEGORY_ID)
+        .values(channelId.toString(), categoryId.toString())
+        .execute();
   }
 }
