@@ -13,6 +13,6 @@ public class ImageUrl extends StringValueObject {
   }
 
   private static boolean isValidImageUrl(String value) {
-    return UrlValidator.getInstance().isValid(value) && UrlExtensionValidator.isImage(value);
+    return UrlValidator.getInstance().isValid(value);
   }
 }

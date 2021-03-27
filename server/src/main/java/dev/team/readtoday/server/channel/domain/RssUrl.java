@@ -13,6 +13,6 @@ public class RssUrl extends StringValueObject {
   }
 
   private static boolean isValidRssUrlAddress(String value) {
-    return UrlValidator.getInstance().isValid(value) && UrlExtensionValidator.isRss(value);
+    return UrlValidator.getInstance().isValid(value);
   }
 }
