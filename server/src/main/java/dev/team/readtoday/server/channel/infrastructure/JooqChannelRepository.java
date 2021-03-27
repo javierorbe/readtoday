@@ -30,13 +30,17 @@ public final class JooqChannelRepository implements ChannelRepository {
 
   @Override
   public void save(Channel channel) {
-    dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE, CHANNEL.LINK, CHANNEL.IMG_URL)
+    dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE, CHANNEL.LINK, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
         .values(
             channel.getId().toString(),
             channel.getTitle().toString(),
             channel.getRssUrl().toString(),
+            channel.getDescription().toString(),
             channel.getImageUrl().toString()
         ).execute();
+
+    // TODO: Decide if categories should be created at the same time a channel is created.
+    //       Otherwise category creation should be done before channel creation.
 
     // Create rows in (many-to-many) channel-category.
     channel.getCategories()
@@ -64,12 +68,29 @@ public final class JooqChannelRepository implements ChannelRepository {
     List<Channel> channels = new ArrayList<>();
 
     // Go over all result Channels
-    for (Record5<String, String, String, String, String> resultChannel : resultChannels) {
+    for (var resultChannel : resultChannels) {
       Channel channel = createChannelFromResult(resultChannel);
       channels.add(channel);
     }
 
     return Optional.of(channels);
+  }
+
+  public Optional<Channel> getFromId(ChannelId id) {
+    Record5<String, String, String, String, String> channelResult =
+        dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.LINK, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+            .from(CHANNEL)
+            .where(CHANNEL.ID.eq(id.toString()))
+            .fetchOne();
+
+    if (channelResult == null) {
+      return Optional.empty();
+    }
+
+    Channel channel = createChannelFromResult(channelResult);
+
+    return Optional.of(channel);
+
   }
 
   /**
@@ -89,8 +110,7 @@ public final class JooqChannelRepository implements ChannelRepository {
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
     Url imageUrl = new Url(result.get(CHANNEL.IMG_URL));
 
-    // List<Category> categories = getCategoriesFromChannelId(id);
-    List<Category> categories = List.of();
+    List<Category> categories = getCategoriesFromChannelId(id);
     return new Channel(id, title, rssUrl, description, imageUrl, categories);
   }
 
