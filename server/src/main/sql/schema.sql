@@ -16,9 +16,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE category (
-    PRIMARY KEY (id),
-    id          CHAR(36)     NOT NULL,
-    name        VARCHAR(30)  NOT NULL UNIQUE
+    category_name   VARCHAR(30)  PRIMARY KEY
 );
 
 CREATE TABLE channel (
@@ -32,8 +30,10 @@ CREATE TABLE channel (
 
 CREATE TABLE channel_categories (
     channel_id  CHAR(36) NOT NULL,
-    category_id CHAR(36) NOT NULL,
-    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (channel_id, category_id)
+    category_name CHAR(30) NOT NULL,
+    FOREIGN KEY (channel_id)
+        REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (category_name)
+        REFERENCES category (category_name) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (channel_id, category_name)
 );

@@ -2,16 +2,10 @@ package dev.team.readtoday.server.category.domain;
 
 public final class Category {
 
-  private final CategoryId id;
   private final CategoryName name;
 
-  public Category(CategoryId id, CategoryName name) {
-    this.id = id;
+  public Category(CategoryName name) {
     this.name = name;
-  }
-
-  public CategoryId getId() {
-    return id;
   }
 
   public CategoryName getName() {

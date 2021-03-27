@@ -3,12 +3,11 @@ package dev.team.readtoday.server.category.infrastructure;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 
 import dev.team.readtoday.server.category.domain.Category;
-import dev.team.readtoday.server.category.domain.CategoryId;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import java.util.Optional;
 import org.jooq.DSLContext;
-import org.jooq.Record2;
+import org.jooq.Record1;
 
 public final class JooqCategoryRepository implements CategoryRepository {
 
@@ -20,28 +19,25 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public void save(Category category) {
-    dsl.insertInto(CATEGORY, CATEGORY.ID, CATEGORY.NAME)
+    dsl.insertInto(CATEGORY, CATEGORY.CATEGORY_NAME)
         .values(
-            category.getId().toString(),
             category.getName().toString()
         ).execute();
   }
 
   @Override
-  public Optional<Category> getById(CategoryId id) {
-    Record2<String, String> record =
-        dsl.select(CATEGORY.ID, CATEGORY.NAME)
+  public Optional<Category> getByName(CategoryName categoryName) {
+    Record1<String> record =
+        dsl.select(CATEGORY.CATEGORY_NAME)
             .from(CATEGORY)
-            .where(CATEGORY.ID.eq(id.toString()))
+            .where(CATEGORY.CATEGORY_NAME.eq(categoryName.toString()))
             .fetchOne();
 
     if (record == null) {
       return Optional.empty();
     }
 
-    CategoryName name = new CategoryName(record.getValue(CATEGORY.NAME));
-
-    return Optional.of(new Category(id, name));
+    return Optional.of(new Category(categoryName));
   }
 
 
