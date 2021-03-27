@@ -9,4 +9,6 @@ public interface ChannelRepository {
   void save(Channel channel);
 
   Optional<List<Channel>> getAllByCategoryName(CategoryName categoryName);
+
+  Optional<Channel> getFromId(ChannelId channelId);
 }
