@@ -22,7 +22,9 @@ public final class JooqCategoryRepository implements CategoryRepository {
     dsl.insertInto(CATEGORY, CATEGORY.CATEGORY_NAME)
         .values(
             category.getName().toString()
-        ).execute();
+        )
+        .onDuplicateKeyIgnore()
+        .execute();
   }
 
   @Override
