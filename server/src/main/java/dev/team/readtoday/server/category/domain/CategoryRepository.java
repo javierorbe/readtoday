@@ -7,6 +7,5 @@ public interface CategoryRepository {
 
   void save(Category category);
 
-  Optional<Category> getById(CategoryId id);
-
+  Optional<Category> getByName(CategoryName categoryName);
 }
