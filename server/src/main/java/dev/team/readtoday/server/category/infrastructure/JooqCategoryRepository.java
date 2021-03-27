@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
 
-public class JooqCategoryRepository implements CategoryRepository {
+public final class JooqCategoryRepository implements CategoryRepository {
 
   private final DSLContext dsl;
 

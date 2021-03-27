@@ -3,7 +3,7 @@ package dev.team.readtoday.server.category.domain;
 import dev.team.readtoday.server.shared.domain.Identifier;
 import java.util.UUID;
 
-public class CategoryId extends Identifier {
+public final class CategoryId extends Identifier {
 
   private CategoryId(UUID value) {
     super(value);

@@ -8,17 +8,17 @@ public final class Channel {
 
   private final ChannelId id;
   private final ChannelTitle title;
-  private final RssUrl rssUrl;
+  private final Url rssUrl;
   private final ChannelDescription description;
-  private final ImageUrl imageUrl;
+  private final Url imageUrl;
   private final List<Category> categories;
 
   public Channel(
       ChannelId id,
       ChannelTitle title,
-      RssUrl rssUrl,
+      Url rssUrl,
       ChannelDescription description,
-      ImageUrl imageUrl,
+      Url imageUrl,
       List<Category> categories) {
 
     Objects.requireNonNull(title);
@@ -37,9 +37,9 @@ public final class Channel {
 
   public static Channel create(
       ChannelTitle title,
-      RssUrl rssUrl,
+      Url rssUrl,
       ChannelDescription description,
-      ImageUrl imageUrl,
+      Url imageUrl,
       List<Category> categories) {
     return new Channel(ChannelId.random(), title, rssUrl, description, imageUrl, categories);
   }
@@ -52,7 +52,7 @@ public final class Channel {
     return title;
   }
 
-  public RssUrl getRssUrl() {
+  public Url getRssUrl() {
     return rssUrl;
   }
 
@@ -60,7 +60,7 @@ public final class Channel {
     return description;
   }
 
-  public ImageUrl getImageUrl() {
+  public Url getImageUrl() {
     return imageUrl;
   }
 
