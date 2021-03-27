@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.category.domain;
 
-public class Category {
+public final class Category {
 
   private final CategoryId id;
   private final CategoryName name;

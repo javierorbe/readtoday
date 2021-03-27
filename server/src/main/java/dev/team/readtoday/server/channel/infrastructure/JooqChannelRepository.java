@@ -10,9 +10,9 @@ import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelId;
+import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
-import dev.team.readtoday.server.channel.domain.ImageUrl;
-import dev.team.readtoday.server.channel.domain.RssUrl;
+import dev.team.readtoday.server.channel.domain.Url;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +21,7 @@ import org.jooq.Record2;
 import org.jooq.Record5;
 import org.jooq.Result;
 
-public class JooqChannelRepository implements
-    dev.team.readtoday.server.channel.domain.ChannelRepository {
+public final class JooqChannelRepository implements ChannelRepository {
 
   private final DSLContext dsl;
 
@@ -87,9 +86,9 @@ public class JooqChannelRepository implements
 
     ChannelId id = ChannelId.fromString(result.getValue(CHANNEL.ID));
     ChannelTitle title = new ChannelTitle(result.getValue(CHANNEL.TITLE));
-    RssUrl rssUrl = new RssUrl(result.getValue(CHANNEL.LINK));
+    Url rssUrl = new Url(result.getValue(CHANNEL.LINK));
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
-    ImageUrl imageUrl = new ImageUrl(result.get(CHANNEL.IMG_URL));
+    Url imageUrl = new Url(result.get(CHANNEL.IMG_URL));
 
     List<Category> categories = getCategoriesFromChannelId(id);
 

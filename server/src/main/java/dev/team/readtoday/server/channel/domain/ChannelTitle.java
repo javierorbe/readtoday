@@ -2,7 +2,7 @@ package dev.team.readtoday.server.channel.domain;
 
 import dev.team.readtoday.server.shared.domain.StringValueObject;
 
-public class ChannelTitle extends StringValueObject {
+public final class ChannelTitle extends StringValueObject {
 
   private static final int MAX_LENGTH = 30;
 
