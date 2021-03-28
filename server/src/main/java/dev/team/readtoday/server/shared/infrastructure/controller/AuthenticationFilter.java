@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure;
+package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;

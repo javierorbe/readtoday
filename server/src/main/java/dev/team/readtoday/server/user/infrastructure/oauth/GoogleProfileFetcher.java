@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure;
+package dev.team.readtoday.server.user.infrastructure.oauth;
 
 import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.core.builder.ServiceBuilder;

@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure;
+package dev.team.readtoday.server.user.infrastructure.persistence;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 

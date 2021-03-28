@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure;
+package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

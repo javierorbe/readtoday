@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure;
+package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import jakarta.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;
