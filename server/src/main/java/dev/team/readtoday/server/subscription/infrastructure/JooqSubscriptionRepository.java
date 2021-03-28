@@ -62,4 +62,5 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
     Subscription subscription = new Subscription(idU, idC);
     return Optional.of(subscription);
   }
+
 }

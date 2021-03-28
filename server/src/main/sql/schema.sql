@@ -47,4 +47,5 @@ CREATE TABLE subscription (
     FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (user_id, channel_id)
 );
+
     
