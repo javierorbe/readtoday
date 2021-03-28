@@ -5,8 +5,12 @@
 
 ## Building
 
-Building the server module requires the MySQL database to be active,
-to generate the jOOQ sources.
+
+Building the server module requires MySQL to be active. The database must
+contain the ReadToday schema
+([server/src/main/sql/schema.sql](/server/src/main/sql/schema.sql)), in order
+to generate the jOOQ sources. The jOOQ sources are generated at compile time,
+but can also be generated with ```mvn jooq-codegen:generate```.
 
 Build and execute all tests:
 
