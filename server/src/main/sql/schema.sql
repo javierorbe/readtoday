@@ -39,3 +39,12 @@ CREATE TABLE channel_categories (
     REFERENCES category (id ) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (channel_id, category_id )
 );
+
+CREATE TABLE subscription (
+	user_id CHAR(36) NOT NULL,
+    channel_id  CHAR(36) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (user_id, channel_id)
+);
+    
