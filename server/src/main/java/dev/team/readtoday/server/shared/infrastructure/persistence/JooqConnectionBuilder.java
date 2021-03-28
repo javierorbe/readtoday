@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure;
+package dev.team.readtoday.server.shared.infrastructure.persistence;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

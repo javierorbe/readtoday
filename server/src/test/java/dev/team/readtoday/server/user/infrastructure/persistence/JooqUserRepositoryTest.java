@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure;
+package dev.team.readtoday.server.user.infrastructure.persistence;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.shared.infrastructure.JooqConnectionBuilder;
+import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.EmailAddressMother;
 import dev.team.readtoday.server.user.domain.Role;
