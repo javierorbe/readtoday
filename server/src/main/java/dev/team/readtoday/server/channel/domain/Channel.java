@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.domain;
 
-import dev.team.readtoday.server.category.domain.Category;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import java.util.List;
 import java.util.Objects;
 
@@ -8,40 +8,40 @@ public final class Channel {
 
   private final ChannelId id;
   private final ChannelTitle title;
-  private final Url rssUrl;
+  private final RssURL rssURL;
   private final ChannelDescription description;
-  private final Url imageUrl;
-  private final List<Category> categories;
+  private final ImageURL imageURL;
+  private final List<CategoryId> categoryIds;
 
   public Channel(
       ChannelId id,
       ChannelTitle title,
-      Url rssUrl,
+      RssURL rssURL,
       ChannelDescription description,
-      Url imageUrl,
-      List<Category> categories) {
+      ImageURL imageURL,
+      List<CategoryId> categoryIds) {
 
     Objects.requireNonNull(title);
-    Objects.requireNonNull(rssUrl);
+    Objects.requireNonNull(rssURL);
     Objects.requireNonNull(description);
-    Objects.requireNonNull(imageUrl);
-    Objects.requireNonNull(categories);
+    Objects.requireNonNull(imageURL);
+    Objects.requireNonNull(categoryIds);
 
     this.id = id;
     this.title = title;
-    this.rssUrl = rssUrl;
+    this.imageURL = imageURL;
+    this.rssURL = rssURL;
     this.description = description;
-    this.imageUrl = imageUrl;
-    this.categories = categories;
+    this.categoryIds = categoryIds;
   }
 
   public static Channel create(
       ChannelTitle title,
-      Url rssUrl,
+      RssURL rssURL,
       ChannelDescription description,
-      Url imageUrl,
-      List<Category> categories) {
-    return new Channel(ChannelId.random(), title, rssUrl, description, imageUrl, categories);
+      ImageURL imageURL,
+      List<CategoryId> categoryIds) {
+    return new Channel(ChannelId.random(), title, rssURL, description, imageURL, categoryIds);
   }
 
   public ChannelId getId() {
@@ -52,20 +52,20 @@ public final class Channel {
     return title;
   }
 
-  public Url getRssUrl() {
-    return rssUrl;
+  public RssURL getRssUrl() {
+    return rssURL;
   }
 
   public ChannelDescription getDescription() {
     return description;
   }
 
-  public Url getImageUrl() {
-    return imageUrl;
+  public ImageURL getImageUrl() {
+    return imageURL;
   }
 
-  public List<Category> getCategories() {
-    return categories;
+  public List<CategoryId> getCategoryIds() {
+    return categoryIds;
   }
 
   @Override
