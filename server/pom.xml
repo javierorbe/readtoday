@@ -284,5 +284,10 @@
       <artifactId>mockneat</artifactId>
       <version>0.4.6</version>
     </dependency>
+    <dependency>
+      <groupId>net.andreinc</groupId>
+      <artifactId>mockneat</artifactId>
+      <version>0.4.6</version>
+    </dependency>
   </dependencies>
 </project>
