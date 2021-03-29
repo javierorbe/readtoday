@@ -3,11 +3,14 @@ package dev.team.readtoday.server.category.infrastructure;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 
 import dev.team.readtoday.server.category.domain.Category;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
+import dev.team.readtoday.server.shared.infrastructure.jooq.tables.records.CategoryRecord;
 import java.util.Optional;
 import org.jooq.DSLContext;
-import org.jooq.Record1;
+import org.jooq.Record2;
+import org.jooq.TableField;
 
 public final class JooqCategoryRepository implements CategoryRepository {
 
@@ -19,7 +22,7 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public void save(Category category) {
-    dsl.insertInto(CATEGORY, CATEGORY.CATEGORY_NAME)
+    dsl.insertInto(CATEGORY, CATEGORY.NAME)
         .values(
             category.getName().toString()
         )
@@ -29,18 +32,29 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public Optional<Category> getByName(CategoryName categoryName) {
-    Record1<String> record =
-        dsl.select(CATEGORY.CATEGORY_NAME)
+
+    return getBy(CATEGORY.NAME, categoryName.toString());
+  }
+
+  @Override
+  public Optional<Category> getById(CategoryId categoryId) {
+    return getBy(CATEGORY.ID, categoryId.toString());
+  }
+
+  private Optional<Category> getBy(TableField<CategoryRecord, String> FIELD, String value) {
+    Record2<String, String> record =
+        dsl.select(CATEGORY.ID, CATEGORY.NAME)
             .from(CATEGORY)
-            .where(CATEGORY.CATEGORY_NAME.eq(categoryName.toString()))
+            .where(FIELD.eq(value))
             .fetchOne();
 
     if (record == null) {
       return Optional.empty();
     }
 
-    return Optional.of(new Category(categoryName));
+    CategoryId id = CategoryId.fromString(record.getValue(CATEGORY.ID));
+    CategoryName name = new CategoryName(record.getValue(CATEGORY.NAME));
+
+    return Optional.of(new Category(id, name));
   }
-
-
 }

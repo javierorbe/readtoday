@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.category.infrastructure;
 
-import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -15,11 +15,13 @@ import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 
 @TestMethodOrder(MethodOrderer.Random.class)
+@Tag("IntegrationTest")
 public class JooqCategoryRepositoryTest {
 
   private static JooqConnectionBuilder jooq;
@@ -31,7 +33,7 @@ public class JooqCategoryRepositoryTest {
     repository = new JooqCategoryRepository(jooq.getContext());
 
     DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(USER).execute();
+    ctx.deleteFrom(CATEGORY).execute();
   }
 
   @Test
@@ -55,18 +57,19 @@ public class JooqCategoryRepositoryTest {
 
     repository.save(originalCategory);
 
-    Optional<Category> optCategory = repository.getByName(originalCategory.getName());
+    Optional<Category> optCategory = repository.getById(originalCategory.getId());
     assertTrue(optCategory.isPresent());
 
     Category category = optCategory.get();
 
+    assertEquals(originalCategory.getId(), category.getId());
     assertEquals(originalCategory.getName(), category.getName());
   }
 
   @Test
   void shouldNotReturnANonExistingCategory() {
     Category category = CategoryMother.random();
-    Optional<Category> optCategory = repository.getByName(category.getName());
+    Optional<Category> optCategory = repository.getById(category.getId());
     assertTrue(optCategory.isEmpty());
   }
 
@@ -74,5 +77,4 @@ public class JooqCategoryRepositoryTest {
   static void clean() {
     jooq.close();
   }
-
 }

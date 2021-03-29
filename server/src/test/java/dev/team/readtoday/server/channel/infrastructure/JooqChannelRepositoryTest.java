@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.infrastructure;
 
-import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -16,10 +16,12 @@ import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
+@Tag("IntegrationTest")
 final class JooqChannelRepositoryTest {
 
   private static JooqConnectionBuilder jooq;
@@ -31,7 +33,7 @@ final class JooqChannelRepositoryTest {
     repository = new JooqChannelRepository(jooq.getContext());
 
     DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(USER).execute();
+    ctx.deleteFrom(CHANNEL).execute();
   }
 
   @Test
