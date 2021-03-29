@@ -9,7 +9,7 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryMother;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
-import dev.team.readtoday.server.shared.infrastructure.JooqConnectionBuilder;
+import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import java.util.Optional;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
-public class JooqCategoryRepositoryTest {
+final class JooqCategoryRepositoryTest {
 
   private static JooqConnectionBuilder jooq;
   private static CategoryRepository repository;

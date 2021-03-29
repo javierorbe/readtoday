@@ -22,8 +22,9 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public void save(Category category) {
-    dsl.insertInto(CATEGORY, CATEGORY.NAME)
+    dsl.insertInto(CATEGORY, CATEGORY.ID, CATEGORY.NAME)
         .values(
+            category.getId().toString(),
             category.getName().toString()
         )
         .onDuplicateKeyIgnore()
