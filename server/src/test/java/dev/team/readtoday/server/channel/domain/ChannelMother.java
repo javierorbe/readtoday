@@ -16,7 +16,7 @@ public enum ChannelMother {
         new ChannelTitle(faker.bothify("????##")),
         RssURLMother.get(i++),
         new ChannelDescription(faker.bothify("??#? ?##? ##??")),
-        ImageURLMother.get(),
+        ImageURLMother.getPNG(),
         List.of()
     );
   }
