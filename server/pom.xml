@@ -285,9 +285,9 @@
       <version>0.4.6</version>
     </dependency>
     <dependency>
-      <groupId>rome</groupId>
+      <groupId>com.rometools</groupId>
       <artifactId>rome</artifactId>
-      <version>1.0</version>
+      <version>1.15.0</version>
     </dependency>
   </dependencies>
 </project>

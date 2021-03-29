@@ -3,11 +3,11 @@ package dev.team.readtoday.server.shared.domain;
 import java.net.URL;
 import java.util.Objects;
 
-public class URLValueObject {
+public class UrlValueObject {
 
   private final URL value;
 
-  protected URLValueObject(URL value) {
+  protected UrlValueObject(URL value) {
     this.value = value;
   }
 
@@ -16,10 +16,10 @@ public class URLValueObject {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof URLValueObject)) {
+    if (!(o instanceof UrlValueObject)) {
       return false;
     }
-    URLValueObject that = (URLValueObject) o;
+    UrlValueObject that = (UrlValueObject) o;
     return value.equals(that.value);
   }
 

@@ -3,7 +3,7 @@ package dev.team.readtoday.server.channel.domain;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public enum RssURLMother {
+public enum RssUrlMother {
   ;
 
   private static final String [] urls = {
@@ -13,8 +13,8 @@ public enum RssURLMother {
   };
 
 
-  static RssURL get(int i) throws MalformedURLException {
-    return new RssURL(new URL(urls[i]));
+  static RssUrl get(int i) throws MalformedURLException {
+    return new RssUrl(new URL(urls[i]));
   }
 
 }

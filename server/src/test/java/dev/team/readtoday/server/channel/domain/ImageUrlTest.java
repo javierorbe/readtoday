@@ -8,16 +8,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class ImageURLTest {
+final class ImageUrlTest {
 
   @Test
   void shouldNotThrowExceptionIfItIsValid() {
-    assertDoesNotThrow(ImageURLMother::getPNG);
-    assertDoesNotThrow(ImageURLMother::getJPG);
+    assertDoesNotThrow(ImageUrlMother::getPNG);
+    assertDoesNotThrow(ImageUrlMother::getJPG);
   }
 
   @Test
   void shouldThrowExceptionIfItIsValid() {
-    assertThrows(InvalidImageURL.class, ImageURLMother::getInvalidImageURL);
+    assertThrows(InvalidImageUrl.class, ImageUrlMother::getInvalidImageURL);
   }
 }

@@ -1,10 +1,9 @@
 package dev.team.readtoday.server.channel.domain;
 
-import java.awt.Image;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public enum ImageURLMother {
+public enum ImageUrlMother {
   ;
 
   private static final String png =
@@ -15,15 +14,15 @@ public enum ImageURLMother {
   private static final String invalidImage = "https://www.google.es/";
 
 
-  static ImageURL getPNG() throws MalformedURLException {
-    return new ImageURL(new URL(png));
+  static ImageUrl getPNG() throws MalformedURLException {
+    return new ImageUrl(new URL(png));
   }
 
-  static ImageURL getJPG() throws MalformedURLException {
-    return new ImageURL(new URL(jpg));
+  static ImageUrl getJPG() throws MalformedURLException {
+    return new ImageUrl(new URL(jpg));
   }
 
-  static ImageURL getInvalidImageURL() throws MalformedURLException {
-    return new ImageURL(new URL(invalidImage));
+  static ImageUrl getInvalidImageURL() throws MalformedURLException {
+    return new ImageUrl(new URL(invalidImage));
   }
 }

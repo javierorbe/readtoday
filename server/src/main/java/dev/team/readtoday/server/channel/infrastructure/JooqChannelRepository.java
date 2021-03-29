@@ -9,8 +9,8 @@ import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
-import dev.team.readtoday.server.channel.domain.ImageURL;
-import dev.team.readtoday.server.channel.domain.RssURL;
+import dev.team.readtoday.server.channel.domain.ImageUrl;
+import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -83,6 +83,7 @@ public final class JooqChannelRepository implements ChannelRepository {
 
   /**
    * Returns a Channel given a channel id.
+   *
    * @param id ChannelId
    * @return Channel
    */
@@ -120,9 +121,9 @@ public final class JooqChannelRepository implements ChannelRepository {
 
     ChannelId id = ChannelId.fromString(result.getValue(CHANNEL.ID));
     ChannelTitle title = new ChannelTitle(result.getValue(CHANNEL.TITLE));
-    RssURL rssURL = new RssURL(new URL(result.getValue(CHANNEL.RSS_URL)));
+    RssUrl rssURL = new RssUrl(new URL(result.getValue(CHANNEL.RSS_URL)));
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
-    ImageURL imageUrl = new ImageURL(new URL(result.get(CHANNEL.IMG_URL)));
+    ImageUrl imageUrl = new ImageUrl(new URL(result.get(CHANNEL.IMG_URL)));
 
     List<CategoryId> categories = getCategoriesFromChannelId(id);
     return new Channel(id, title, rssURL, description, imageUrl, categories);
@@ -155,6 +156,7 @@ public final class JooqChannelRepository implements ChannelRepository {
 
   /**
    * Bind a channel with its category. Middle table mxn (Channel - Category)
+   *
    * @param channelId ChannelId
    * @param categoryId CategoryId
    */

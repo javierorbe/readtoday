@@ -3,9 +3,9 @@ package dev.team.readtoday.server.category.infrastructure;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 
 import dev.team.readtoday.server.category.domain.Category;
-import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.jooq.tables.records.CategoryRecord;
 import java.util.Optional;
 import org.jooq.DSLContext;
@@ -42,11 +42,11 @@ public final class JooqCategoryRepository implements CategoryRepository {
     return getBy(CATEGORY.ID, categoryId.toString());
   }
 
-  private Optional<Category> getBy(TableField<CategoryRecord, String> FIELD, String value) {
+  private Optional<Category> getBy(TableField<CategoryRecord, String> field, String value) {
     Record2<String, String> record =
         dsl.select(CATEGORY.ID, CATEGORY.NAME)
             .from(CATEGORY)
-            .where(FIELD.eq(value))
+            .where(field.eq(value))
             .fetchOne();
 
     if (record == null) {

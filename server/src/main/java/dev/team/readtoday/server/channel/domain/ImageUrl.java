@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.domain;
 
-import dev.team.readtoday.server.shared.domain.URLValueObject;
+import dev.team.readtoday.server.shared.domain.UrlValueObject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
@@ -9,14 +9,14 @@ import jakarta.ws.rs.core.Response;
 import java.net.URL;
 import org.glassfish.jersey.client.JerseyInvocation.Builder;
 
-public final class ImageURL extends URLValueObject {
+public final class ImageUrl extends UrlValueObject {
 
   private static final Client client = ClientBuilder.newClient();
 
-  public ImageURL(URL value) {
+  public ImageUrl(URL value) {
     super(value);
     if (!isValid(value)) {
-      throw new InvalidImageURL("Error getting the image from:  " + value);
+      throw new InvalidImageUrl("Error getting the image from:  " + value);
     }
   }
 

@@ -11,18 +11,18 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class RssURLTest {
+final class RssUrlTest {
 
   @Test
   void shouldNotThrowExceptionIfItIsValid() {
-    assertDoesNotThrow(() -> RssURLMother.get(0));
-    assertDoesNotThrow(() -> RssURLMother.get(1));
-    assertDoesNotThrow(() -> RssURLMother.get(2));
+    assertDoesNotThrow(() -> RssUrlMother.get(0));
+    assertDoesNotThrow(() -> RssUrlMother.get(1));
+    assertDoesNotThrow(() -> RssUrlMother.get(2));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {"https://www.google.es/"})
   void shouldThrowExceptionIfItIsNotValid(String rssUrl) {
-    assertThrows(InvalidRssURL.class, () -> new RssURL(new URL(rssUrl)));
+    assertThrows(InvalidRssUrl.class, () -> new RssUrl(new URL(rssUrl)));
   }
 }
