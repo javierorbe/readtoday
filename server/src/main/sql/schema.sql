@@ -25,15 +25,17 @@ CREATE TABLE channel (
     PRIMARY KEY (id),
     id          CHAR(36)     NOT NULL,
     title       VARCHAR(30)  NOT NULL,
-    link        VARCHAR(255) NOT NULL UNIQUE,
+    rss_url        VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255) NOT NULL,
     img_url     VARCHAR(255)
 );
 
 CREATE TABLE channel_categories (
     channel_id  CHAR(36) NOT NULL,
-    category_id CHAR(36) NOT NULL,
-    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (channel_id, category_id)
+    category_id  CHAR(30) NOT NULL,
+    FOREIGN KEY (channel_id)
+    REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (category_id )
+    REFERENCES category (id ) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (channel_id, category_id )
 );

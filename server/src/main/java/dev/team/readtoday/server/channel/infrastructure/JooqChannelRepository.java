@@ -1,0 +1,170 @@
+package dev.team.readtoday.server.channel.infrastructure;
+
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL_CATEGORIES;
+
+import dev.team.readtoday.server.channel.domain.Channel;
+import dev.team.readtoday.server.channel.domain.ChannelDescription;
+import dev.team.readtoday.server.channel.domain.ChannelId;
+import dev.team.readtoday.server.channel.domain.ChannelRepository;
+import dev.team.readtoday.server.channel.domain.ChannelTitle;
+import dev.team.readtoday.server.channel.domain.ImageUrl;
+import dev.team.readtoday.server.channel.domain.RssUrl;
+import dev.team.readtoday.server.shared.domain.CategoryId;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.jooq.DSLContext;
+import org.jooq.Record1;
+import org.jooq.Record5;
+import org.jooq.Result;
+
+public final class JooqChannelRepository implements ChannelRepository {
+
+  private final DSLContext dsl;
+
+  public JooqChannelRepository(DSLContext dsl) {
+    this.dsl = dsl;
+  }
+
+  /**
+   * Create a channel. Channel's categories must be exist before trying to create the channel.
+   *
+   * @param channel Channel
+   */
+  @Override
+  public void save(Channel channel) {
+    dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE,
+        CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+        .values(
+            channel.getId().toString(),
+            channel.getTitle().toString(),
+            channel.getRssUrl().toString(),
+            channel.getDescription().toString(),
+            channel.getImageUrl().toString()
+        ).execute();
+
+    // Create rows in (many-to-many) channel-category.
+    channel.getCategoryIds()
+        .forEach(categoryId -> bindWithCategories(channel.getId(), categoryId));
+  }
+
+
+  @Override
+  public List<Channel> getAllByCategoryId(CategoryId categoryId) {
+
+    // Get channels without Categories field
+    Result<Record5<String, String, String, String, String>> resultChannels =
+        dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+            .from(CHANNEL)
+            .join(CHANNEL_CATEGORIES).on(CHANNEL.ID.eq(CHANNEL_CATEGORIES.CHANNEL_ID))
+            .where(CATEGORY.ID.eq(categoryId.toString()))
+            .fetch();
+
+    // Create return channels
+    List<Channel> channels = new ArrayList<>();
+
+    // Go over all result Channels
+    for (var resultChannel : resultChannels) {
+
+      try {
+        Channel channel = createChannelFromResult(resultChannel);
+        channels.add(channel);
+      } catch (MalformedURLException e) {
+        e.printStackTrace();
+      }
+    }
+
+    return channels;
+  }
+
+  /**
+   * Returns a Channel given a channel id.
+   *
+   * @param id ChannelId
+   * @return Channel
+   */
+  public Optional<Channel> getFromId(ChannelId id) {
+    Record5<String, String, String, String, String> channelResult =
+        dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+            .from(CHANNEL)
+            .where(CHANNEL.ID.eq(id.toString()))
+            .fetchOne();
+
+    if (channelResult == null) {
+      return Optional.empty();
+    }
+
+    try {
+      Channel channel = createChannelFromResult(channelResult);
+      return Optional.of(channel);
+
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+      return Optional.empty();
+    }
+  }
+
+  /**
+   * Returns a Channel instance from channel's result. It must contains all fields. The Channel
+   * returned will contains its categories.
+   *
+   * @param result Channel result must have the following fields ID, TITLE, LINK, DESCRIPTION and
+   *               IMG_URL
+   * @return Channel instance
+   */
+  private Channel createChannelFromResult(
+      Record5<String, String, String, String, String> result) throws MalformedURLException {
+
+    ChannelId id = ChannelId.fromString(result.getValue(CHANNEL.ID));
+    ChannelTitle title = new ChannelTitle(result.getValue(CHANNEL.TITLE));
+    RssUrl rssURL = new RssUrl(new URL(result.getValue(CHANNEL.RSS_URL)));
+    ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
+    ImageUrl imageUrl = new ImageUrl(new URL(result.get(CHANNEL.IMG_URL)));
+
+    List<CategoryId> categories = getCategoriesFromChannelId(id);
+    return new Channel(id, title, rssURL, description, imageUrl, categories);
+  }
+
+  /**
+   * Returns categories of a channel.
+   *
+   * @param channelId Channel id
+   * @return List of categories
+   */
+  private List<CategoryId> getCategoriesFromChannelId(ChannelId channelId) {
+    // Get categories from a channel
+    Result<Record1<String>> resultCategories = dsl.select(CATEGORY.ID)
+        .from(CATEGORY)
+        .join(CHANNEL_CATEGORIES).on(CATEGORY.ID.eq(CHANNEL_CATEGORIES.CATEGORY_ID))
+        .where(CATEGORY.ID.eq(channelId.toString()))
+        .fetch();
+
+    List<CategoryId> categories = new ArrayList<>();
+
+    for (var resultCategory : resultCategories) {
+      CategoryId categoryId = CategoryId.fromString(resultCategory.getValue(CATEGORY.ID));
+      // Add a category of a channel
+      categories.add(categoryId);
+    }
+
+    return categories;
+  }
+
+  /**
+   * Bind a channel with its category. Middle table mxn (Channel - Category)
+   *
+   * @param channelId ChannelId
+   * @param categoryId CategoryId
+   */
+  private void bindWithCategories(ChannelId channelId, CategoryId categoryId) {
+    dsl.insertInto(CHANNEL_CATEGORIES,
+        CHANNEL_CATEGORIES.CHANNEL_ID,
+        CHANNEL_CATEGORIES.CATEGORY_ID)
+        .values(channelId.toString(), categoryId.toString())
+        .execute();
+  }
+}
