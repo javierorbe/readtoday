@@ -1,17 +1,22 @@
-package dev.team.readtoday.client;
+package dev.team.readtoday.client.model;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
+import java.util.Collection;
 import java.util.UUID;
 
-public final class Channel {
+public final class Channel implements Comparable<Channel> {
 
   private final UUID id;
   private final String name;
   private final String faviconImageUrl;
+  private final ImmutableCollection<Category> categories;
 
-  public Channel(UUID id, String name, String faviconImageUrl) {
+  public Channel(UUID id, String name, String faviconImageUrl, Collection<Category> categories) {
     this.id = id;
     this.name = name;
     this.faviconImageUrl = faviconImageUrl;
+    this.categories = ImmutableSet.copyOf(categories);
   }
 
   public UUID getId() {
@@ -24,6 +29,10 @@ public final class Channel {
 
   public String getFaviconImageUrl() {
     return faviconImageUrl;
+  }
+
+  public ImmutableCollection<Category> getCategories() {
+    return categories;
   }
 
   @Override
@@ -41,5 +50,10 @@ public final class Channel {
   @Override
   public int hashCode() {
     return id.hashCode();
+  }
+
+  @Override
+  public int compareTo(Channel other) {
+    return name.compareToIgnoreCase(other.name);
   }
 }
