@@ -9,7 +9,7 @@ test:
 	@mvn test
 
 run:
-	@mvn exec:java
+	@mvn javafx:run
 
 lint:
 	@mvn checkstyle:check
