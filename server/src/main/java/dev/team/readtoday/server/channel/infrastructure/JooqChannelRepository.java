@@ -121,12 +121,12 @@ public final class JooqChannelRepository implements ChannelRepository {
 
     ChannelId id = ChannelId.fromString(result.getValue(CHANNEL.ID));
     ChannelTitle title = new ChannelTitle(result.getValue(CHANNEL.TITLE));
-    RssUrl rssURL = new RssUrl(new URL(result.getValue(CHANNEL.RSS_URL)));
+    RssUrl rssUrl = new RssUrl(new URL(result.getValue(CHANNEL.RSS_URL)));
     ChannelDescription description = new ChannelDescription(result.getValue(CHANNEL.DESCRIPTION));
     ImageUrl imageUrl = new ImageUrl(new URL(result.get(CHANNEL.IMG_URL)));
 
     List<CategoryId> categories = getCategoriesFromChannelId(id);
-    return new Channel(id, title, rssURL, description, imageUrl, categories);
+    return new Channel(id, title, rssUrl, description, imageUrl, categories);
   }
 
   /**

@@ -8,40 +8,40 @@ public final class Channel {
 
   private final ChannelId id;
   private final ChannelTitle title;
-  private final RssUrl rssURL;
+  private final RssUrl rssUrl;
   private final ChannelDescription description;
-  private final ImageUrl imageURL;
+  private final ImageUrl imageUrl;
   private final List<CategoryId> categoryIds;
 
   public Channel(
       ChannelId id,
       ChannelTitle title,
-      RssUrl rssURL,
+      RssUrl rssUrl,
       ChannelDescription description,
-      ImageUrl imageURL,
+      ImageUrl imageUrl,
       List<CategoryId> categoryIds) {
 
     Objects.requireNonNull(title);
-    Objects.requireNonNull(rssURL);
+    Objects.requireNonNull(rssUrl);
     Objects.requireNonNull(description);
-    Objects.requireNonNull(imageURL);
+    Objects.requireNonNull(imageUrl);
     Objects.requireNonNull(categoryIds);
 
     this.id = id;
     this.title = title;
-    this.imageURL = imageURL;
-    this.rssURL = rssURL;
+    this.imageUrl = imageUrl;
+    this.rssUrl = rssUrl;
     this.description = description;
     this.categoryIds = categoryIds;
   }
 
   public static Channel create(
       ChannelTitle title,
-      RssUrl rssURL,
+      RssUrl rssUrl,
       ChannelDescription description,
-      ImageUrl imageURL,
+      ImageUrl imageUrl,
       List<CategoryId> categoryIds) {
-    return new Channel(ChannelId.random(), title, rssURL, description, imageURL, categoryIds);
+    return new Channel(ChannelId.random(), title, rssUrl, description, imageUrl, categoryIds);
   }
 
   public ChannelId getId() {
@@ -53,7 +53,7 @@ public final class Channel {
   }
 
   public RssUrl getRssUrl() {
-    return rssURL;
+    return rssUrl;
   }
 
   public ChannelDescription getDescription() {
@@ -61,7 +61,7 @@ public final class Channel {
   }
 
   public ImageUrl getImageUrl() {
-    return imageURL;
+    return imageUrl;
   }
 
   public List<CategoryId> getCategoryIds() {
