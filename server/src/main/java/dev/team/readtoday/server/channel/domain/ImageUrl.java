@@ -15,12 +15,12 @@ public final class ImageUrl extends UrlValueObject {
 
   public ImageUrl(URL value) {
     super(value);
-    if (!isValid(value)) {
+    if (!isValidImageUrl(value)) {
       throw new InvalidImageUrl("Error getting the image from:  " + value);
     }
   }
 
-  private static boolean isValid(URL value) {
+  private static boolean isValidImageUrl(URL value) {
     WebTarget imageTarget = client.target(value.toString());
     Builder builder = (Builder) imageTarget.request();
     Response response = builder.get();

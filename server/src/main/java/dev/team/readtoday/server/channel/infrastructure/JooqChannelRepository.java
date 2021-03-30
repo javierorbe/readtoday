@@ -87,6 +87,7 @@ public final class JooqChannelRepository implements ChannelRepository {
    * @param id ChannelId
    * @return Channel
    */
+  @Override
   public Optional<Channel> getFromId(ChannelId id) {
     Record5<String, String, String, String, String> channelResult =
         dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)

@@ -7,7 +7,7 @@ import dev.team.readtoday.server.shared.domain.UrlValueObject;
 import java.io.IOException;
 import java.net.URL;
 
-public class RssUrl extends UrlValueObject {
+public final class RssUrl extends UrlValueObject {
 
   public RssUrl(URL value) {
     super(value);

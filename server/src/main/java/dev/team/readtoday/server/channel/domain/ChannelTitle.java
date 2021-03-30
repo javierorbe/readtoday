@@ -8,12 +8,12 @@ public final class ChannelTitle extends StringValueObject {
 
   public ChannelTitle(String value) {
     super(value);
-    if (!isValidTitleChannel(value)) {
+    if (!isValidChannelTitle(value)) {
       throw new InvalidChannelTitle("Invalid channel title: " + value);
     }
   }
 
-  private static boolean isValidTitleChannel(String value) {
+  private static boolean isValidChannelTitle(String value) {
     return value.length() < MAX_LENGTH;
   }
 }
