@@ -1,7 +1,10 @@
 ---
 name: Lint Commit Messages
 
-on: [push]
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
   commitlint:
