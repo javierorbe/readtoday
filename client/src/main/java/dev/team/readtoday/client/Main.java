@@ -10,6 +10,6 @@ public enum Main {
   private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
   public static void main(String[] args) {
-    Application.launch(GuiApp.class, args);
+    Application.launch(App.class, args);
   }
 }
