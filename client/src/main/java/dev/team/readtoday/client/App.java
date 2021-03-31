@@ -8,6 +8,7 @@ import dev.team.readtoday.client.jersey.JerseyAuthController;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.view.auth.AuthController;
+import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
@@ -66,15 +67,20 @@ public final class App extends Application {
     URI googleOauthUri = URI.create(config.get("googleOauthUri").getAsString());
     AuthController authController = new JerseyAuthController(baseTarget);
 
-    // TODO: create authScene using authController and googleOauthUri
+    authScene = createAuthScene(authController, googleOauthUri);
     homeScene = createHomeScene();
   }
 
   @Override
   public void start(Stage stage) {
     stage.setTitle("Home | ReadToday");
-    stage.setScene(homeScene);
+    stage.setScene(authScene);
     stage.show();
+  }
+
+  private static Scene createAuthScene(AuthController authController, URI googleOauthUri)
+      throws IOException {
+    return createScene("auth.fxml", new AuthView(authController, googleOauthUri));
   }
 
   private static Scene createHomeScene() throws IOException {
