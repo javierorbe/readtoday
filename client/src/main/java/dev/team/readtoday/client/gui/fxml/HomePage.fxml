@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dev.team.readtoday.client.gui.ClientView">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="395.0" prefWidth="596.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#5e60617c" height="400.0" layoutX="-2.0" layoutY="-2.0" stroke="TRANSPARENT" strokeType="INSIDE" width="600.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2efef" height="400.0" layoutX="149.0" stroke="#0000004e" strokeType="INSIDE" width="294.0" />
+            <Button fx:id="register" layoutX="193.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleRegisterView" prefHeight="28.0" prefWidth="212.0" text="Register" />
+            <Button fx:id="login" layoutX="193.0" layoutY="182.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="212.0" text="Login" />
+            <Text layoutX="172.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ReadToday" textAlignment="CENTER" wrappingWidth="247.6708984375">
+               <font>
+                  <Font name="Bodoni MT" size="33.0" />
+               </font>
+            </Text>
+            <Text layoutX="215.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to " textAlignment="CENTER" wrappingWidth="166.06005859375">
+               <font>
+                  <Font name="Bodoni MT" size="21.0" />
+               </font>
+            </Text>
+         </children></AnchorPane>
+  </content>
+</ScrollPane>
