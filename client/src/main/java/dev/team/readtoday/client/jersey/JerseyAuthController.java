@@ -9,9 +9,11 @@ import jakarta.ws.rs.core.Response;
 public final class JerseyAuthController implements AuthController {
 
   private final WebTarget signUpTarget;
+  private final WebTarget singInTarget;
 
   public JerseyAuthController(WebTarget baseTarget) {
     signUpTarget = baseTarget.path("/auth/signup");
+    singInTarget = baseTarget.path("/auth/singin");
   }
 
   @Override
@@ -25,6 +27,9 @@ public final class JerseyAuthController implements AuthController {
   @Override
   public String signIn(String googleOauthToken) {
     // TODO: Implement method.
-    throw new UnsupportedOperationException("Not implemented, yet.");
+    SingInRequest request = new SingInRequest(googleOauthToken);
+    Response response = singInTarget.request(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+    return response.readEntity(String.class);
   }
 }
