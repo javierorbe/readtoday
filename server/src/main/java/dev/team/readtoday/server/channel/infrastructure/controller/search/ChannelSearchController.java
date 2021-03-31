@@ -5,7 +5,6 @@ import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.infrastructure.controller.CategoryResponse;
 import dev.team.readtoday.server.channel.application.SearchChannelByCategory;
 import dev.team.readtoday.server.channel.domain.Channel;
-import dev.team.readtoday.server.channel.infrastructure.controller.create.ChannelCreateController;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -17,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class ChannelSearchController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelCreateController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 
   @Inject
   private SearchChannelByCategory searchChannelByCategory;
