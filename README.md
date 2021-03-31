@@ -63,4 +63,4 @@ Software design concepts that have been considered when developing:
 - [JavaFX](https://openjfx.io/) for the client GUI.
 - [OAuth 2.0](https://oauth.net/2/) for user Sign Up & Sign In.
 - [JWT (JSON Web Tokens)](https://jwt.io/) for Token-Based Authentication.
-- [JUnit 5](https://site.mockito.org/) & [Mockito](https://site.mockito.org/) for testing.
+- [JUnit 5](https://junit.org/junit5/) & [Mockito](https://site.mockito.org/) for testing.
