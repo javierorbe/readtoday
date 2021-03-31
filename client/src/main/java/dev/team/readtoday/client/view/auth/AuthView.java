@@ -17,7 +17,7 @@ public final class AuthView implements Initializable {
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 
   private final AuthController authController;
-  private final URI oAuthUri;
+  private final URI googleOauthUri;
 
   @FXML
   private TextField usernameField;
@@ -26,9 +26,9 @@ public final class AuthView implements Initializable {
   @FXML
   private TextField signInTokenField;
 
-  public AuthView(AuthController authController, URI oAuthUri) {
+  public AuthView(AuthController authController, URI googleOauthUri) {
     this.authController = authController;
-    this.oAuthUri = oAuthUri;
+    this.googleOauthUri = googleOauthUri;
   }
 
   @Override
@@ -61,7 +61,7 @@ public final class AuthView implements Initializable {
 
   private void openAuthUri() {
     try {
-      Desktop.getDesktop().browse(oAuthUri);
+      Desktop.getDesktop().browse(googleOauthUri);
     } catch (IOException e) {
       LOGGER.error("Error opening OAuth URI.", e);
     }
