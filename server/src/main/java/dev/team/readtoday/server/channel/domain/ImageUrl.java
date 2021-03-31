@@ -6,6 +6,7 @@ import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.net.MalformedURLException;
 import java.net.URL;
 import org.glassfish.jersey.client.JerseyInvocation.Builder;
 
@@ -31,5 +32,9 @@ public final class ImageUrl extends UrlValueObject {
       case "image/jpeg", "image/png" -> true;
       default -> false;
     };
+  }
+
+  public static ImageUrl fromString(String value) throws MalformedURLException {
+    return new ImageUrl(new URL(value));
   }
 }

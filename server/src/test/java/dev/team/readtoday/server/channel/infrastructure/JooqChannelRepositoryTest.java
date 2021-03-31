@@ -10,6 +10,7 @@ import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
+import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import java.net.MalformedURLException;
 import java.util.Optional;

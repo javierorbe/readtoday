@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.category.infrastructure;
+package dev.team.readtoday.server.category.infrastructure.persistence;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 

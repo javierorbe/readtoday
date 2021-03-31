@@ -1,6 +1,12 @@
 package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import dev.team.readtoday.server.category.application.SearchCategory;
+import dev.team.readtoday.server.category.domain.CategoryRepository;
+import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
+import dev.team.readtoday.server.channel.application.SearchChannelByCategory;
+import dev.team.readtoday.server.channel.domain.ChannelRepository;
+import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.application.SignUpUser;
@@ -35,7 +41,11 @@ public final class JerseyConfig extends ResourceConfig {
       bind(new JwtTokenManager(JWT_SIGNING_ALGORITHM)).to(JwtTokenManager.class);
 
       UserRepository userRepository = new JooqUserRepository(jooq.getContext());
+      ChannelRepository channelRepository = new JooqChannelRepository(jooq.getContext());
+      CategoryRepository categoryRepository = new JooqCategoryRepository(jooq.getContext());
 
+      bind(new SearchChannelByCategory(channelRepository)).to(SearchChannelByCategory.class);
+      bind(new SearchCategory((categoryRepository))).to(SearchCategory.class);
       bind(new SignUpUser(profileFetcher, userRepository)).to(SignUpUser.class);
     }
   }

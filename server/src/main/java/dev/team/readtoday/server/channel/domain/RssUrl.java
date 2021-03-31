@@ -5,6 +5,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import dev.team.readtoday.server.shared.domain.UrlValueObject;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public final class RssUrl extends UrlValueObject {
@@ -24,5 +25,9 @@ public final class RssUrl extends UrlValueObject {
     } catch (IOException | FeedException e) {
       return false;
     }
+  }
+
+  public static RssUrl fromString(String value) throws MalformedURLException {
+    return new RssUrl(new URL(value));
   }
 }
