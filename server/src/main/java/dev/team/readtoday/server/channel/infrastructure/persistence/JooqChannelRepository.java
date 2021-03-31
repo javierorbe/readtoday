@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.channel.infrastructure;
+package dev.team.readtoday.server.channel.infrastructure.persistence;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
@@ -37,19 +37,22 @@ public final class JooqChannelRepository implements ChannelRepository {
    */
   @Override
   public void save(Channel channel) {
-    dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE,
-        CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
-        .values(
-            channel.getId().toString(),
-            channel.getTitle().toString(),
-            channel.getRssUrl().toString(),
-            channel.getDescription().toString(),
-            channel.getImageUrl().toString()
-        ).execute();
 
-    // Create rows in (many-to-many) channel-category.
-    channel.getCategoryIds()
-        .forEach(categoryId -> bindWithCategories(channel.getId(), categoryId));
+    dsl.transaction(() -> {
+      dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE,
+          CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+          .values(
+              channel.getId().toString(),
+              channel.getTitle().toString(),
+              channel.getRssUrl().toString(),
+              channel.getDescription().toString(),
+              channel.getImageUrl().toString()
+          ).execute();
+
+      // Create rows in (many-to-many) channel-category.
+      channel.getCategoryIds()
+          .forEach(categoryId -> bindWithCategories(channel.getId(), categoryId));
+    });
   }
 
 

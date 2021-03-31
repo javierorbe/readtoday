@@ -9,6 +9,7 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryMother;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
+import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import java.util.Optional;
 import org.jooq.DSLContext;
