@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.view;
+package dev.team.readtoday.client.view.home;
 
 import com.google.common.collect.ImmutableList;
 import dev.team.readtoday.client.model.Category;
