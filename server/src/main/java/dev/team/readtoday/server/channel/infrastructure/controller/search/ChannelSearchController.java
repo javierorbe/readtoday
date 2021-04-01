@@ -14,7 +14,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ChannelSearchController {
+public final class ChannelSearchController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 

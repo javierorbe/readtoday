@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class SearchCategory {
+public final class SearchCategory {
 
   private final CategoryRepository categoryRepository;
 

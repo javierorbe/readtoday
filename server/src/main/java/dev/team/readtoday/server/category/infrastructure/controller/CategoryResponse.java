@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class CategoryResponse {
+public final class CategoryResponse {
 
   private String id;
   private String name;
