@@ -19,6 +19,7 @@ public class SignInUser {
 		EmailAddress email = profileFetcher.fetchEmailAddress(token);
 		
 		
+		
 	    return username;
 	}
 }
