@@ -23,12 +23,13 @@ public final class AuthResponseController {
   @GET
   @Produces(MediaType.TEXT_PLAIN)
   public String receiveSignUpToken(@QueryParam("code") String token) {
-    String jwtToken = switch (authInfoProvider.getAuthProcess()) {
-      case SIGN_UP -> {
-        String username = authInfoProvider.getUsername();
-        yield authController.signUp(token, username);
-      }
-      case SIGN_IN -> authController.signIn(token);
+    String jwtToken;
+
+    switch (authInfoProvider.getAuthProcess()) {
+      case SIGN_UP -> jwtToken = authController.signUp(token, authInfoProvider.getUsername());
+      case SIGN_IN -> jwtToken = authController.signIn(token);
+      default -> throw new IllegalStateException(
+          "Unexpected value: " + authInfoProvider.getAuthProcess());
     };
 
     jwtTokenReceiver.receiveJwtToken(jwtToken);
