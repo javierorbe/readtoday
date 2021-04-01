@@ -1,0 +1,12 @@
+---
+coverage:
+  status:
+    project:
+      server:
+        paths:
+          - server
+        only_pulls: true
+      client:
+        paths:
+          - client
+        only_pulls: true
