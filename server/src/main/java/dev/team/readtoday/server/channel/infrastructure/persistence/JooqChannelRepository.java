@@ -4,6 +4,7 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGO
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL_CATEGORIES;
 
+import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelId;
@@ -12,6 +13,7 @@ import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.infrastructure.jooq.tables.records.CategoryRecord;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Result;
+import org.jooq.TableField;
 import org.jooq.impl.DSL;
 
 public final class JooqChannelRepository implements ChannelRepository {
@@ -33,7 +36,8 @@ public final class JooqChannelRepository implements ChannelRepository {
   }
 
   /**
-   * Create a channel. Channel's categories must be exist before trying to create the channel.
+   * Create or update a channel.
+   * Categories of the channel given must be exist (DB) before trying to save the channel.
    *
    * @param channel Channel
    */
@@ -61,13 +65,33 @@ public final class JooqChannelRepository implements ChannelRepository {
 
   @Override
   public List<Channel> getAllByCategoryId(CategoryId categoryId) {
+    return getAllBy(CATEGORY.ID, categoryId.toString());
+  }
+
+  @Override
+  public List<Channel> getAllByCategoryName(CategoryName categoryName) {
+    return getAllBy(CATEGORY.NAME, categoryName.toString());
+  }
+
+  /**
+   * Methods just for not duplicate code. Returns a list of channels given a category field
+   * and a value for that field.
+   *
+   * The category field ie. CATEGORY.ID must be unique (still not tested).
+   *
+   * @param field The category field, ie. CATEGORY.ID, CATEGORY.NAME.
+   * @param value the category field value, ie. if CATEGORY.NAME field is passed, you must pass
+   *              a value "Entertainment" or "Sports".
+   * @return List of channels.
+   */
+  private List<Channel> getAllBy(TableField<CategoryRecord, String> field, String value) {
 
     // Get channels without Categories field
     Result<Record5<String, String, String, String, String>> resultChannels =
         dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
             .from(CHANNEL)
             .join(CHANNEL_CATEGORIES).on(CHANNEL.ID.eq(CHANNEL_CATEGORIES.CHANNEL_ID))
-            .where(CATEGORY.ID.eq(categoryId.toString()))
+            .where(field.eq(value))
             .fetch();
 
     // Create return channels
@@ -77,6 +101,7 @@ public final class JooqChannelRepository implements ChannelRepository {
     for (var resultChannel : resultChannels) {
 
       try {
+        // Convert the result to channel and link them with their categories.
         Channel channel = createChannelFromResult(resultChannel);
         channels.add(channel);
       } catch (MalformedURLException e) {
@@ -86,6 +111,7 @@ public final class JooqChannelRepository implements ChannelRepository {
 
     return channels;
   }
+
 
   /**
    * Returns a Channel given a channel id.
