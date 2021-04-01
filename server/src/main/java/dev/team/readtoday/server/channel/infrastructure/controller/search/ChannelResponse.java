@@ -4,7 +4,7 @@ import dev.team.readtoday.server.channel.domain.Channel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChannelResponse {
+public final class ChannelResponse {
   private String id;
   private String title;
   private String rssUrl;

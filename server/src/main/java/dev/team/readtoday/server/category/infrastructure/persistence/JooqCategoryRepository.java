@@ -33,7 +33,6 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public Optional<Category> getByName(CategoryName categoryName) {
-
     return getBy(CATEGORY.NAME, categoryName.toString());
   }
 

@@ -1,5 +1,7 @@
 package dev.team.readtoday.client.view.auth;
 
+import dev.team.readtoday.client.oauth.AuthInfoProvider;
+import dev.team.readtoday.client.oauth.AuthProcess;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -12,56 +14,52 @@ import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class AuthView implements Initializable {
+public final class AuthView implements Initializable, AuthInfoProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 
-  private final AuthController authController;
-  private final URI googleOauthUri;
+  private final URI googleAuthUri;
 
   @FXML
   private TextField usernameField;
-  @FXML
-  private TextField signUpTokenField;
-  @FXML
-  private TextField signInTokenField;
 
-  public AuthView(AuthController authController, URI googleOauthUri) {
-    this.authController = authController;
-    this.googleOauthUri = googleOauthUri;
+  private AuthProcess selectedAuthProcess = null;
+
+  public AuthView(URI googleAuthUri) {
+    this.googleAuthUri = googleAuthUri;
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Objects.requireNonNull(usernameField);
-    Objects.requireNonNull(signUpTokenField);
-    Objects.requireNonNull(signInTokenField);
   }
 
-  public void executeSignUpWithGoogle() {
-    openAuthUri();
+  @Override
+  public AuthProcess getAuthProcess() {
+    Objects.requireNonNull(selectedAuthProcess);
+    return selectedAuthProcess;
   }
 
-  public void executeSignInWithGoogle() {
-    openAuthUri();
+  @Override
+  public String getUsername() {
+    return usernameField.getText();
   }
 
-  public void sendSignUpToken() {
-    String token = signUpTokenField.getText();
-    String username = usernameField.getText();
-    String jwtToken = authController.signUp(token, username);
-    LOGGER.info("SignUp JWT Token: {}", jwtToken);
-  }
-
-  public void sendSignInToken() {
-    String token = signInTokenField.getText();
-    String jwtToken = authController.signIn(token);
-    LOGGER.info("Sign In JWT Token: {}", jwtToken);
-  }
-
-  private void openAuthUri() {
+  public void openSignUpAuthUri() {
     try {
-      Desktop.getDesktop().browse(googleOauthUri);
+      Desktop.getDesktop().browse(googleAuthUri);
+      LOGGER.debug("Google OAuth Link: {}", googleAuthUri);
+      selectedAuthProcess = AuthProcess.SIGN_UP;
+    } catch (IOException e) {
+      LOGGER.error("Error opening OAuth URI.", e);
+    }
+  }
+
+  public void openSignInAuthUri() {
+    try {
+      Desktop.getDesktop().browse(googleAuthUri);
+      LOGGER.debug("Google OAuth Link: {}", googleAuthUri);
+      selectedAuthProcess = AuthProcess.SIGN_IN;
     } catch (IOException e) {
       LOGGER.error("Error opening OAuth URI.", e);
     }

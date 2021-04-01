@@ -14,7 +14,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ChannelSearchController {
+public final class ChannelSearchController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 
@@ -26,27 +26,43 @@ public class ChannelSearchController {
 
   @GET
   @Consumes
-  public ChannelsByCategoryResponse getAllByCategory(@QueryParam("categoryId") String categoryId) {
+  public ChannelsByCategoryResponse getAllByCategoryId(
+      @QueryParam("categoryId") String categoryId) {
 
-    LOGGER.trace("Received get channels by category request");
+    LOGGER.trace("Received get channels by category id request");
 
     try {
       List<Channel> channels = searchChannelByCategory.getAllByCategoryId(categoryId);
       Set<Category> categories = searchCategory.getFromChannels(channels);
+      ChannelsByCategoryResponse response = ChannelsByCategoryResponse.create(channels, categories);
 
-      List<ChannelResponse> channelResponses = ChannelResponse.fromChannels(channels);
-      List<CategoryResponse> categoryResponses = CategoryResponse.fromCategories(categories);
-
-      ChannelsByCategoryResponse response =
-          new ChannelsByCategoryResponse(channelResponses, categoryResponses);
-
-      LOGGER.debug("Successful channels by category request");
+      LOGGER.debug("Successful channels by category id request");
       return response;
     } catch (Exception e) {
       e.printStackTrace();
-      LOGGER.debug("Error getting channel by category.");
+      LOGGER.debug("Error getting channel by category id.");
       return null;
     }
   }
 
+  @GET
+  @Consumes
+  public ChannelsByCategoryResponse getAllByCategoryName(
+      @QueryParam("categoryName") String categoryName) {
+
+    LOGGER.trace("Received get channels by category name request");
+
+    try {
+      List<Channel> channels = searchChannelByCategory.getAllByCategoryName(categoryName);
+      Set<Category> categories = searchCategory.getFromChannels(channels);
+      ChannelsByCategoryResponse response = ChannelsByCategoryResponse.create(channels, categories);
+
+      LOGGER.debug("Successful channels by category name request");
+      return response;
+    } catch (Exception e) {
+      e.printStackTrace();
+      LOGGER.debug("Error getting channel by category name.");
+      return null;
+    }
+  }
 }
