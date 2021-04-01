@@ -33,10 +33,7 @@ public class CategoryResponse {
 
   @Override
   public String toString() {
-    return "CategoryResponse{" +
-        "id='" + id + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+    return name;
   }
 
   private static CategoryResponse fromCategory(Category category) {
