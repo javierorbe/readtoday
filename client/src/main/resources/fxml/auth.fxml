@@ -57,27 +57,11 @@
             </HBox.margin>
           </TextField>
         </HBox>
-        <Button mnemonicParsing="false" onAction="#executeSignUpWithGoogle"
-                text="Sign Up with Google">
+        <Button mnemonicParsing="false" onAction="#openSignUpAuthUri" text="Sign Up with Google">
           <VBox.margin>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
           </VBox.margin>
         </Button>
-        <HBox alignment="CENTER">
-          <VBox.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
-          </VBox.margin>
-          <TextField fx:id="signUpTokenField" promptText="Google OAuth Token">
-            <HBox.margin>
-              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
-            </HBox.margin>
-          </TextField>
-          <Button mnemonicParsing="false" onAction="#sendSignUpToken" text="Send">
-            <HBox.margin>
-              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
-            </HBox.margin>
-          </Button>
-        </HBox>
       </VBox>
       <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
         <Label text="Sign In:">
@@ -88,27 +72,11 @@
             <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
           </VBox.margin>
         </Label>
-        <Button mnemonicParsing="false" onAction="#executeSignInWithGoogle"
-                text="Sign In with Google">
+        <Button mnemonicParsing="false" onAction="#openSignInAuthUri" text="Sign In with Google">
           <VBox.margin>
             <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
           </VBox.margin>
         </Button>
-        <HBox alignment="CENTER">
-          <VBox.margin>
-            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
-          </VBox.margin>
-          <TextField fx:id="signInTokenField" promptText="Google OAuth Token">
-            <HBox.margin>
-              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
-            </HBox.margin>
-          </TextField>
-          <Button mnemonicParsing="false" onAction="#sendSignInToken" text="Send">
-            <HBox.margin>
-              <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
-            </HBox.margin>
-          </Button>
-        </HBox>
       </VBox>
     </HBox>
   </center>
