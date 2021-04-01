@@ -1,7 +1,10 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
+import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.infrastructure.controller.CategoryResponse;
+import dev.team.readtoday.server.channel.domain.Channel;
 import java.util.List;
+import java.util.Set;
 
 public class ChannelsByCategoryResponse {
 
@@ -21,5 +24,13 @@ public class ChannelsByCategoryResponse {
 
   public List<CategoryResponse> getCategories() {
     return categories;
+  }
+
+  public static ChannelsByCategoryResponse create(List<Channel> channels,
+      Set<Category> categories) {
+    List<ChannelResponse> channelResponses = ChannelResponse.fromChannels(channels);
+    List<CategoryResponse> categoryResponses = CategoryResponse.fromCategories(categories);
+
+    return new ChannelsByCategoryResponse(channelResponses, categoryResponses);
   }
 }
