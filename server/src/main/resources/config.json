@@ -1,0 +1,6 @@
+{
+  "baseUri": "http://localhost:8080/readtoday/",
+  "googleClientId": "",
+  "googleClientSecret": "",
+  "googleOauthRedirect": "http://127.0.0.1:38492/oauth"
+}
