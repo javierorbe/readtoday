@@ -68,23 +68,23 @@ public final class App extends Application implements JwtTokenReceiver {
   private Scene homeScene;
   private Scene authScene;
 
-  private AuthResponseServer oAuthRespListener;
+  private AuthResponseServer oauthRespListener;
 
   @Override
   public void init() throws IOException {
     JsonObject config = loadConfig();
 
-    URI oAuthBaseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
+    URI oauthBaseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
     URI googleOauthBaseUri = URI.create(config.get("googleOauthBaseUri").getAsString());
     String googleClientId = config.get("googleClientId").getAsString();
 
-    URI oAuthRedirectUri = UriBuilder.fromUri(oAuthBaseRedirectUri)
+    URI oauthRedirectUri = UriBuilder.fromUri(oauthBaseRedirectUri)
         .path("oauth")
         .build();
 
     URI googleOauthUri = UriBuilder.fromUri(googleOauthBaseUri)
         .queryParam("client_id", googleClientId)
-        .queryParam("redirect_uri", oAuthRedirectUri)
+        .queryParam("redirect_uri", oauthRedirectUri)
         .build();
 
     String baseUri = config.get("serverBaseUri").getAsString();
@@ -94,8 +94,8 @@ public final class App extends Application implements JwtTokenReceiver {
     AuthController authController = new JerseyAuthController(baseTarget);
     AuthView authView = new AuthView(googleOauthUri);
 
-    oAuthRespListener =
-        new AuthResponseServer(oAuthBaseRedirectUri, authView, authController, this);
+    oauthRespListener =
+        new AuthResponseServer(oauthBaseRedirectUri, authView, authController, this);
 
     authScene = createScene("auth.fxml", authView);
     homeScene = createHomeScene();
@@ -113,7 +113,7 @@ public final class App extends Application implements JwtTokenReceiver {
     LOGGER.debug("Received JWT token: {}", jwtToken);
 
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.schedule(() -> oAuthRespListener.close(),
+    executorService.schedule(() -> oauthRespListener.close(),
         AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY, TimeUnit.SECONDS);
   }
 
