@@ -6,7 +6,7 @@ import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import java.util.List;
 
-public class SearchChannelByCategory {
+public final class SearchChannelByCategory {
 
   private final ChannelRepository channelRepository;
 

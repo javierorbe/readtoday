@@ -76,7 +76,6 @@ public final class JooqChannelRepository implements ChannelRepository {
   /**
    * Methods just for not duplicate code. Returns a list of channels given a category field
    * and a value for that field.
-   *
    * The category field ie. CATEGORY.ID must be unique (still not tested).
    *
    * @param field The category field, ie. CATEGORY.ID, CATEGORY.NAME.

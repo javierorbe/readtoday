@@ -6,7 +6,7 @@ import dev.team.readtoday.server.channel.domain.Channel;
 import java.util.List;
 import java.util.Set;
 
-public class ChannelsByCategoryResponse {
+public final class ChannelsByCategoryResponse {
 
   private final List<ChannelResponse> channelResponse;
   private final List<CategoryResponse> categories;
