@@ -17,10 +17,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.jooq.Configuration;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Result;
+import org.jooq.impl.DSL;
 
 public final class JooqChannelRepository implements ChannelRepository {
 
@@ -37,9 +39,10 @@ public final class JooqChannelRepository implements ChannelRepository {
    */
   @Override
   public void save(Channel channel) {
+    dsl.transaction(configuration -> {
 
-    dsl.transaction(() -> {
-      dsl.insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE,
+      DSL.using(configuration)
+          .insertInto(CHANNEL, CHANNEL.ID, CHANNEL.TITLE,
           CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
           .values(
               channel.getId().toString(),
@@ -51,7 +54,7 @@ public final class JooqChannelRepository implements ChannelRepository {
 
       // Create rows in (many-to-many) channel-category.
       channel.getCategoryIds()
-          .forEach(categoryId -> bindWithCategories(channel.getId(), categoryId));
+          .forEach(categoryId -> bindWithCategories(configuration, channel.getId(), categoryId));
     });
   }
 
@@ -164,8 +167,10 @@ public final class JooqChannelRepository implements ChannelRepository {
    * @param channelId ChannelId
    * @param categoryId CategoryId
    */
-  private void bindWithCategories(ChannelId channelId, CategoryId categoryId) {
-    dsl.insertInto(CHANNEL_CATEGORIES,
+  private void bindWithCategories(Configuration configuration,
+      ChannelId channelId, CategoryId categoryId) {
+    DSL.using(configuration)
+        .insertInto(CHANNEL_CATEGORIES,
         CHANNEL_CATEGORIES.CHANNEL_ID,
         CHANNEL_CATEGORIES.CATEGORY_ID)
         .values(channelId.toString(), categoryId.toString())
