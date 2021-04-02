@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
 <BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1">
-  <center>
-    <SplitPane dividerPositions="0.3" prefHeight="160.0" prefWidth="200.0"
-               BorderPane.alignment="CENTER">
+  xmlns:fx="http://javafx.com/fxml/1">
+  <top>
+    <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0"
+      BorderPane.alignment="CENTER">
+      <items>
+        <Button mnemonicParsing="false" onAction="#searchNewChannelsByCategory" text="Search"/>
+        <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category"/>
+      </items>
+    </ToolBar>
+  </top>
+  <left>
+    <SplitPane dividerPositions="0.9848484848484849" prefHeight="160.0" prefWidth="200.0"
+      BorderPane.alignment="CENTER">
       <BorderPane>
         <center>
           <ListView fx:id="channelListView" prefHeight="200.0" prefWidth="200.0"/>
@@ -32,8 +35,8 @@
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
                 </HBox.margin>
               </ComboBox>
-              <Button text="Clear" minWidth="-Infinity" mnemonicParsing="false"
-                      onAction="#unselectCategory">
+              <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#unselectCategory"
+                text="Clear">
                 <HBox.margin>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
                 </HBox.margin>
@@ -48,7 +51,15 @@
           </VBox>
         </top>
       </BorderPane>
-      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0"/>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0"/>
     </SplitPane>
+  </left>
+  <center>
+    <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <center>
+        <ListView fx:id="newChannelListView" prefHeight="200.0" prefWidth="200.0"
+          BorderPane.alignment="CENTER"/>
+      </center>
+    </BorderPane>
   </center>
 </BorderPane>
