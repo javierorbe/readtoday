@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class CategoryTest {
+final class ChannelTest {
 
   @Test
   void shouldBeSortedByName() {
-    Collection<Category> categories = Set.of(
-        CategoryMother.withName("Science"),
-        CategoryMother.withName("News"),
-        CategoryMother.withName("Technology")
+    Collection<Channel> channels = Set.of(
+        ChannelMother.withName("The New York Times"),
+        ChannelMother.withName("TechCrunch"),
+        ChannelMother.withName("Hacker News")
     );
 
-    ImmutableList<Category> sortedChannels = ImmutableList.sortedCopyOf(categories);
+    ImmutableList<Channel> sortedChannels = ImmutableList.sortedCopyOf(channels);
 
-    ImmutableList<Category> expectedOrder = ImmutableList.sortedCopyOf(
-        (c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()), categories);
+    ImmutableList<Channel> expectedOrder = ImmutableList.sortedCopyOf(
+        (c1, c2) -> c1.getName().compareToIgnoreCase(c2.getName()), channels);
     assertEquals(expectedOrder, sortedChannels);
   }
 }
