@@ -5,8 +5,8 @@ coverage:
       server:
         paths:
           - server
-        only_pulls: true
+        informational: true
       client:
         paths:
           - client
-        only_pulls: true
+        informational: true
