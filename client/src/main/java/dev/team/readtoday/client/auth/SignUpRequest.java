@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.jersey;
+package dev.team.readtoday.client.auth;
 
 public final class SignUpRequest {
 
