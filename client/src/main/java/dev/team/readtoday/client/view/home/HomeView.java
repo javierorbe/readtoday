@@ -98,6 +98,7 @@ public final class HomeView implements Initializable {
     return map;
   }
 
+  @FXML
   public void unselectCategory() {
     channelCategorySelector.valueProperty().set(null);
   }
