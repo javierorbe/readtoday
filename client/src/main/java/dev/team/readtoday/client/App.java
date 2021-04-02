@@ -7,16 +7,12 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-<<<<<<< HEAD
 import dev.team.readtoday.client.auth.AuthRequestListener;
 import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
-=======
-import dev.team.readtoday.client.jersey.JerseyAuthController;
-import dev.team.readtoday.client.jersey.search.JerseySearchChannelController;
->>>>>>> 4525610 (feat: Controller to search channel by category and gui)
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
+import dev.team.readtoday.client.search.JerseySearchChannelController;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
 import dev.team.readtoday.client.view.home.SearchChannelController;
@@ -94,15 +90,11 @@ public final class App extends Application {
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
 
     authScene = createScene("auth.fxml", authView);
-<<<<<<< HEAD
-    homeScene = createHomeScene();
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
     eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
     eventBus.register(this);
-=======
-    homeScene = createHomeScene(baseTarget);
->>>>>>> 4525610 (feat: Controller to search channel by category and gui)
+    homeScene = createHomeScene(serverBaseTarget);
   }
 
   @Override

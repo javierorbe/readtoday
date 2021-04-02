@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.jersey.search;
+package dev.team.readtoday.client.search;
 
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.view.home.SearchChannelController;
