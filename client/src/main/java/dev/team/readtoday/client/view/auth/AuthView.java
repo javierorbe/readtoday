@@ -1,7 +1,9 @@
 package dev.team.readtoday.client.view.auth;
 
+import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.auth.AuthInfoProvider;
 import dev.team.readtoday.client.auth.AuthProcess;
+import dev.team.readtoday.client.auth.SignUpFailedEvent;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -65,6 +67,12 @@ public final class AuthView implements Initializable, AuthInfoProvider {
   public void openSignInAuthUri() {
     selectedAuthProcess = AuthProcess.SIGN_IN;
     openAuthUri();
+  }
+
+  @Subscribe
+  public void onSignUpFailed(SignUpFailedEvent event) {
+    signUpBtn.setDisable(false);
+    signInBtn.setDisable(false);
   }
 
   private void openAuthUri() {

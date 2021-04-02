@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import dev.team.readtoday.client.auth.AuthRequestListener;
+import dev.team.readtoday.client.auth.SignUpFailedEvent;
 import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.model.Category;
@@ -28,6 +29,7 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -36,6 +38,8 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,7 +74,8 @@ public final class App extends Application {
 
   private static final long AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY = 5L;
 
-  private final EventBus eventBus = new AsyncEventBus(Executors.newSingleThreadExecutor());
+  private final ExecutorService eventBusExecutor = Executors.newSingleThreadExecutor();
+  private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
 
   private Stage stage;
   private Scene homeScene;
@@ -89,11 +94,13 @@ public final class App extends Application {
 
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
 
-    authScene = createScene("auth.fxml", authView);
-
     WebTarget serverBaseTarget = getServerBaseTarget(config);
+
     eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
+    eventBus.register(authView);
     eventBus.register(this);
+
+    authScene = createScene("auth.fxml", authView);
     homeScene = createHomeScene(serverBaseTarget);
   }
 
@@ -101,10 +108,13 @@ public final class App extends Application {
   public void start(Stage stage) {
     this.stage = stage;
 
-    stage.setOnHiding(event -> accessTokenReceiver.close());
+    stage.setOnHiding(event -> {
+      accessTokenReceiver.close();
+      eventBusExecutor.shutdownNow();
+    });
 
-    stage.setTitle("Home | ReadToday");
-    stage.setScene(homeScene);
+    stage.setTitle("ReadToday");
+    stage.setScene(authScene);
     stage.show();
   }
 
@@ -117,6 +127,19 @@ public final class App extends Application {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
     executorService.schedule(() -> accessTokenReceiver.close(),
         AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY, TimeUnit.SECONDS);
+  }
+
+  @Subscribe
+  public static void onSignUpFailed(SignUpFailedEvent event) {
+    LOGGER.debug("Sign up failed (reason: {}).", event.getReason());
+
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Sign up failed");
+      alert.setHeaderText("Sign up failed");
+      alert.setContentText("Reason: " + event.getReason());
+      alert.show();
+    });
   }
 
   private static Scene createHomeScene(WebTarget baseTarget) throws IOException {
