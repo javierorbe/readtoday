@@ -41,7 +41,7 @@ public final class SignUpController {
       String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
 
       LOGGER.debug("Successful user sign up.");
-      return Response.ok(jwtToken).build();
+      return Response.status(Response.Status.CREATED).entity(jwtToken).build();
     } catch (AuthProcessFailed e) {
       LOGGER.debug("Sign up failed.", e);
       return Response.status(Response.Status.UNAUTHORIZED).build();
@@ -49,7 +49,7 @@ public final class SignUpController {
       LOGGER.debug("Sign up failed.", e);
       return Response.status(Response.Status.CONFLICT).build();
     } catch (RuntimeException e) {
-      LOGGER.debug("Other exception", e);
+      LOGGER.debug("Sign up failed.", e);
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
