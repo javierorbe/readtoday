@@ -1,6 +1,5 @@
 package dev.team.readtoday.server.subscription.domain;
 
-
 import java.util.List;
 import java.util.Optional;
 import dev.team.readtoday.server.channel.domain.ChannelId;

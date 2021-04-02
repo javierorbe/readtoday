@@ -12,6 +12,7 @@ import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 import dev.team.readtoday.server.user.domain.UserId;
 
+
 public class JooqSubscriptionRepository implements SubscriptionRepository {
 
   private final DSLContext dsl;
@@ -61,6 +62,11 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
     }
     Subscription subscription = new Subscription(idU, idC);
     return Optional.of(subscription);
+	  dsl.insertInto(SUBSCRIPTION, SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID)
+      .values(
+          subscription.getIdUser().toString(),
+          subscription.getIdChannel().toString()
+      ).execute();	
   }
 
 }
