@@ -90,6 +90,7 @@ public final class JooqChannelRepository implements ChannelRepository {
         dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
             .from(CHANNEL)
             .join(CHANNEL_CATEGORIES).on(CHANNEL.ID.eq(CHANNEL_CATEGORIES.CHANNEL_ID))
+            .join(CATEGORY).on(CHANNEL_CATEGORIES.CATEGORY_ID.eq(CATEGORY.ID))
             .where(field.eq(value))
             .fetch();
 
@@ -172,7 +173,7 @@ public final class JooqChannelRepository implements ChannelRepository {
     Result<Record1<String>> resultCategories = dsl.select(CATEGORY.ID)
         .from(CATEGORY)
         .join(CHANNEL_CATEGORIES).on(CATEGORY.ID.eq(CHANNEL_CATEGORIES.CATEGORY_ID))
-        .where(CATEGORY.ID.eq(channelId.toString()))
+        .where(CHANNEL_CATEGORIES.CHANNEL_ID.eq(channelId.toString()))
         .fetch();
 
     List<CategoryId> categories = new ArrayList<>();
