@@ -98,6 +98,9 @@ public final class App extends Application {
   @Override
   public void start(Stage stage) {
     this.stage = stage;
+
+    stage.setOnHiding(event -> accessTokenReceiver.close());
+
     stage.setTitle("Home | ReadToday");
     stage.setScene(authScene);
     stage.show();
