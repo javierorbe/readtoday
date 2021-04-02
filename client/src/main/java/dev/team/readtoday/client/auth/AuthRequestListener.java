@@ -23,7 +23,16 @@ public final class AuthRequestListener {
     Response response = signUpTarget.request(MediaType.APPLICATION_JSON)
         .post(Entity.entity(request, MediaType.APPLICATION_JSON));
 
-    String jwtToken = response.readEntity(String.class);
-    eventBus.post(new SuccessfulSignUpEvent(jwtToken));
+    if (isResponseStatusCreated(response)) {
+      String jwtToken = response.readEntity(String.class);
+      eventBus.post(new SuccessfulSignUpEvent(jwtToken));
+    } else {
+      String reason = Response.Status.fromStatusCode(response.getStatus()).getReasonPhrase();
+      eventBus.post(new SignUpFailedEvent(reason));
+    }
+  }
+
+  private static boolean isResponseStatusCreated(Response response) {
+    return response.getStatus() == Response.Status.CREATED.getStatusCode();
   }
 }
