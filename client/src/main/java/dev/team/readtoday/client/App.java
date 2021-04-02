@@ -7,13 +7,19 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+<<<<<<< HEAD
 import dev.team.readtoday.client.auth.AuthRequestListener;
 import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
+=======
+import dev.team.readtoday.client.jersey.JerseyAuthController;
+import dev.team.readtoday.client.jersey.search.JerseySearchChannelController;
+>>>>>>> 4525610 (feat: Controller to search channel by category and gui)
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
+import dev.team.readtoday.client.view.home.SearchChannelController;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
@@ -88,11 +94,15 @@ public final class App extends Application {
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
 
     authScene = createScene("auth.fxml", authView);
+<<<<<<< HEAD
     homeScene = createHomeScene();
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
     eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
     eventBus.register(this);
+=======
+    homeScene = createHomeScene(baseTarget);
+>>>>>>> 4525610 (feat: Controller to search channel by category and gui)
   }
 
   @Override
@@ -102,7 +112,7 @@ public final class App extends Application {
     stage.setOnHiding(event -> accessTokenReceiver.close());
 
     stage.setTitle("Home | ReadToday");
-    stage.setScene(authScene);
+    stage.setScene(homeScene);
     stage.show();
   }
 
@@ -117,8 +127,9 @@ public final class App extends Application {
         AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY, TimeUnit.SECONDS);
   }
 
-  private static Scene createHomeScene() throws IOException {
-    return createScene("home.fxml", new HomeView(EXAMPLE_CHANNELS));
+  private static Scene createHomeScene(WebTarget baseTarget) throws IOException {
+    SearchChannelController controller = new JerseySearchChannelController(baseTarget);
+    return createScene("home.fxml", new HomeView(EXAMPLE_CHANNELS, controller));
   }
 
   private static Scene createScene(String fxmlFile, Object controller) throws IOException {
