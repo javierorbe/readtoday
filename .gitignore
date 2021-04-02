@@ -27,3 +27,8 @@ local.properties
 
 ### Maven ###
 target/
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride
