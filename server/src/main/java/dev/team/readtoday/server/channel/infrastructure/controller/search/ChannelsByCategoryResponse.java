@@ -8,22 +8,22 @@ import java.util.Set;
 
 public final class ChannelsByCategoryResponse {
 
-  private final List<ChannelResponse> channelResponse;
-  private final List<CategoryResponse> categories;
+  private final List<ChannelResponse> channelsResponse;
+  private final List<CategoryResponse> categoriesResponse;
 
   public ChannelsByCategoryResponse(
-      List<ChannelResponse> channelResponse,
-      List<CategoryResponse> categories) {
-    this.channelResponse = channelResponse;
-    this.categories = categories;
+      List<ChannelResponse> channelsResponse,
+      List<CategoryResponse> categoriesResponse) {
+    this.channelsResponse = channelsResponse;
+    this.categoriesResponse = categoriesResponse;
   }
 
-  public List<ChannelResponse> getChannelResponse() {
-    return channelResponse;
+  public List<ChannelResponse> getChannelsResponse() {
+    return channelsResponse;
   }
 
-  public List<CategoryResponse> getCategories() {
-    return categories;
+  public List<CategoryResponse> getCategoriesResponse() {
+    return categoriesResponse;
   }
 
   public static ChannelsByCategoryResponse create(List<Channel> channels,

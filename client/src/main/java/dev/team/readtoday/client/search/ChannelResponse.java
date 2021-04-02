@@ -1,8 +1,12 @@
-package dev.team.readtoday.server.channel.infrastructure.controller.search;
+package dev.team.readtoday.client.search;
 
-import dev.team.readtoday.server.channel.domain.Channel;
-import java.util.ArrayList;
+import dev.team.readtoday.client.model.Category;
+import dev.team.readtoday.client.model.Channel;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public final class ChannelResponse {
   private String id;
@@ -11,6 +15,10 @@ public final class ChannelResponse {
   private String description;
   private String imageUrl;
   private List<String> categoryIds;
+
+  public ChannelResponse() {
+    categoryIds = List.of();
+  }
 
   public ChannelResponse(String id, String title, String rssUrl, String description,
       String imageUrl, List<String> categoryIds) {
@@ -70,26 +78,22 @@ public final class ChannelResponse {
     this.categoryIds = categoryIds;
   }
 
-  private static ChannelResponse fromChannel(Channel channel) {
 
-    List<String> categoriesIds = new ArrayList<>();
-    channel.getCategoryIds().forEach(categoriesId -> categoriesIds.add(categoriesId.toString()));
+  public Channel toChannel(Map<UUID, Category> categories) {
 
-    return new ChannelResponse(
-        channel.getId().toString(),
-        channel.getTitle().toString(),
-        channel.getRssUrl().toString(),
-        channel.getDescription().toString(),
-        channel.getImageUrl().toString(),
-        categoriesIds
+    Collection<Category> categoriesOfChannel = new HashSet<>();
+
+    categoryIds.forEach(id -> {
+      Category category = categories.get(UUID.fromString(id));
+      categoriesOfChannel.add(category);
+    });
+
+
+    return new Channel(
+        UUID.fromString(id),
+        title,
+        imageUrl,
+        categoriesOfChannel
     );
-  }
-
-  public static List<ChannelResponse> fromChannels(List<Channel> channels) {
-    List<ChannelResponse> response = new ArrayList<>();
-
-    channels.forEach(channel -> response.add(ChannelResponse.fromChannel(channel)));
-
-    return response;
   }
 }
