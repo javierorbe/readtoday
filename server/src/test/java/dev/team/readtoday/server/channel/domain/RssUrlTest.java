@@ -22,7 +22,10 @@ final class RssUrlTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"https://www.google.es/"})
+  @ValueSource(strings = {
+      "htt:-//metric_.com",
+      "https://www.google.es/"
+  })
   void shouldThrowExceptionIfItIsNotValid(String rssUrl) {
     assertThrows(InvalidRssUrl.class, () -> RssUrl.create(rssUrl));
   }

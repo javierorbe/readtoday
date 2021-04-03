@@ -20,4 +20,13 @@ public enum UserMother {
         Role.USER
     );
   }
+
+  public static User withEmail(EmailAddress email) {
+    return new User(
+        UserId.random(),
+        UsernameMother.random(),
+        email,
+        Role.USER
+    );
+  }
 }

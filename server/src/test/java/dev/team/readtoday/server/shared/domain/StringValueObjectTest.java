@@ -1,11 +1,13 @@
 package dev.team.readtoday.server.shared.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,6 +15,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 final class StringValueObjectTest {
+
+  @Test
+  void shouldNotBeEqualToNull() {
+    StringValueObject strVal = new StringValueObject("someValue");
+    assertNotEquals(null, strVal);
+  }
 
   @ParameterizedTest
   @MethodSource("provideMatchingStringAndPattern")

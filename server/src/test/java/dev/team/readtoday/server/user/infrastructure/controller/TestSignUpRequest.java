@@ -1,11 +1,11 @@
-package dev.team.readtoday.client.auth;
+package dev.team.readtoday.server.user.infrastructure.controller;
 
-public final class SignUpRequest {
+public final class TestSignUpRequest {
 
   private final String accessToken;
   private final String username;
 
-  SignUpRequest(String accessToken, String username) {
+  TestSignUpRequest(String accessToken, String username) {
     this.accessToken = accessToken;
     this.username = username;
   }
