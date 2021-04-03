@@ -1,17 +1,20 @@
 package dev.team.readtoday.server.channel.domain;
 
-import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.shared.domain.CategoryId;
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 public interface ChannelRepository {
 
+  /**
+   * Create or update a channel.
+   * <p>
+   * Category integrity is checked.
+   */
   void save(Channel channel);
 
-  List<Channel> getAllByCategoryId(CategoryId categoryId);
-
-  List<Channel> getAllByCategoryName(CategoryName categoryName);
-
+  /** Returns a Channel given a channel id. */
   Optional<Channel> getFromId(ChannelId channelId);
+
+  Collection<Channel> getByCategory(CategoryId categoryId);
 }

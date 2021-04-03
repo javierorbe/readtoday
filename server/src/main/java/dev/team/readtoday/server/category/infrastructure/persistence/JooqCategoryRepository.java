@@ -6,11 +6,11 @@ import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import dev.team.readtoday.server.shared.domain.CategoryId;
-import dev.team.readtoday.server.shared.infrastructure.jooq.tables.records.CategoryRecord;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.jooq.DSLContext;
-import org.jooq.Record2;
-import org.jooq.TableField;
+import org.jooq.Record1;
 
 public final class JooqCategoryRepository implements CategoryRepository {
 
@@ -26,35 +26,36 @@ public final class JooqCategoryRepository implements CategoryRepository {
         .values(
             category.getId().toString(),
             category.getName().toString()
-        )
-        .onDuplicateKeyIgnore()
+        ).onDuplicateKeyIgnore()
         .execute();
   }
 
   @Override
-  public Optional<Category> getByName(CategoryName categoryName) {
-    return getBy(CATEGORY.NAME, categoryName.toString());
+  public Collection<Category> getById(Collection<CategoryId> ids) {
+    var result = dsl.select(CATEGORY.ID, CATEGORY.NAME)
+        .from(CATEGORY)
+        .where(CATEGORY.ID.in(ids))
+        .fetch();
+
+    return result.stream().map(record -> {
+      CategoryId id = CategoryId.fromString(record.get(CATEGORY.ID));
+      CategoryName name = new CategoryName(record.get(CATEGORY.NAME));
+      return new Category(id, name);
+    }).collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
-  public Optional<Category> getById(CategoryId categoryId) {
-    return getBy(CATEGORY.ID, categoryId.toString());
-  }
-
-  private Optional<Category> getBy(TableField<CategoryRecord, String> field, String value) {
-    Record2<String, String> record =
-        dsl.select(CATEGORY.ID, CATEGORY.NAME)
-            .from(CATEGORY)
-            .where(field.eq(value))
-            .fetchOne();
+  public Optional<Category> getByName(CategoryName categoryName) {
+    Record1<String> record = dsl.select(CATEGORY.ID)
+        .from(CATEGORY)
+        .where(CATEGORY.NAME.eq(categoryName.toString()))
+        .fetchOne();
 
     if (record == null) {
       return Optional.empty();
     }
 
-    CategoryId id = CategoryId.fromString(record.getValue(CATEGORY.ID));
-    CategoryName name = new CategoryName(record.getValue(CATEGORY.NAME));
-
-    return Optional.of(new Category(id, name));
+    CategoryId categoryId = CategoryId.fromString(record.value1());
+    return Optional.of(new Category(categoryId, categoryName));
   }
 }

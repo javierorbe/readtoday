@@ -1,10 +1,11 @@
 package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import dev.team.readtoday.server.category.application.SearchCategory;
+import dev.team.readtoday.server.category.application.SearchCategoriesById;
+import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
-import dev.team.readtoday.server.channel.application.SearchChannelByCategory;
+import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
@@ -23,30 +24,22 @@ public final class JerseyConfig extends ResourceConfig {
 
   public JerseyConfig(ProfileFetcher profileFetcher, JooqConnectionBuilder jooq) {
     packages(READTODAY_SERVER_PACKAGE);
-    register(new MyAbstractBinder(jooq, profileFetcher));
-  }
+    register(new AbstractBinder() {
+      @Override
+      protected void configure() {
+        bind(new JwtTokenManager(JWT_SIGNING_ALGORITHM)).to(JwtTokenManager.class);
 
-  private static final class MyAbstractBinder extends AbstractBinder {
+        UserRepository userRepository = new JooqUserRepository(jooq.getContext());
+        ChannelRepository channelRepository = new JooqChannelRepository(jooq.getContext());
+        CategoryRepository categoryRepository = new JooqCategoryRepository(jooq.getContext());
 
-    private final JooqConnectionBuilder jooq;
-    private final ProfileFetcher profileFetcher;
+        SearchCategoryByName searchCategoryByName = new SearchCategoryByName(categoryRepository);
 
-    private MyAbstractBinder(JooqConnectionBuilder jooq, ProfileFetcher profileFetcher) {
-      this.jooq = jooq;
-      this.profileFetcher = profileFetcher;
-    }
-
-    @Override
-    protected void configure() {
-      bind(new JwtTokenManager(JWT_SIGNING_ALGORITHM)).to(JwtTokenManager.class);
-
-      UserRepository userRepository = new JooqUserRepository(jooq.getContext());
-      ChannelRepository channelRepository = new JooqChannelRepository(jooq.getContext());
-      CategoryRepository categoryRepository = new JooqCategoryRepository(jooq.getContext());
-
-      bind(new SearchChannelByCategory(channelRepository)).to(SearchChannelByCategory.class);
-      bind(new SearchCategory((categoryRepository))).to(SearchCategory.class);
-      bind(new SignUpUser(profileFetcher, userRepository)).to(SignUpUser.class);
-    }
+        bind(new SearchChannelsByCategory(channelRepository, searchCategoryByName)).to(SearchChannelsByCategory.class);
+        bind(new SearchCategoriesById(categoryRepository)).to(SearchCategoriesById.class);
+        bind(new SearchCategoryByName(categoryRepository)).to(SearchCategoryByName.class);
+        bind(new SignUpUser(profileFetcher, userRepository)).to(SignUpUser.class);
+      }
+    });
   }
 }

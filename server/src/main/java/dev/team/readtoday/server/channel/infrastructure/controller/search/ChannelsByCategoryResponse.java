@@ -1,36 +1,26 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
 import dev.team.readtoday.server.category.domain.Category;
-import dev.team.readtoday.server.category.infrastructure.controller.CategoryResponse;
 import dev.team.readtoday.server.channel.domain.Channel;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public final class ChannelsByCategoryResponse {
 
-  private final List<ChannelResponse> channelsResponse;
-  private final List<CategoryResponse> categoriesResponse;
+  private final List<ChannelResponse> channels;
+  private final List<CategoryResponse> categories;
 
-  public ChannelsByCategoryResponse(
-      List<ChannelResponse> channelsResponse,
-      List<CategoryResponse> categoriesResponse) {
-    this.channelsResponse = channelsResponse;
-    this.categoriesResponse = categoriesResponse;
+  ChannelsByCategoryResponse(Collection<Channel> channels,
+                                     Collection<Category> categories) {
+    this.channels = ChannelResponse.fromChannels(channels);
+    this.categories = CategoryResponse.fromCategories(categories);
   }
 
-  public List<ChannelResponse> getChannelsResponse() {
-    return channelsResponse;
+  public Collection<ChannelResponse> getChannels() {
+    return channels;
   }
 
-  public List<CategoryResponse> getCategoriesResponse() {
-    return categoriesResponse;
-  }
-
-  public static ChannelsByCategoryResponse create(List<Channel> channels,
-      Set<Category> categories) {
-    List<ChannelResponse> channelResponses = ChannelResponse.fromChannels(channels);
-    List<CategoryResponse> categoryResponses = CategoryResponse.fromCategories(categories);
-
-    return new ChannelsByCategoryResponse(channelResponses, categoryResponses);
+  public Collection<CategoryResponse> getCategories() {
+    return categories;
   }
 }
