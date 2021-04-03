@@ -35,7 +35,8 @@ public final class JerseyConfig extends ResourceConfig {
 
         SearchCategoryByName searchCategoryByName = new SearchCategoryByName(categoryRepository);
 
-        bind(new SearchChannelsByCategory(channelRepository, searchCategoryByName)).to(SearchChannelsByCategory.class);
+        bind(new SearchChannelsByCategory(channelRepository, searchCategoryByName)).to(
+            SearchChannelsByCategory.class);
         bind(new SearchCategoriesById(categoryRepository)).to(SearchCategoriesById.class);
         bind(new SearchCategoryByName(categoryRepository)).to(SearchCategoryByName.class);
         bind(new SignUpUser(profileFetcher, userRepository)).to(SignUpUser.class);
