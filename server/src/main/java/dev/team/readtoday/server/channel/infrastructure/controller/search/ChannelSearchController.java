@@ -4,8 +4,10 @@ import dev.team.readtoday.server.category.application.SearchCategoriesById;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
+import dev.team.readtoday.server.channel.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@RequiresAuth
 @Path("channels")
 public final class ChannelSearchController {
 
@@ -43,6 +46,9 @@ public final class ChannelSearchController {
 
       LOGGER.debug("Successful channels by category name request");
       return Response.ok(response).build();
+    } catch (CategoryDoesNotExist e) {
+      LOGGER.trace("Channel search by category request failed.", e);
+      return Response.status(Response.Status.NOT_FOUND).build();
     } catch (RuntimeException e) {
       LOGGER.debug("Error getting channels by category name.", e);
       return Response.status(Response.Status.BAD_REQUEST).build();
