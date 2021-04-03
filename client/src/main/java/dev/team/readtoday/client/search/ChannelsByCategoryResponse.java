@@ -1,6 +1,11 @@
 package dev.team.readtoday.client.search;
 
+import dev.team.readtoday.client.model.Category;
+import dev.team.readtoday.client.model.Channel;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public final class ChannelsByCategoryResponse {
 
@@ -22,5 +27,15 @@ public final class ChannelsByCategoryResponse {
 
   public void setCategories(List<CategoryResponse> categories) {
     this.categories = categories;
+  }
+
+  public List<Channel> toChannels() {
+    List<Channel> channels = new ArrayList<>();
+    Map<UUID, Category> categories = CategoryResponse.toCategories(this.categories);
+
+    this.channels
+        .forEach(channelResponse -> channels.add(channelResponse.toChannel(categories)));
+
+    return channels;
   }
 }
