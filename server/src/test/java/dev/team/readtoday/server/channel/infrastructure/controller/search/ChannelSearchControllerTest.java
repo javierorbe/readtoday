@@ -48,11 +48,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URI;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.stream.Collectors;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -150,6 +152,15 @@ public final class ChannelSearchControllerTest {
   @Given("I have a valid authentication token")
   public void iHaveAValidAuthenticationToken() {
     userJwtToken = jwtTokenManager.getForUserId(userId.toString());
+  }
+
+  @Given("I have an invalid authentication token")
+  public void iHaveAnInvalidAuthenticationToken() {
+    Random random = new SecureRandom();
+    byte[] secret = new byte[64];
+    random.nextBytes(secret);
+    JwtTokenManager otherTokenManager = new JwtTokenManager(Algorithm.HMAC256(secret));
+    userJwtToken = otherTokenManager.getForUserId(userId.toString());
   }
 
   @When("I request to search channels with the category {string}")
