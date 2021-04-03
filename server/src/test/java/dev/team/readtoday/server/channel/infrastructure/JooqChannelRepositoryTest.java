@@ -15,7 +15,6 @@ import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
-import java.net.MalformedURLException;
 import java.util.Optional;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
@@ -45,15 +44,20 @@ final class JooqChannelRepositoryTest {
     ctx.deleteFrom(CHANNEL).execute();
   }
 
+  @AfterAll
+  static void clean() {
+    jooq.close();
+  }
+
   @Test
-  void shouldSaveChannel() throws MalformedURLException {
+  void shouldSaveChannel() {
     Channel channel = ChannelMother.random();
 
     assertDoesNotThrow(() -> channelRepository.save(channel));
   }
 
   @Test
-  void shouldReturnAnExistingChannel() throws MalformedURLException {
+  void shouldReturnAnExistingChannel() {
     Channel originalChannel = ChannelMother.random();
 
     channelRepository.save(originalChannel);
@@ -73,12 +77,5 @@ final class JooqChannelRepositoryTest {
   void shouldNotReturnANonExistingChannel() {
     Optional<Channel> optChannel = channelRepository.getFromId(ChannelId.random());
     assertTrue(optChannel.isEmpty());
-  }
-
-  @AfterAll
-  static void clean() {
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CHANNEL).execute();
-    jooq.close();
   }
 }

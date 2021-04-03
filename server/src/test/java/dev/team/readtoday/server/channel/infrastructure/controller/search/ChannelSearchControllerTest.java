@@ -68,10 +68,12 @@ public final class ChannelSearchControllerTest {
   private String baseUri;
   private HttpServer server;
   private JooqConnectionBuilder jooq;
+
+  private JwtTokenManager jwtTokenManager;
+
   private UserRepository userRepository;
   private ChannelRepository channelRepository;
   private CategoryRepository categoryRepository;
-  private JwtTokenManager jwtTokenManager;
 
   private UserId userId;
   private String userJwtToken;
@@ -95,7 +97,7 @@ public final class ChannelSearchControllerTest {
     jooq.getContext().deleteFrom(CHANNEL).execute();
     jooq.getContext().deleteFrom(USER).execute();
 
-    ResourceConfig jerseyConfig = new TestingJerseyConfig(jwtTokenManager, userRepository,
+    ResourceConfig jerseyConfig = new ChannelSearchTestingJerseyConfig(jwtTokenManager,
         channelRepository, categoryRepository);
 
     server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), jerseyConfig);
