@@ -59,4 +59,23 @@ public final class JooqUserRepository implements UserRepository {
 
     return Optional.of(new User(id, username, email, role));
   }
+
+  @Override
+  public Optional<User> getById(UserId id) {
+    Record3<String, String, String> record =
+        ctx.select(USER.USERNAME, USER.EMAIL, USER.ROLE_NAME)
+            .from(USER)
+            .where(USER.ID.eq(id.toString()))
+            .fetchOne();
+
+    if (record == null) {
+      return Optional.empty();
+    }
+
+    Username username = new Username(record.get(USER.USERNAME));
+    EmailAddress email = new EmailAddress(record.get(USER.EMAIL));
+    Role role = ROLE_MAP.inverse().get(record.get(USER.ROLE_NAME));
+
+    return Optional.of(new User(id, username, email, role));
+  }
 }
