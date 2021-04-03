@@ -35,7 +35,7 @@ public final class SignUpController {
 
     try {
       User user = signUpUser.signUp(
-          new AuthToken(request.getToken()),
+          new AuthToken(request.getAccessToken()),
           new Username(request.getUsername())
       );
       String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
