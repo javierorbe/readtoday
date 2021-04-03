@@ -48,9 +48,6 @@ public final class SignUpController {
     } catch (AlreadyExistingUser e) {
       LOGGER.debug("Sign up failed.", e);
       return Response.status(Response.Status.CONFLICT).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Sign up failed.", e);
-      return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
 }
