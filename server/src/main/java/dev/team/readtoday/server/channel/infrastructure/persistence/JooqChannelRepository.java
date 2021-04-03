@@ -78,7 +78,11 @@ public final class JooqChannelRepository implements ChannelRepository {
             channel.getDescription().toString(),
             channel.getImageUrl().toString()
         )
-        .onDuplicateKeyIgnore()
+        .onDuplicateKeyUpdate()
+        .set(CHANNEL.TITLE, channel.getTitle().toString())
+        .set(CHANNEL.RSS_URL, channel.getRssUrl().toString())
+        .set(CHANNEL.DESCRIPTION, channel.getDescription().toString())
+        .set(CHANNEL.IMG_URL, channel.getImageUrl().toString())
         .execute();
   }
 
