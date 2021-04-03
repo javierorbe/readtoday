@@ -1,16 +1,16 @@
-package dev.team.readtoday.server.category.infrastructure.controller;
+package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
 import dev.team.readtoday.server.category.domain.Category;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public final class CategoryResponse {
 
   private String id;
   private String name;
 
-  public CategoryResponse(String id, String name) {
+  private CategoryResponse(String id, String name) {
     this.id = id;
     this.name = name;
   }
@@ -43,7 +43,7 @@ public final class CategoryResponse {
     );
   }
 
-  public static List<CategoryResponse> fromCategories(Set<Category> categories) {
+  public static List<CategoryResponse> fromCategories(Collection<Category> categories) {
 
     List<CategoryResponse> result = new ArrayList<>();
 

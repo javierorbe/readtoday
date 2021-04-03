@@ -1,18 +1,20 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
-import dev.team.readtoday.server.category.application.SearchCategory;
+import dev.team.readtoday.server.category.application.SearchCategoriesById;
 import dev.team.readtoday.server.category.domain.Category;
-import dev.team.readtoday.server.channel.application.SearchChannelByCategory;
+import dev.team.readtoday.server.category.domain.CategoryName;
+import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
 import dev.team.readtoday.server.channel.domain.Channel;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import java.util.List;
-import java.util.Set;
+import jakarta.ws.rs.core.Response;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,30 +24,34 @@ public final class ChannelSearchController {
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 
   @Inject
-  private SearchChannelByCategory searchChannelByCategory;
+  private SearchChannelsByCategory searchChannelsByCategory;
 
   @Inject
-  private SearchCategory searchCategory;
+  private SearchCategoriesById searchCategoriesById;
 
   @GET
-  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public ChannelsByCategoryResponse getAllByCategoryName(
-      @QueryParam("categoryName") String categoryName) {
+  public Response getAllByCategoryName(@QueryParam("categoryName") CategoryName categoryName) {
 
-    LOGGER.trace("Received get channels by category name request: " + categoryName);
+    LOGGER.trace("Received get channels by category name request: {}", categoryName);
 
     try {
-      List<Channel> channels = searchChannelByCategory.getAllByCategoryName(categoryName);
-      Set<Category> categories = searchCategory.getFromChannels(channels);
-      ChannelsByCategoryResponse response = ChannelsByCategoryResponse.create(channels, categories);
+      Collection<Channel> channels = searchChannelsByCategory.search(categoryName);
+      Collection<CategoryId> categoryIds = flatChannelCategories(channels);
+      Collection<Category> categories = searchCategoriesById.search(categoryIds);
+      ChannelsByCategoryResponse response = new ChannelsByCategoryResponse(channels, categories);
 
       LOGGER.debug("Successful channels by category name request");
-      return response;
-    } catch (Exception e) {
-      e.printStackTrace();
-      LOGGER.debug("Error getting channel by category name.");
-      return null;
+      return Response.ok(response).build();
+    } catch (RuntimeException e) {
+      LOGGER.debug("Error getting channels by category name.", e);
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
+  }
+
+  private static Collection<CategoryId> flatChannelCategories(Collection<Channel> channels) {
+    return channels.stream()
+        .flatMap(channel -> channel.getCategories().stream())
+        .collect(Collectors.toSet());
   }
 }

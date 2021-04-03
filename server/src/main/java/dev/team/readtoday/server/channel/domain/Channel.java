@@ -1,6 +1,10 @@
 package dev.team.readtoday.server.channel.domain;
 
+import com.google.common.collect.ImmutableCollection;
+import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,7 +15,7 @@ public final class Channel {
   private final RssUrl rssUrl;
   private final ChannelDescription description;
   private final ImageUrl imageUrl;
-  private final List<CategoryId> categoryIds;
+  private final Collection<CategoryId> categories;
 
   public Channel(
       ChannelId id,
@@ -19,20 +23,20 @@ public final class Channel {
       RssUrl rssUrl,
       ChannelDescription description,
       ImageUrl imageUrl,
-      List<CategoryId> categoryIds) {
+      Collection<CategoryId> categories) {
 
     Objects.requireNonNull(title);
     Objects.requireNonNull(rssUrl);
     Objects.requireNonNull(description);
     Objects.requireNonNull(imageUrl);
-    Objects.requireNonNull(categoryIds);
+    Objects.requireNonNull(categories);
 
     this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.rssUrl = rssUrl;
     this.description = description;
-    this.categoryIds = categoryIds;
+    this.categories = new ArrayList<>(categories);
   }
 
   public static Channel create(
@@ -64,8 +68,12 @@ public final class Channel {
     return imageUrl;
   }
 
-  public List<CategoryId> getCategoryIds() {
-    return categoryIds;
+  public ImmutableCollection<CategoryId> getCategories() {
+    return ImmutableSet.copyOf(categories);
+  }
+
+  public void addCategory(CategoryId categoryId) {
+    categories.add(categoryId);
   }
 
   @Override
