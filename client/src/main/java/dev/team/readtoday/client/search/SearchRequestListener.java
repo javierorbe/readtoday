@@ -3,7 +3,9 @@ package dev.team.readtoday.client.search;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.model.Channel;
+import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -28,6 +30,7 @@ public final class SearchRequestListener {
 
     executorService.submit(() -> {
       ChannelsByCategoryResponse response = categoryNameTarget.request(MediaType.APPLICATION_JSON)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + UserJwtTokenStorage.getToken())
           .get(ChannelsByCategoryResponse.class);
       List<Channel> channels = response.toChannels();
       eventBus.post(new SearchResultReceivedEvent(channels));
