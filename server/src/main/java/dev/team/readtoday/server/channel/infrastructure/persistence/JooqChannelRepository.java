@@ -99,8 +99,8 @@ public final class JooqChannelRepository implements ChannelRepository {
 
   /**
    * Create a channel from a {@link Record5}.
-   * <p>
-   * The record must have the following fields: ID, TITLE, RSS_URL, DESCRIPTION and IMG_URL.
+   *
+   * <p>The record must have the following fields: ID, TITLE, RSS_URL, DESCRIPTION and IMG_URL.
    */
   private Channel createChannelFromResult(Record5<String, String, String, String, String> result) {
     ChannelId channelId = ChannelId.fromString(result.getValue(CHANNEL.ID));

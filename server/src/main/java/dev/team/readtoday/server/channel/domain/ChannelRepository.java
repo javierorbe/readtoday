@@ -8,8 +8,8 @@ public interface ChannelRepository {
 
   /**
    * Create or update a channel.
-   * <p>
-   * Category integrity is checked.
+   *
+   * <p>Category integrity is checked.
    */
   void save(Channel channel);
 

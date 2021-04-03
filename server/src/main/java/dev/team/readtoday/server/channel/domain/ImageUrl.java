@@ -25,8 +25,8 @@ public final class ImageUrl extends StringValueObject {
 
   /**
    * Create an image url.
-   * <p>
-   * Checks for the URL content validity.
+   *
+   * <p>Checks for the URL content validity.
    *
    * @param value the url
    * @return the {@code ImageUrl}
