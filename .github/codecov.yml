@@ -1,0 +1,12 @@
+---
+coverage:
+  status:
+    project:
+      server:
+        paths:
+          - server
+        informational: true
+      client:
+        paths:
+          - client
+        informational: true

@@ -17,8 +17,10 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -31,6 +33,9 @@ public final class HomeView implements Initializable {
   private final ObservableList<Channel> observableChannelList;
 
   @FXML
+  private ListView<Channel> newChannelListView;
+
+  @FXML
   private ComboBox<Category> channelCategorySelector;
 
   private final Map<Channel, Image> channelImageCache = new HashMap<>();
@@ -38,8 +43,15 @@ public final class HomeView implements Initializable {
   private final ImmutableList<Channel> allChannels;
   private final Map<Category, List<Channel>> categoryToChannel;
 
-  public HomeView(Collection<Channel> subscribedChannels) {
+  private final SearchChannelController searchChannelController;
+
+  @FXML
+  private TextField channelsByCategory;
+
+  public HomeView(Collection<Channel> subscribedChannels,
+      SearchChannelController searchChannelController) {
     allChannels = ImmutableList.sortedCopyOf(subscribedChannels);
+    this.searchChannelController = searchChannelController;
     observableChannelList = FXCollections.observableArrayList(allChannels);
     categoryToChannel = createCategoryToChannelMap(subscribedChannels);
   }
@@ -66,6 +78,7 @@ public final class HomeView implements Initializable {
     });
 
     channelListView.setCellFactory(listView -> new CustomListCell());
+    newChannelListView.setCellFactory(listView -> new CustomListCell());
   }
 
   private static Map<Category, List<Channel>> createCategoryToChannelMap(
@@ -85,8 +98,16 @@ public final class HomeView implements Initializable {
     return map;
   }
 
+  @FXML
   public void unselectCategory() {
     channelCategorySelector.valueProperty().set(null);
+  }
+
+  public void searchNewChannelsByCategory() {
+    List<Channel> newChannels = searchChannelController.searchNewChannelsByCategoryName(
+            channelsByCategory.getText());
+
+    newChannelListView.setItems(FXCollections.observableArrayList(newChannels));
   }
 
   private final class CustomListCell extends ListCell<Channel> {

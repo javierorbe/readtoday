@@ -10,9 +10,11 @@ local.properties
 .settings/
 .loadpath
 .recommenders
+.project
+.classpath
 
 ### Intellij ###
-.idea
+.idea/
 *.iml
 
 ### vscode ###
@@ -24,4 +26,9 @@ local.properties
 *.code-workspace
 
 ### Maven ###
-target
+target/
+
+### macOS ###
+.DS_Store
+.AppleDouble
+.LSOverride

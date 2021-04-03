@@ -1,7 +1,9 @@
 package dev.team.readtoday.client.view.auth;
 
-import dev.team.readtoday.client.oauth.AuthInfoProvider;
-import dev.team.readtoday.client.oauth.AuthProcess;
+import com.google.common.eventbus.Subscribe;
+import dev.team.readtoday.client.auth.AuthInfoProvider;
+import dev.team.readtoday.client.auth.AuthProcess;
+import dev.team.readtoday.client.auth.SignUpFailedEvent;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -10,6 +12,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,20 +21,26 @@ public final class AuthView implements Initializable, AuthInfoProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 
-  private final URI googleAuthUri;
+  private final URI googleAccessTokenUri;
 
   @FXML
   private TextField usernameField;
+  @FXML
+  private Button signUpBtn;
+  @FXML
+  private Button signInBtn;
 
   private AuthProcess selectedAuthProcess = null;
 
-  public AuthView(URI googleAuthUri) {
-    this.googleAuthUri = googleAuthUri;
+  public AuthView(URI googleAccessTokenUri) {
+    this.googleAccessTokenUri = googleAccessTokenUri;
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     Objects.requireNonNull(usernameField);
+    Objects.requireNonNull(signUpBtn);
+    Objects.requireNonNull(signInBtn);
   }
 
   @Override
@@ -42,26 +51,41 @@ public final class AuthView implements Initializable, AuthInfoProvider {
 
   @Override
   public String getUsername() {
+    if (selectedAuthProcess != AuthProcess.SIGN_UP) {
+      throw new IllegalStateException("Not in the sign up process.");
+    }
     return usernameField.getText();
   }
 
+  @FXML
   public void openSignUpAuthUri() {
-    try {
-      Desktop.getDesktop().browse(googleAuthUri);
-      LOGGER.debug("Google OAuth Link: {}", googleAuthUri);
-      selectedAuthProcess = AuthProcess.SIGN_UP;
-    } catch (IOException e) {
-      LOGGER.error("Error opening OAuth URI.", e);
-    }
+    selectedAuthProcess = AuthProcess.SIGN_UP;
+    openAuthUri();
   }
 
+  @FXML
   public void openSignInAuthUri() {
+    selectedAuthProcess = AuthProcess.SIGN_IN;
+    openAuthUri();
+  }
+
+  @Subscribe
+  public void onSignUpFailed(SignUpFailedEvent event) {
+    signUpBtn.setDisable(false);
+    signInBtn.setDisable(false);
+  }
+
+  private void openAuthUri() {
     try {
-      Desktop.getDesktop().browse(googleAuthUri);
-      LOGGER.debug("Google OAuth Link: {}", googleAuthUri);
-      selectedAuthProcess = AuthProcess.SIGN_IN;
+      signUpBtn.setDisable(true);
+      signInBtn.setDisable(true);
+
+      LOGGER.debug("Google OAuth Link: {}", googleAccessTokenUri);
+      Desktop.getDesktop().browse(googleAccessTokenUri);
     } catch (IOException e) {
       LOGGER.error("Error opening OAuth URI.", e);
+      signUpBtn.setDisable(false);
+      signInBtn.setDisable(false);
     }
   }
 }

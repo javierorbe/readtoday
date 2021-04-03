@@ -53,6 +53,11 @@ public final class Channel implements Comparable<Channel> {
   }
 
   @Override
+  public String toString() {
+    return name;
+  }
+
+  @Override
   public int compareTo(Channel other) {
     return name.compareToIgnoreCase(other.name);
   }

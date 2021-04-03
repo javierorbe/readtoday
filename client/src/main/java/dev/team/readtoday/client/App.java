@@ -1,17 +1,22 @@
 package dev.team.readtoday.client;
 
 import com.google.common.collect.ImmutableSet;
+import com.google.common.eventbus.AsyncEventBus;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import dev.team.readtoday.client.jersey.JerseyAuthController;
+import dev.team.readtoday.client.auth.AuthRequestListener;
+import dev.team.readtoday.client.auth.SignUpFailedEvent;
+import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
+import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
-import dev.team.readtoday.client.oauth.AuthResponseServer;
-import dev.team.readtoday.client.oauth.JwtTokenReceiver;
-import dev.team.readtoday.client.view.auth.AuthController;
+import dev.team.readtoday.client.search.JerseySearchChannelController;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
+import dev.team.readtoday.client.view.home.SearchChannelController;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
@@ -24,18 +29,22 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class App extends Application implements JwtTokenReceiver {
+public final class App extends Application {
 
   private static final Collection<Channel> EXAMPLE_CHANNELS = ImmutableSet.of(
       new Channel(UUID.randomUUID(),
@@ -65,60 +74,77 @@ public final class App extends Application implements JwtTokenReceiver {
 
   private static final long AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY = 5L;
 
+  private final ExecutorService eventBusExecutor = Executors.newSingleThreadExecutor();
+  private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
+
+  private Stage stage;
   private Scene homeScene;
   private Scene authScene;
 
-  private AuthResponseServer oauthRespListener;
+  private AccessTokenReceiver accessTokenReceiver;
 
   @Override
   public void init() throws IOException {
     JsonObject config = loadConfig();
 
-    URI oauthBaseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
-    URI googleOauthBaseUri = URI.create(config.get("googleOauthBaseUri").getAsString());
-    String googleClientId = config.get("googleClientId").getAsString();
+    URI baseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
+    URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
-    URI oauthRedirectUri = UriBuilder.fromUri(oauthBaseRedirectUri)
-        .path("oauth")
-        .build();
+    AuthView authView = new AuthView(googleAccessTokenUri);
 
-    URI googleOauthUri = UriBuilder.fromUri(googleOauthBaseUri)
-        .queryParam("client_id", googleClientId)
-        .queryParam("redirect_uri", oauthRedirectUri)
-        .build();
+    accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
 
-    String baseUri = config.get("serverBaseUri").getAsString();
-    Client client = ClientBuilder.newClient();
-    WebTarget baseTarget = client.target(baseUri);
+    WebTarget serverBaseTarget = getServerBaseTarget(config);
 
-    AuthController authController = new JerseyAuthController(baseTarget);
-    AuthView authView = new AuthView(googleOauthUri);
-
-    oauthRespListener =
-        new AuthResponseServer(oauthBaseRedirectUri, authView, authController, this);
+    eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
+    eventBus.register(authView);
+    eventBus.register(this);
 
     authScene = createScene("auth.fxml", authView);
-    homeScene = createHomeScene();
+    homeScene = createHomeScene(serverBaseTarget);
   }
 
   @Override
   public void start(Stage stage) {
-    stage.setTitle("Home | ReadToday");
+    this.stage = stage;
+
+    stage.setOnHiding(event -> {
+      accessTokenReceiver.close();
+      eventBusExecutor.shutdownNow();
+    });
+
+    stage.setTitle("ReadToday");
     stage.setScene(authScene);
     stage.show();
   }
 
-  @Override
-  public void receiveJwtToken(String jwtToken) {
-    LOGGER.debug("Received JWT token: {}", jwtToken);
+  @Subscribe
+  public void onSuccessfulSignUp(SuccessfulSignUpEvent event) {
+    LOGGER.debug("Successful sign up (JWT Token = {})", event.getJwtToken());
+
+    Platform.runLater(() -> stage.setScene(homeScene));
 
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.schedule(() -> oauthRespListener.close(),
+    executorService.schedule(() -> accessTokenReceiver.close(),
         AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY, TimeUnit.SECONDS);
   }
 
-  private static Scene createHomeScene() throws IOException {
-    return createScene("home.fxml", new HomeView(EXAMPLE_CHANNELS));
+  @Subscribe
+  public static void onSignUpFailed(SignUpFailedEvent event) {
+    LOGGER.debug("Sign up failed (reason: {}).", event.getReason());
+
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Sign up failed");
+      alert.setHeaderText("Sign up failed");
+      alert.setContentText("Reason: " + event.getReason());
+      alert.show();
+    });
+  }
+
+  private static Scene createHomeScene(WebTarget baseTarget) throws IOException {
+    SearchChannelController controller = new JerseySearchChannelController(baseTarget);
+    return createScene("home.fxml", new HomeView(EXAMPLE_CHANNELS, controller));
   }
 
   private static Scene createScene(String fxmlFile, Object controller) throws IOException {
@@ -133,5 +159,25 @@ public final class App extends Application implements JwtTokenReceiver {
     URL fileUrl = Objects.requireNonNull(App.class.getResource(CONFIG_FILE));
     String file = fileUrl.getFile();
     return GSON.fromJson(new JsonReader(new FileReader(file)), JsonObject.class);
+  }
+
+  private static WebTarget getServerBaseTarget(JsonObject config) {
+    String serverBaseUri = config.get("serverBaseUri").getAsString();
+    Client client = ClientBuilder.newClient();
+    return client.target(serverBaseUri);
+  }
+
+  private static URI buildGoogleAccessTokenUri(JsonObject config, URI baseRedirectUri) {
+    URI googleOauthBaseUri = URI.create(config.get("googleOauthBaseUri").getAsString());
+    String googleClientId = config.get("googleClientId").getAsString();
+
+    URI oauthRedirectUri = UriBuilder.fromUri(baseRedirectUri)
+        .path("oauth")
+        .build();
+
+    return UriBuilder.fromUri(googleOauthBaseUri)
+        .queryParam("client_id", googleClientId)
+        .queryParam("redirect_uri", oauthRedirectUri)
+        .build();
   }
 }
