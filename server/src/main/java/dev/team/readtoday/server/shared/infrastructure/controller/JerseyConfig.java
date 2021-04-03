@@ -5,6 +5,7 @@ import dev.team.readtoday.server.category.application.SearchCategoriesById;
 import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
+import dev.team.readtoday.server.channel.application.CreateChannel;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
@@ -39,6 +40,7 @@ public final class JerseyConfig extends ResourceConfig {
             SearchChannelsByCategory.class);
         bind(new SearchCategoriesById(categoryRepository)).to(SearchCategoriesById.class);
         bind(new SearchCategoryByName(categoryRepository)).to(SearchCategoryByName.class);
+        bind(new CreateChannel(channelRepository)).to(CreateChannel.class);
         bind(new SignUpUser(profileFetcher, userRepository)).to(SignUpUser.class);
       }
     });
