@@ -10,7 +10,7 @@
     <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0"
       BorderPane.alignment="CENTER">
       <items>
-        <Button mnemonicParsing="false" onAction="#searchNewChannelsByCategory" text="Search"/>
+        <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>
         <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category"/>
       </items>
     </ToolBar>
