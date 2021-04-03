@@ -30,7 +30,8 @@ final class SignUpUserTest {
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token))).thenReturn(email);
     UserRepository userRepository = mock(UserRepository.class);
-    when(userRepository.getByEmailAddress(eq(email))).thenReturn(Optional.of(UserMother.random()));
+    when(userRepository.getByEmailAddress(eq(email)))
+        .thenReturn(Optional.of(UserMother.withEmail(email)));
 
     SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
 
@@ -65,5 +66,21 @@ final class SignUpUserTest {
     signUpUser.signUp(token, UsernameMother.random());
 
     verify(userRepository, times(1)).save(any());
+  }
+
+  @Test
+  void shouldThrowExceptionIfFailsGettingTheAccessToken() throws AuthProcessFailed {
+    AuthToken token = AuthTokenMother.random();
+    EmailAddress email = EmailAddressMother.random();
+    ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
+    when(profileFetcher.fetchEmailAddress(eq(token)))
+        .thenThrow(AuthProcessFailed.class);
+    UserRepository userRepository = mock(UserRepository.class);
+    when(userRepository.getByEmailAddress(eq(email)))
+        .thenReturn(Optional.of(UserMother.withEmail(email)));
+
+    SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
+
+    assertThrows(AuthProcessFailed.class, () -> signUpUser.signUp(token, UsernameMother.random()));
   }
 }

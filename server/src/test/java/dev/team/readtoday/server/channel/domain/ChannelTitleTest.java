@@ -9,23 +9,23 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class ImageUrlTest {
+final class ChannelTitleTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-      "https://i.pinimg.com/originals/ca/76/0b/ca760b70976b52578da88e06973af542.jpg",
-      "https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"
+      "Reddit",
+      "The New York Times"
   })
-  void shouldNotThrowExceptionIfItIsValid(String url) {
-    assertDoesNotThrow(() -> ImageUrl.create(url));
+  void shouldCreateIfTitleIsValid(String title) {
+    assertDoesNotThrow(() -> new ChannelTitle(title));
   }
 
   @ParameterizedTest
   @ValueSource(strings = {
-      "hps:/images.com/example.png",
-      "https://www.google.es/"
+      "This is too long of a channel title",
+      "This is also not a valid channel title"
   })
-  void shouldThrowExceptionIfItIsNotValid(String url) {
-    assertThrows(InvalidImageUrl.class, () -> ImageUrl.create(url));
+  void shouldThrowExceptionIfTitleInvalid(String title) {
+    assertThrows(InvalidChannelTitle.class, () -> new ChannelTitle(title));
   }
 }
