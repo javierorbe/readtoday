@@ -49,9 +49,6 @@ public final class ChannelSearchController {
     } catch (CategoryDoesNotExist e) {
       LOGGER.trace("Channel search by category request failed.", e);
       return Response.status(Response.Status.NOT_FOUND).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error getting channels by category name.", e);
-      return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
 
