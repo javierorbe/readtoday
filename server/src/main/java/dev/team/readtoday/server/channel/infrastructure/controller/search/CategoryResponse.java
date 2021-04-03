@@ -1,54 +1,31 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
 import dev.team.readtoday.server.category.domain.Category;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class CategoryResponse {
 
-  private String id;
-  private String name;
+  private final String id;
+  private final String name;
 
-  private CategoryResponse(String id, String name) {
-    this.id = id;
-    this.name = name;
+  private CategoryResponse(Category category) {
+    id = category.getId().toString();
+    name = category.getName().toString();
   }
 
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String toString() {
-    return name;
-  }
-
-  private static CategoryResponse fromCategory(Category category) {
-    return new CategoryResponse(
-        category.getId().toString(),
-        category.getName().toString()
-    );
-  }
-
-  public static List<CategoryResponse> fromCategories(Collection<Category> categories) {
-
-    List<CategoryResponse> result = new ArrayList<>();
-
-    categories.forEach(category -> result.add(fromCategory(category)));
-
-    return result;
+  static List<CategoryResponse> fromCategories(Collection<Category> categories) {
+    return categories.stream()
+        .map(CategoryResponse::new)
+        .collect(Collectors.toList());
   }
 }
