@@ -7,4 +7,6 @@ public interface UserRepository {
   void save(User user);
 
   Optional<User> getByEmailAddress(EmailAddress email);
+
+  Optional<User> getById(UserId id);
 }

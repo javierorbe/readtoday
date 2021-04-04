@@ -1,95 +1,58 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
 import dev.team.readtoday.server.channel.domain.Channel;
-import java.util.ArrayList;
+import dev.team.readtoday.server.shared.domain.Identifier;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class ChannelResponse {
-  private String id;
-  private String title;
-  private String rssUrl;
-  private String description;
-  private String imageUrl;
-  private List<String> categoryIds;
 
-  public ChannelResponse(String id, String title, String rssUrl, String description,
-      String imageUrl, List<String> categoryIds) {
-    this.id = id;
-    this.title = title;
-    this.rssUrl = rssUrl;
-    this.description = description;
-    this.imageUrl = imageUrl;
-    this.categoryIds = categoryIds;
+  private final String id;
+  private final String title;
+  private final String rssUrl;
+  private final String description;
+  private final String imageUrl;
+  private final List<String> categories;
+
+  private ChannelResponse(Channel channel) {
+    id = channel.getId().toString();
+    title = channel.getTitle().toString();
+    rssUrl = channel.getRssUrl().toString();
+    description = channel.getDescription().toString();
+    imageUrl = channel.getImageUrl().toString();
+    categories = channel.getCategories().stream()
+        .map(Identifier::toString)
+        .collect(Collectors.toList());
   }
 
   public String getId() {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
   public String getTitle() {
     return title;
-  }
-
-  public void setTitle(String title) {
-    this.title = title;
   }
 
   public String getRssUrl() {
     return rssUrl;
   }
 
-  public void setRssUrl(String rssUrl) {
-    this.rssUrl = rssUrl;
-  }
-
   public String getDescription() {
     return description;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 
   public String getImageUrl() {
     return imageUrl;
   }
 
-  public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
+  public List<String> getCategories() {
+    return categories;
   }
 
-  public List<String> getCategoryIds() {
-    return categoryIds;
-  }
-
-  public void setCategoryIds(List<String> categoryIds) {
-    this.categoryIds = categoryIds;
-  }
-
-  private static ChannelResponse fromChannel(Channel channel) {
-
-    List<String> categoriesIds = new ArrayList<>();
-    channel.getCategoryIds().forEach(categoriesId -> categoriesIds.add(categoriesId.toString()));
-
-    return new ChannelResponse(
-        channel.getId().toString(),
-        channel.getTitle().toString(),
-        channel.getRssUrl().toString(),
-        channel.getDescription().toString(),
-        channel.getImageUrl().toString(),
-        categoriesIds
-    );
-  }
-
-  public static List<ChannelResponse> fromChannels(List<Channel> channels) {
-    List<ChannelResponse> response = new ArrayList<>();
-
-    channels.forEach(channel -> response.add(ChannelResponse.fromChannel(channel)));
-
-    return response;
+  static List<ChannelResponse> fromChannels(Collection<Channel> channels) {
+    return channels.stream()
+        .map(ChannelResponse::new)
+        .collect(Collectors.toList());
   }
 }

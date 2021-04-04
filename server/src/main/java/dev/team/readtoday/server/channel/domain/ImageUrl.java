@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.domain;
 
-import dev.team.readtoday.server.shared.domain.UrlValueObject;
+import dev.team.readtoday.server.shared.domain.StringValueObject;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
@@ -8,17 +8,40 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.glassfish.jersey.client.JerseyInvocation.Builder;
 
-public final class ImageUrl extends UrlValueObject {
+public final class ImageUrl extends StringValueObject {
 
   private static final Client client = ClientBuilder.newClient();
 
-  public ImageUrl(URL value) {
+  public ImageUrl(String value) {
     super(value);
-    if (!isValidImageUrl(value)) {
-      throw new InvalidImageUrl("Error getting the image from:  " + value);
+
+    if (!UrlValidator.getInstance().isValid(value)) {
+      throw new InvalidImageUrl("Invalid URL.");
     }
+  }
+
+  /**
+   * Create an image url.
+   *
+   * <p>Checks for the URL content validity.
+   *
+   * @param value the url
+   * @return the {@code ImageUrl}
+   */
+  public static ImageUrl create(String value) {
+    try {
+      URL url = new URL(value);
+      if (!isValidImageUrl(url)) {
+        throw new InvalidImageUrl("Error getting the image from:  " + value);
+      }
+    } catch (MalformedURLException e) {
+      throw new InvalidImageUrl("Invalid URL.", e);
+    }
+
+    return new ImageUrl(value);
   }
 
   private static boolean isValidImageUrl(URL value) {
@@ -32,9 +55,5 @@ public final class ImageUrl extends UrlValueObject {
       case "image/jpeg", "image/png" -> true;
       default -> false;
     };
-  }
-
-  public static ImageUrl fromString(String value) throws MalformedURLException {
-    return new ImageUrl(new URL(value));
   }
 }

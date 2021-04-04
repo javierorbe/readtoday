@@ -3,31 +3,36 @@ package dev.team.readtoday.server.channel.domain;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import dev.team.readtoday.server.shared.domain.UrlValueObject;
+import dev.team.readtoday.server.shared.domain.StringValueObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.apache.commons.validator.routines.UrlValidator;
 
-public final class RssUrl extends UrlValueObject {
+public final class RssUrl extends StringValueObject {
 
-  public RssUrl(URL value) {
+  public RssUrl(String value) {
     super(value);
-    if (!isContentValid(value)) {
-      throw new InvalidRssUrl("Error reading the feed url: " + value);
+
+    if (!UrlValidator.getInstance().isValid(value)) {
+      throw new InvalidImageUrl("Invalid URL.");
     }
   }
 
-  private static boolean isContentValid(URL value) {
+  public static RssUrl create(String value) {
     try {
-      SyndFeedInput input = new SyndFeedInput();
-      input.build(new XmlReader(value));
-      return true;
-    } catch (IOException | FeedException e) {
-      return false;
+      URL url = new URL(value);
+      parseRssContent(url);
+      return new RssUrl(value);
+    } catch (MalformedURLException e) {
+      throw new InvalidRssUrl("Invalid URL.", e);
+    } catch (FeedException | IOException e) {
+      throw new InvalidRssUrl("Invalid RSS content.", e);
     }
   }
 
-  public static RssUrl fromString(String value) throws MalformedURLException {
-    return new RssUrl(new URL(value));
+  private static void parseRssContent(URL url) throws IOException, FeedException {
+    SyndFeedInput input = new SyndFeedInput();
+    input.build(new XmlReader(url));
   }
 }

@@ -2,15 +2,15 @@ package dev.team.readtoday.server.user.infrastructure.controller;
 
 public final class SignUpRequest {
 
-  private String token;
+  private String accessToken;
   private String username;
 
-  String getToken() {
-    return token;
+  String getAccessToken() {
+    return accessToken;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 
   String getUsername() {

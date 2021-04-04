@@ -35,7 +35,7 @@ public final class SignUpController {
 
     try {
       User user = signUpUser.signUp(
-          new AuthToken(request.getToken()),
+          new AuthToken(request.getAccessToken()),
           new Username(request.getUsername())
       );
       String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
@@ -48,9 +48,6 @@ public final class SignUpController {
     } catch (AlreadyExistingUser e) {
       LOGGER.debug("Sign up failed.", e);
       return Response.status(Response.Status.CONFLICT).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Sign up failed.", e);
-      return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
 }
