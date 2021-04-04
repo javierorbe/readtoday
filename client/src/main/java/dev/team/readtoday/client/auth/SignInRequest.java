@@ -1,10 +1,10 @@
-package dev.team.readtoday.client.jersey;
+package dev.team.readtoday.client.auth;
 
-public final class SingInRequest {
+public final class SignInRequest {
 
   private final String token;
 
-  SingInRequest(String token) {
+  SignInRequest(String token) {
     this.token = token;
   }
 
