@@ -11,6 +11,7 @@ import dev.team.readtoday.client.auth.AuthRequestListener;
 import dev.team.readtoday.client.auth.SignUpFailedEvent;
 import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
+import dev.team.readtoday.client.create.ChannelCreationListener;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
@@ -99,8 +100,10 @@ public final class App extends Application {
 
     eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
     eventBus.register(new SearchRequestListener(eventBus, serverBaseTarget));
+    eventBus.register(new ChannelCreationListener(eventBus, serverBaseTarget));
     eventBus.register(authView);
     eventBus.register(homeView);
+    eventBus.register(adminView);
     eventBus.register(this);
 
     authScene = createScene("auth.fxml", authView);
