@@ -10,3 +10,13 @@ coverage:
         paths:
           - client
         informational: true
+    patch:
+      project:
+        server:
+          paths:
+            - server
+          informational: true
+        client:
+          paths:
+            - client
+          informational: true
