@@ -5,13 +5,13 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
-<<<<<<< HEAD
+
 
 import java.io.IOException;
-=======
+
 import dev.team.readtoday.client.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.search.SearchResultReceivedEvent;
->>>>>>> 4563e22be9913c797b0abc29fc6ad2832e4e4bb5
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
