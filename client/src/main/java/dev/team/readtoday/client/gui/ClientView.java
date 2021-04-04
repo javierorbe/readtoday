@@ -46,11 +46,19 @@ public class ClientView extends Application {
           + "access_type=offline&" + "include_granted_scopes=true&" + "response_type=code&"
           + "state=state_parameter_passthrough_value&"
           + "redirect_uri=https%3A//oauth2.example.com/code&" + "client_id=client_id");
+
+      stage.setTitle("Register");
+      FXMLLoader loader = new FXMLLoader();
+      loader.setLocation(getClass().getResource("fxml/Register.fxml"));
+      ScrollPane rootLayout = (ScrollPane) loader.load();
+
+      Scene scene = new Scene(rootLayout);
+      stage.setScene(scene);
+      stage.show();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-  //
 
   public void open(String url) throws Exception {
     URI u = new URI(url);
