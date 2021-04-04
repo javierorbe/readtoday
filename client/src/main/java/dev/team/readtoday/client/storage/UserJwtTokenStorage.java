@@ -11,4 +11,8 @@ public class UserJwtTokenStorage {
   public static String getToken() {
     return token;
   }
+
+  public static void removeToken() {
+    token = "";
+  }
 }

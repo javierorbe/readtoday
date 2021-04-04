@@ -9,6 +9,7 @@ import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.search.SearchResultReceivedEvent;
+import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -24,17 +25,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public final class HomeView implements Initializable {
 
@@ -134,15 +131,10 @@ public final class HomeView implements Initializable {
   }
 
   @FXML
-  private void SignOut(ActionEvent event) throws IOException {
-
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("auth.fxml"));
-      Stage stage = new Stage();
-      stage.setScene(new Scene((Parent) loader.load()));
-      stage.show();
+  private void signOut(ActionEvent event) throws IOException {
+    UserJwtTokenStorage.removeToken();
+    eventBus.post(new ChangeSceneEvent(SceneType.AUTH));
   }
-
-
 
   private final class CustomListCell extends ListCell<Channel> {
 
