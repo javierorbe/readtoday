@@ -1,7 +1,7 @@
-package dev.team.readtoday.client.auth.accesstoken;
+package dev.team.readtoday.client.usecase.auth.accesstoken;
 
 import com.google.common.eventbus.EventBus;
-import dev.team.readtoday.client.auth.AuthInfoProvider;
+import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;

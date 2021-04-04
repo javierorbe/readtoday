@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.search;
+package dev.team.readtoday.client.usecase.search;
 
 import dev.team.readtoday.client.model.Category;
 import java.util.Collection;

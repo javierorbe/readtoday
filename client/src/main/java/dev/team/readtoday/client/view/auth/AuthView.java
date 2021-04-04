@@ -1,9 +1,9 @@
 package dev.team.readtoday.client.view.auth;
 
 import com.google.common.eventbus.Subscribe;
-import dev.team.readtoday.client.auth.AuthInfoProvider;
-import dev.team.readtoday.client.auth.AuthProcess;
-import dev.team.readtoday.client.auth.SignUpFailedEvent;
+import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
+import dev.team.readtoday.client.usecase.auth.AuthProcess;
+import dev.team.readtoday.client.usecase.auth.SignUpFailedEvent;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;

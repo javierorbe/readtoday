@@ -1,9 +1,8 @@
-package dev.team.readtoday.client.create;
+package dev.team.readtoday.client.usecase.create;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
-import dev.team.readtoday.client.view.admin.AdminView;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.HttpHeaders;

@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.create;
+package dev.team.readtoday.client.usecase.create;
 
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
