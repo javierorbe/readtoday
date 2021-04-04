@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.user.infrastructure.controller;
 
+import dev.team.readtoday.server.user.domain.NonExistingUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
@@ -44,6 +45,9 @@ public final class SingInController {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     } catch (RuntimeException e) {
       LOGGER.debug("Other exception", e);
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    } catch (NonExistingUser nonExistingUser) {
+      nonExistingUser.printStackTrace();
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
