@@ -11,10 +11,12 @@ public final class AuthRequestListener {
 
   private final EventBus eventBus;
   private final WebTarget signUpTarget;
+  private final WebTarget signInTarget;
 
   public AuthRequestListener(EventBus eventBus, WebTarget baseTarget) {
     this.eventBus = eventBus;
     signUpTarget = baseTarget.path("/auth/signup");
+    signInTarget = baseTarget.path("/auth/signin");
   }
 
   @Subscribe
@@ -32,7 +34,26 @@ public final class AuthRequestListener {
     }
   }
 
+  @Subscribe
+  public void signIn(SignInRequestReadyEvent event) {
+    SignInRequest request = new SignInRequest(event.getAccessToken());
+    Response response = signInTarget.request(MediaType.APPLICATION_JSON)
+        .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+
+    if (isResponseStatusOk(response)) {
+      String jwtToken = response.readEntity(String.class);
+      eventBus.post(new SuccessfulSignInEvent(jwtToken));
+    } else {
+      String reason = Response.Status.fromStatusCode(response.getStatus()).getReasonPhrase();
+      eventBus.post(new SignInFailedEvent(reason));
+    }
+  }
+
   private static boolean isResponseStatusCreated(Response response) {
     return response.getStatus() == Response.Status.CREATED.getStatusCode();
+  }
+
+  private static boolean isResponseStatusOk(Response response) {
+    return response.getStatus() == Response.Status.OK.getStatusCode();
   }
 }
