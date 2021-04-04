@@ -1,6 +1,10 @@
 package dev.team.readtoday.server.user.application;
 
+import java.util.Optional;
+
+import dev.team.readtoday.server.user.domain.AlreadyExistingUser;
 import dev.team.readtoday.server.user.domain.EmailAddress;
+import dev.team.readtoday.server.user.domain.NonExistingUser;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserRepository;
@@ -15,12 +19,16 @@ public class SignInUser {
 		this.repository = repository;
 	}
 	
-	public Username SignIn(AuthToken token, Username username) throws AuthProcessFailed{
+	public User SignIn(AuthToken token) throws AuthProcessFailed, NonExistingUser{
 		EmailAddress email = profileFetcher.fetchEmailAddress(token);
 		
-		
-		
-	    return username;
+		Optional<User> optUser = repository.getByEmailAddress(email);
+	    if (optUser.isPresent()) {	      	    
+	    return optUser.get();
+	    
+	    }else {
+	    	throw new NonExistingUser("This user has not sign up");
+	    }
 	}
 }
 
