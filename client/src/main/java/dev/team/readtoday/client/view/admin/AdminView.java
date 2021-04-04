@@ -15,8 +15,12 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class AdminView implements Initializable {
+
+  Logger LOGGER = LoggerFactory.getLogger(AdminView.class);
 
   @FXML
   private TextField title;
@@ -62,14 +66,15 @@ public final class AdminView implements Initializable {
   // When server sends a response.
   @Subscribe
   public void onChannelCreationResponseReceived(ChannelCreationResponseEvent event) {
+    LOGGER.debug("A response was received.");
     Response response = event.getResponse();
     Status status = Status.fromStatusCode(response.getStatus());
 
     switch (status) {
-      case UNAUTHORIZED -> System.out.println("You have no permission.");
-      case BAD_REQUEST -> System.out.println("Invalid data.");
-      case CREATED -> System.out.println("Channel was created.");
-      default -> System.out.println("Status code not supported: " + status.getStatusCode());
+      case UNAUTHORIZED -> LOGGER.debug("You have no permission.");
+      case BAD_REQUEST ->LOGGER.debug("Invalid data.");
+      case CREATED -> LOGGER.debug("Channel was created.");
+      default -> LOGGER.debug("Status code not supported: " + status.getStatusCode());
     }
   }
 }
