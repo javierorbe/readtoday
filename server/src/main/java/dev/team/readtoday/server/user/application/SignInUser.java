@@ -26,6 +26,7 @@ public class SignInUser {
 	    if (optUser.isPresent()) {	      	    
 	    return optUser.get();
 	    
+	    
 	    }else {
 	    	throw new NonExistingUser("This user has not sign up");
 	    }
