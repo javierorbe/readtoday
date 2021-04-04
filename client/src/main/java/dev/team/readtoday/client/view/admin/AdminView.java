@@ -5,6 +5,8 @@ import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.create.ChannelCreationEvent;
 import dev.team.readtoday.client.create.ChannelCreationRequest;
 import dev.team.readtoday.client.create.ChannelCreationResponseEvent;
+import dev.team.readtoday.client.navigation.ChangeSceneEvent;
+import dev.team.readtoday.client.navigation.SceneType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import java.net.URL;
@@ -14,7 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-public final class ChannelCreationView implements Initializable {
+public final class AdminView implements Initializable {
 
   @FXML
   private TextField title;
@@ -29,7 +31,7 @@ public final class ChannelCreationView implements Initializable {
 
   private final EventBus eventBus;
 
-  public ChannelCreationView(EventBus eventBus) {
+  public AdminView(EventBus eventBus) {
     this.eventBus = eventBus;
   }
 
@@ -50,6 +52,11 @@ public final class ChannelCreationView implements Initializable {
     );
 
     eventBus.post(new ChannelCreationEvent(request));
+  }
+
+  @FXML
+  public void exitAdminMode() {
+    eventBus.post(new ChangeSceneEvent(SceneType.HOME));
   }
 
   // When server sends a response.

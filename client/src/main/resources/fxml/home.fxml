@@ -62,4 +62,8 @@
       </center>
     </BorderPane>
   </center>
+  <bottom>
+    <Button mnemonicParsing="false" onAction="#goToAdmin" text="Admin mode"
+      BorderPane.alignment="CENTER"/>
+  </bottom>
 </BorderPane>
