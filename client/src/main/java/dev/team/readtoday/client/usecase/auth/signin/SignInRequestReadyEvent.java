@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.auth;
+package dev.team.readtoday.client.usecase.auth.signin;
 
 public final class SignInRequestReadyEvent {
 

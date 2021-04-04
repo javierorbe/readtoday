@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.auth;
+package dev.team.readtoday.client.usecase.auth.signup;
 
 public final class SignUpRequestReadyEvent {
 
@@ -10,11 +10,11 @@ public final class SignUpRequestReadyEvent {
     this.username = username;
   }
 
-  String getAccessToken() {
+  public String getAccessToken() {
     return accessToken;
   }
 
-  String getUsername() {
+  public String getUsername() {
     return username;
   }
 }

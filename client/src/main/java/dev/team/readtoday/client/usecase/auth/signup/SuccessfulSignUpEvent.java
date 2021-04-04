@@ -1,10 +1,10 @@
-package dev.team.readtoday.client.usecase.auth;
+package dev.team.readtoday.client.usecase.auth.signup;
 
 public final class SuccessfulSignUpEvent {
 
   private final String jwtToken;
 
-  SuccessfulSignUpEvent(String jwtToken) {
+  public SuccessfulSignUpEvent(String jwtToken) {
     this.jwtToken = jwtToken;
   }
 

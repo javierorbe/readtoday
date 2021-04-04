@@ -1,10 +1,10 @@
-package dev.team.readtoday.client.usecase.auth;
+package dev.team.readtoday.client.usecase.auth.signin;
 
 public final class SignInRequest {
 
   private final String token;
 
-  SignInRequest(String token) {
+  public SignInRequest(String token) {
     this.token = token;
   }
 

@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 public final class ChannelCreationListener {
 
-  Logger LOGGER = LoggerFactory.getLogger(ChannelCreationListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelCreationListener.class);
 
   private final EventBus eventBus;
   private final WebTarget channelsTarget;
@@ -29,7 +29,6 @@ public final class ChannelCreationListener {
 
   @Subscribe
   public void onChannelCreationRequestReceived(ChannelCreationEvent event) {
-
     LOGGER.trace("Sending channel creation request.");
     executorService.submit(() -> {
       Response response = channelsTarget.request(MediaType.APPLICATION_JSON)

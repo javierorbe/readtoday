@@ -2,8 +2,8 @@ package dev.team.readtoday.client.usecase.auth.accesstoken;
 
 import com.google.common.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
-import dev.team.readtoday.client.usecase.auth.SignInRequestReadyEvent;
-import dev.team.readtoday.client.usecase.auth.SignUpRequestReadyEvent;
+import dev.team.readtoday.client.usecase.auth.signin.SignInRequestReadyEvent;
+import dev.team.readtoday.client.usecase.auth.signup.SignUpRequestReadyEvent;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -33,6 +33,7 @@ public final class AccessTokenController {
       case SIGN_UP -> eventBus
           .post(new SignUpRequestReadyEvent(accessToken, authInfoProvider.getUsername()));
       case SIGN_IN -> eventBus.post(new SignInRequestReadyEvent(accessToken));
+      default -> throw new IllegalStateException("Unreachable");
     }
 
     return "OK! Check the app.";
