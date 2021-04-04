@@ -15,11 +15,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+
 @Path("/auth/singin")
 public final class SingInController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SingInController.class);
-
 
   @Inject
   private SignInUser signInUser;
