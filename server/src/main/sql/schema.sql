@@ -17,35 +17,31 @@ CREATE TABLE user (
 
 CREATE TABLE category (
     PRIMARY KEY (id),
-    id          CHAR(36)     NOT NULL,
-    name        VARCHAR(30)  NOT NULL UNIQUE
+    id   CHAR(36)    NOT NULL,
+    name VARCHAR(30) NOT NULL UNIQUE
 );
 
 CREATE TABLE channel (
     PRIMARY KEY (id),
     id          CHAR(36)     NOT NULL,
     title       VARCHAR(30)  NOT NULL,
-    rss_url        VARCHAR(255) NOT NULL UNIQUE,
+    rss_url     VARCHAR(255) NOT NULL UNIQUE,
     description VARCHAR(255) NOT NULL,
     img_url     VARCHAR(255)
 );
 
 CREATE TABLE channel_categories (
+    PRIMARY KEY (channel_id, category_id),
     channel_id  CHAR(36) NOT NULL,
-    category_id  CHAR(36) NOT NULL,
-    FOREIGN KEY (channel_id)
-    REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (category_id )
-    REFERENCES category (id ) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (channel_id, category_id )
+    category_id CHAR(36) NOT NULL,
+    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 CREATE TABLE subscription (
-	user_id CHAR(36) NOT NULL,
-    channel_id  CHAR(36) NOT NULL,
+    PRIMARY KEY (user_id, channel_id),
+    user_id    CHAR(36) NOT NULL,
+    channel_id CHAR(36) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY (user_id, channel_id)
+    FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
-
-    
