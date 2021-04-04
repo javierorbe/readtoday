@@ -10,40 +10,24 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jersey.version>3.0.1</jersey.version>
+    <cucumber.version>6.10.2</cucumber.version>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
+    <exclude.integration.tests/>
+    <exclude.acceptance.tests/>
   </properties>
 
   <profiles>
     <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
-          </plugin>
-        </plugins>
-      </build>
+      <id>exclude-integration-tests</id>
+      <properties>
+        <exclude.integration.tests>IntegrationTest</exclude.integration.tests>
+      </properties>
     </profile>
     <profile>
-      <id>exclude-integration-tests</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
-            <configuration>
-              <excludedGroups>IntegrationTest</excludedGroups>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
+      <id>exclude-acceptance-tests</id>
+      <properties>
+        <exclude.acceptance.tests>**/*Cucumber*.java</exclude.acceptance.tests>
+      </properties>
     </profile>
   </profiles>
 
@@ -60,6 +44,17 @@
           <compilerArgs>
             <compilerArgument>-Xlint</compilerArgument>
           </compilerArgs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <excludes>
+            <exclude>${exclude.acceptance.tests}</exclude>
+          </excludes>
+          <excludedGroups>${exclude.integration.tests}</excludedGroups>
         </configuration>
       </plugin>
       <plugin>
@@ -109,6 +104,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <excludes>
+            <exclude>dev/team/readtoday/server/shared/infrastructure/jooq/**/*</exclude>
+          </excludes>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -171,20 +171,18 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.9.1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>3.1.1</version>
+      </plugin>
     </plugins>
   </build>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.glassfish.jersey</groupId>
-        <artifactId>jersey-bom</artifactId>
-        <version>${jersey.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -200,6 +198,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.8.0-M1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.7.1</version>
@@ -209,6 +213,18 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>3.8.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-java</artifactId>
+      <version>${cucumber.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.cucumber</groupId>
+      <artifactId>cucumber-junit</artifactId>
+      <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -240,14 +256,17 @@
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-grizzly2-http</artifactId>
+      <version>3.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
+      <version>3.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-json-binding</artifactId>
+      <version>3.0.1</version>
     </dependency>
     <dependency>
       <groupId>org.jooq</groupId>

@@ -9,5 +9,11 @@
     <Root level="trace">
       <AppenderRef ref="Console"/>
     </Root>
+    <Logger name="com.zaxxer.hikari" level="info">
+      <AppenderRef ref="Console"/>
+    </Logger>
+    <Logger name="org.jooq" level="info">
+      <AppenderRef ref="Console"/>
+    </Logger>
   </Loggers>
 </Configuration>

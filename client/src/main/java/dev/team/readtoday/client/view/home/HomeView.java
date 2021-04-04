@@ -1,10 +1,17 @@
 package dev.team.readtoday.client.view.home;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
+<<<<<<< HEAD
 
 import java.io.IOException;
+=======
+import dev.team.readtoday.client.search.SearchChannelsByCategoryEvent;
+import dev.team.readtoday.client.search.SearchResultReceivedEvent;
+>>>>>>> 4563e22be9913c797b0abc29fc6ad2832e4e4bb5
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +31,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -47,18 +54,17 @@ public final class HomeView implements Initializable {
 
   private final Map<Channel, Image> channelImageCache = new HashMap<>();
 
+  private final EventBus eventBus;
+
   private final ImmutableList<Channel> allChannels;
   private final Map<Category, List<Channel>> categoryToChannel;
-
-  private final SearchChannelController searchChannelController;
 
   @FXML
   private TextField channelsByCategory;
 
-  public HomeView(Collection<Channel> subscribedChannels,
-      SearchChannelController searchChannelController) {
+  public HomeView(EventBus eventBus, Collection<Channel> subscribedChannels) {
+    this.eventBus = eventBus;
     allChannels = ImmutableList.sortedCopyOf(subscribedChannels);
-    this.searchChannelController = searchChannelController;
     observableChannelList = FXCollections.observableArrayList(allChannels);
     categoryToChannel = createCategoryToChannelMap(subscribedChannels);
   }
@@ -110,11 +116,17 @@ public final class HomeView implements Initializable {
     channelCategorySelector.valueProperty().set(null);
   }
 
-  public void searchNewChannelsByCategory() {
-    List<Channel> newChannels = searchChannelController.searchNewChannelsByCategoryName(
-            channelsByCategory.getText());
+  @FXML
+  public void performSearch() {
+    String categoryName = channelsByCategory.getText();
+    eventBus.post(new SearchChannelsByCategoryEvent(categoryName));
+  }
 
-    newChannelListView.setItems(FXCollections.observableArrayList(newChannels));
+  @Subscribe
+  public void onSearchResultReceived(SearchResultReceivedEvent event) {
+    ObservableList<Channel> list =
+        FXCollections.observableList(new ArrayList<>(event.getChannels()));
+    Platform.runLater(() -> newChannelListView.setItems(list));
   }
   
   @FXML

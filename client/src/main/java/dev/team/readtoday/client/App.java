@@ -13,10 +13,9 @@ import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
-import dev.team.readtoday.client.search.JerseySearchChannelController;
+import dev.team.readtoday.client.search.SearchRequestListener;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
-import dev.team.readtoday.client.view.home.SearchChannelController;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
@@ -31,8 +30,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -91,17 +88,20 @@ public final class App extends Application {
     URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
     AuthView authView = new AuthView(googleAccessTokenUri);
-
-    accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
+    HomeView homeView = new HomeView(eventBus, EXAMPLE_CHANNELS);
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
 
     eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
+    eventBus.register(new SearchRequestListener(eventBus, serverBaseTarget));
     eventBus.register(authView);
+    eventBus.register(homeView);
     eventBus.register(this);
 
     authScene = createScene("auth.fxml", authView);
-    homeScene = createHomeScene(serverBaseTarget);
+    homeScene = createScene("home.fxml", homeView);
+
+    accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
   }
 
   @Override
@@ -121,12 +121,8 @@ public final class App extends Application {
   @Subscribe
   public void onSuccessfulSignUp(SuccessfulSignUpEvent event) {
     LOGGER.debug("Successful sign up (JWT Token = {})", event.getJwtToken());
-
     Platform.runLater(() -> stage.setScene(homeScene));
-
-    ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-    executorService.schedule(() -> accessTokenReceiver.close(),
-        AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY, TimeUnit.SECONDS);
+    accessTokenReceiver.close();
   }
 
   @Subscribe
@@ -140,11 +136,6 @@ public final class App extends Application {
       alert.setContentText("Reason: " + event.getReason());
       alert.show();
     });
-  }
-
-  private static Scene createHomeScene(WebTarget baseTarget) throws IOException {
-    SearchChannelController controller = new JerseySearchChannelController(baseTarget);
-    return createScene("home.fxml", new HomeView(EXAMPLE_CHANNELS, controller));
   }
 
   private static Scene createScene(String fxmlFile, Object controller) throws IOException {

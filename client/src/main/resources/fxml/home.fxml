@@ -20,6 +20,7 @@
   <top>
     <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       <items>
+<<<<<<< HEAD
             <MenuBar>
               <menus>
                 <Menu mnemonicParsing="false" text="Opciones">
@@ -31,6 +32,10 @@
             </MenuBar>
         <Button mnemonicParsing="false" onAction="#searchNewChannelsByCategory" text="Search" />
         <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category" />
+=======
+        <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>
+        <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category"/>
+>>>>>>> 4563e22be9913c797b0abc29fc6ad2832e4e4bb5
       </items>
     </ToolBar>
   </top>

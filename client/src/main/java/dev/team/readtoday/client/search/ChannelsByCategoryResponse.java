@@ -9,45 +9,31 @@ import java.util.UUID;
 
 public final class ChannelsByCategoryResponse {
 
-  private List<ChannelResponse> channelsResponse;
-  private List<CategoryResponse> categoriesResponse;
+  private List<ChannelResponse> channels;
+  private List<CategoryResponse> categories;
 
-  public ChannelsByCategoryResponse() {
-    channelsResponse = List.of();
-    categoriesResponse = List.of();
+  public List<ChannelResponse> getChannels() {
+    return channels;
   }
 
-  public ChannelsByCategoryResponse(
-      List<ChannelResponse> channelsResponse,
-      List<CategoryResponse> categoriesResponse) {
-    this.channelsResponse = channelsResponse;
-    this.categoriesResponse = categoriesResponse;
+  public List<CategoryResponse> getCategories() {
+    return categories;
   }
 
-  public List<ChannelResponse> getChannelsResponse() {
-    return channelsResponse;
+  public void setChannels(
+      List<ChannelResponse> channels) {
+    this.channels = channels;
   }
 
-  public List<CategoryResponse> getCategoriesResponse() {
-    return categoriesResponse;
+  public void setCategories(List<CategoryResponse> categories) {
+    this.categories = categories;
   }
-
-  public void setChannelsResponse(
-      List<ChannelResponse> channelsResponse) {
-    this.channelsResponse = channelsResponse;
-  }
-
-  public void setCategoriesResponse(
-      List<CategoryResponse> categoriesResponse) {
-    this.categoriesResponse = categoriesResponse;
-  }
-
 
   public List<Channel> toChannels() {
     List<Channel> channels = new ArrayList<>();
-    Map<UUID, Category> categories = CategoryResponse.toCategories(categoriesResponse);
+    Map<UUID, Category> categories = CategoryResponse.toCategories(this.categories);
 
-    channelsResponse
+    this.channels
         .forEach(channelResponse -> channels.add(channelResponse.toChannel(categories)));
 
     return channels;
