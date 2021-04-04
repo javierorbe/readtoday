@@ -46,6 +46,7 @@ public final class ChannelCreationController {
 
     // If not user found
     if (optRequester.isEmpty()) {
+      LOGGER.debug("Channel creation, Unauthorized requester");
       return Response.status(Status.UNAUTHORIZED).build();
     }
 
@@ -53,6 +54,7 @@ public final class ChannelCreationController {
 
     // If not admin
     if (Role.ADMIN != requester.getRole()) {
+      LOGGER.debug("Channel creation, Unauthorized requester");
       return Response.status(Status.UNAUTHORIZED).build();
     }
 
