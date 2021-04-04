@@ -1,18 +1,17 @@
 package dev.team.readtoday.client.search;
 
+import com.google.common.collect.ImmutableCollection;
 import dev.team.readtoday.client.model.Channel;
-import java.util.Collections;
-import java.util.List;
 
 public final class SearchResultReceivedEvent {
 
-  private final List<Channel> channels;
+  private final ImmutableCollection<Channel> channels;
 
-  public SearchResultReceivedEvent(List<Channel> channels) {
+  SearchResultReceivedEvent(ImmutableCollection<Channel> channels) {
     this.channels = channels;
   }
 
-  public List<Channel> getChannels() {
-    return Collections.unmodifiableList(channels);
+  public ImmutableCollection<Channel> getChannels() {
+    return channels;
   }
 }

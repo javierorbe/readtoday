@@ -1,6 +1,5 @@
 package dev.team.readtoday.client;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -12,8 +11,6 @@ import dev.team.readtoday.client.auth.SignUpFailedEvent;
 import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.create.ChannelCreationListener;
-import dev.team.readtoday.client.model.Category;
-import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.search.SearchRequestListener;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
@@ -29,9 +26,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Application;
@@ -46,24 +42,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public final class App extends Application {
-
-  private static final Collection<Channel> EXAMPLE_CHANNELS = ImmutableSet.of(
-      new Channel(UUID.randomUUID(),
-          "El Correo",
-          "https://static1.elcorreo.com/squido/latest/assets/icons/elcorreo/favicon-16x16.png",
-          ImmutableSet.of(new Category(UUID.randomUUID(), "News"))
-      ),
-      new Channel(UUID.randomUUID(),
-          "DEV Community",
-          "https://res.cloudinary.com/practicaldev/image/fetch/s--E8ak4Hr1--/c_limit,f_auto,fl_progressive,q_auto,w_32/https://dev-to.s3.us-east-2.amazonaws.com/favicon.ico",
-          ImmutableSet.of(new Category(UUID.randomUUID(), "Software Development"))
-      ),
-      new Channel(UUID.randomUUID(),
-          "r/memes",
-          "https://www.redditstatic.com/desktop2x/img/favicon/favicon-16x16.png",
-          ImmutableSet.of(new Category(UUID.randomUUID(), "Entertainment"))
-      )
-  );
 
   private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
@@ -93,7 +71,7 @@ public final class App extends Application {
     URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
     AuthView authView = new AuthView(googleAccessTokenUri);
-    HomeView homeView = new HomeView(eventBus, EXAMPLE_CHANNELS);
+    HomeView homeView = new HomeView(eventBus, List.of());
     AdminView adminView = new AdminView(eventBus);
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
