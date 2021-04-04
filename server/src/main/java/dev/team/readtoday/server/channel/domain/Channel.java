@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
 public final class Channel {
@@ -44,7 +43,7 @@ public final class Channel {
       RssUrl rssUrl,
       ChannelDescription description,
       ImageUrl imageUrl,
-      List<CategoryId> categoryIds) {
+      Collection<CategoryId> categoryIds) {
     return new Channel(ChannelId.random(), title, rssUrl, description, imageUrl, categoryIds);
   }
 

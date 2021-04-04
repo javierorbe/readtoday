@@ -1,17 +1,29 @@
 package dev.team.readtoday.server.channel.application;
 
 import dev.team.readtoday.server.channel.domain.Channel;
+import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
+import dev.team.readtoday.server.channel.domain.ChannelTitle;
+import dev.team.readtoday.server.channel.domain.ImageUrl;
+import dev.team.readtoday.server.channel.domain.RssUrl;
+import dev.team.readtoday.server.shared.domain.CategoryId;
+import java.util.Collection;
 
-public class CreateChannel {
+public final class CreateChannel {
 
-  private final ChannelRepository channelRepository;
+  private final ChannelRepository repository;
 
-  public CreateChannel(ChannelRepository channelRepository) {
-    this.channelRepository = channelRepository;
+  public CreateChannel(ChannelRepository repository) {
+    this.repository = repository;
   }
 
-  public void createChannel(Channel channel) {
-    channelRepository.save(channel);
+  public Channel create(ChannelTitle title,
+                     RssUrl rssUrl,
+                     ChannelDescription description,
+                     ImageUrl imageUrl,
+                     Collection<CategoryId> categories) {
+    Channel channel = Channel.create(title, rssUrl, description, imageUrl, categories);
+    repository.save(channel);
+    return channel;
   }
 }
