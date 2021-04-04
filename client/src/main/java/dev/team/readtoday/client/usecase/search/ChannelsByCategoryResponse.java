@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.search;
+package dev.team.readtoday.client.usecase.search;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;

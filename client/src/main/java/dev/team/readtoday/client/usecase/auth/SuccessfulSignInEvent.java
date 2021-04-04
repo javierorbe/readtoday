@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.auth;
+package dev.team.readtoday.client.usecase.auth;
 
 public class SuccessfulSignInEvent {
 

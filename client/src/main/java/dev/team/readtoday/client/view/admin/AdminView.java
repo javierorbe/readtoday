@@ -2,9 +2,9 @@ package dev.team.readtoday.client.view.admin;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import dev.team.readtoday.client.create.ChannelCreationEvent;
-import dev.team.readtoday.client.create.ChannelCreationRequest;
-import dev.team.readtoday.client.create.ChannelCreationResponseEvent;
+import dev.team.readtoday.client.usecase.create.ChannelCreationEvent;
+import dev.team.readtoday.client.usecase.create.ChannelCreationRequest;
+import dev.team.readtoday.client.usecase.create.ChannelCreationResponseEvent;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
 import jakarta.ws.rs.core.Response;

@@ -1,10 +1,10 @@
-package dev.team.readtoday.client.auth;
+package dev.team.readtoday.client.usecase.auth;
 
-public final class SignUpFailedEvent {
+public class SignInFailedEvent {
 
   private final String reason;
 
-  SignUpFailedEvent(String reason) {
+  SignInFailedEvent(String reason) {
     this.reason = reason;
   }
 

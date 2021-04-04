@@ -7,9 +7,11 @@ final class ChannelMother {
 
   static Channel withName(String name) {
     return new Channel(
-        UUID.randomUUID(),
+        UUID.randomUUID().toString(),
         name,
         "https://picsum.photos/128",
+        "Some random description.",
+        "https://www.redditstatic.com/desktop2x/img/favicon/favicon-16x16.png",
         Set.of()
     );
   }

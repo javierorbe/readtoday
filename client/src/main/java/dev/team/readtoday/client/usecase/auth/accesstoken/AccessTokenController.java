@@ -1,9 +1,9 @@
-package dev.team.readtoday.client.auth.accesstoken;
+package dev.team.readtoday.client.usecase.auth.accesstoken;
 
 import com.google.common.eventbus.EventBus;
-import dev.team.readtoday.client.auth.AuthInfoProvider;
-import dev.team.readtoday.client.auth.SignInRequestReadyEvent;
-import dev.team.readtoday.client.auth.SignUpRequestReadyEvent;
+import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
+import dev.team.readtoday.client.usecase.auth.SignInRequestReadyEvent;
+import dev.team.readtoday.client.usecase.auth.SignUpRequestReadyEvent;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
