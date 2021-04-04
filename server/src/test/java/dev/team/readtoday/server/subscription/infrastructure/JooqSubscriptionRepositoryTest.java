@@ -2,6 +2,8 @@ package dev.team.readtoday.server.subscription.infrastructure;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL_CATEGORIES;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SUBSCRIPTION;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,13 +43,15 @@ final class JooqSubscriptionRepositoryTest {
   static void setup() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     repository = new JooqSubscriptionRepository(jooq.getContext());
-   
+
     DSLContext ctx = jooq.getContext();
+    ctx.deleteFrom(SUBSCRIPTION).execute();
     ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
     ctx.deleteFrom(CHANNEL).execute();
-    
+    ctx.deleteFrom(USER).execute();
+
     repositoryChannel = new JooqChannelRepository(jooq.getContext());
-    
+
     repositoryUser = new JooqUserRepository(jooq.getContext());
   }
 
@@ -82,6 +86,12 @@ final class JooqSubscriptionRepositoryTest {
 
   @AfterAll
   static void clean() {
+
+    DSLContext ctx = jooq.getContext();
+    ctx.deleteFrom(SUBSCRIPTION).execute();
+    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
+    ctx.deleteFrom(CHANNEL).execute();
+    ctx.deleteFrom(USER).execute();
     jooq.close();
   }
 }
