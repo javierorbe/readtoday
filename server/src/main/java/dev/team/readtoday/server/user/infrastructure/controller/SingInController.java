@@ -20,7 +20,6 @@ public final class SingInController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SingInController.class);
 
-
   @Inject
   private SignInUser signInUser;
 
@@ -49,5 +48,4 @@ public final class SingInController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
-
 }
