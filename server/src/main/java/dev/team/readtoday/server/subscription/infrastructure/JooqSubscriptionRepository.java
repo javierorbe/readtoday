@@ -25,7 +25,7 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
   public void save(Subscription subscription) {
     dsl.insertInto(SUBSCRIPTION, SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID)
         .values(subscription.getIdUser().toString(), subscription.getIdChannel().toString())
-        .execute();
+        .onDuplicateKeyIgnore().execute();
   }
 
   @Override
@@ -45,17 +45,15 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
 
   @Override
   public void remove(Subscription subscription) {
-    dsl.deleteFrom(SUBSCRIPTION).where(SUBSCRIPTION.USER_ID.eq(subscription.getIdUser().toString())
-        .and(SUBSCRIPTION.CHANNEL_ID.eq(subscription.getIdChannel().toString()))).execute();
+    dsl.deleteFrom(SUBSCRIPTION).where(SUBSCRIPTION.USER_ID.eq(subscription.getIdUser().toString()))
+        .and(SUBSCRIPTION.CHANNEL_ID.eq(subscription.getIdChannel().toString())).execute();
   }
 
   @Override
   public Optional<Subscription> getFromId(UserId idU, ChannelId idC) {
     Record2<String, String> result = dsl.select(SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID)
-        .from(SUBSCRIPTION)
-        .where(
-            SUBSCRIPTION.USER_ID.eq(idU.toString()).and(SUBSCRIPTION.CHANNEL_ID.eq(idC.toString())))
-        .fetchOne();
+        .from(SUBSCRIPTION).where(SUBSCRIPTION.USER_ID.eq(idU.toString()))
+        .and(SUBSCRIPTION.CHANNEL_ID.eq(idC.toString())).fetchOne();
 
     if (result == null) {
       return Optional.empty();
