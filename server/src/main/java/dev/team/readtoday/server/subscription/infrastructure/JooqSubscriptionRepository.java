@@ -8,8 +8,8 @@ import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.jooq.Result;
 import dev.team.readtoday.server.channel.domain.ChannelId;
-import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
+import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.user.domain.UserId;
 
 
@@ -60,11 +60,7 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
     }
     Subscription subscription = new Subscription(idU, idC);
     return Optional.of(subscription);
-	  dsl.insertInto(SUBSCRIPTION, SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID)
-      .values(
-          subscription.getIdUser().toString(),
-          subscription.getIdChannel().toString()
-      ).execute();	
+
   }
 
 }
