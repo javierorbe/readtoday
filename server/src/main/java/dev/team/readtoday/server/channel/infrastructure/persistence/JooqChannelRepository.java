@@ -79,6 +79,10 @@ public final class JooqChannelRepository implements ChannelRepository {
             channel.getImageUrl().toString()
         )
         .onDuplicateKeyUpdate()
+        // This is a weird solution to pass the test.
+        // Basically, the rss url you try to save already exists so just update all fields,
+        // except the id. Then you try to get by channel id and the id doesn't exists.
+        .set(CHANNEL.ID, channel.getId().toString())
         .set(CHANNEL.TITLE, channel.getTitle().toString())
         .set(CHANNEL.RSS_URL, channel.getRssUrl().toString())
         .set(CHANNEL.DESCRIPTION, channel.getDescription().toString())
