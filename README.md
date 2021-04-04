@@ -17,11 +17,22 @@ Build and execute all tests:
 mvn test
 ```
 
-Build and exclude integration tests (considering that integration tests are
-those that interact with infrastructure):
+## Configuration
+
+To configure the applications, set the Google OAuth 2.0 credentials in the
+*config.json* files (on the server and on the client). You can generate
+those credentials in the [Google Cloud Platform](https://console.cloud.google.com/apis/dashboard).
+
+## Running the server
 
 ```
-mvn test -P exclude-integration-tests
+mvn exec:java
+```
+
+## Running the client
+
+```
+mvn javafx:run
 ```
 
 ## Style Guides
@@ -63,4 +74,5 @@ Software design concepts that have been considered when developing:
 - [JavaFX](https://openjfx.io/) for the client GUI.
 - [OAuth 2.0](https://oauth.net/2/) for user Sign Up & Sign In.
 - [JWT (JSON Web Tokens)](https://jwt.io/) for Token-Based Authentication.
-- [JUnit 5](https://junit.org/junit5/) & [Mockito](https://site.mockito.org/) for testing.
+- [JUnit 5](https://junit.org/junit5/), [Mockito](https://site.mockito.org/)
+  & [Cucumber](https://cucumber.io/) for testing.
