@@ -13,7 +13,10 @@ import dev.team.readtoday.client.auth.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
+import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.search.SearchRequestListener;
+import dev.team.readtoday.client.storage.UserJwtTokenStorage;
+import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
 import jakarta.ws.rs.client.Client;
@@ -77,6 +80,7 @@ public final class App extends Application {
   private Stage stage;
   private Scene homeScene;
   private Scene authScene;
+  private Scene adminScene;
 
   private AccessTokenReceiver accessTokenReceiver;
 
@@ -89,6 +93,7 @@ public final class App extends Application {
 
     AuthView authView = new AuthView(googleAccessTokenUri);
     HomeView homeView = new HomeView(eventBus, EXAMPLE_CHANNELS);
+    AdminView adminView = new AdminView(eventBus);
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
 
@@ -100,6 +105,7 @@ public final class App extends Application {
 
     authScene = createScene("auth.fxml", authView);
     homeScene = createScene("home.fxml", homeView);
+    adminScene = createScene("channelCreation.fxml", adminView);
 
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
   }
@@ -120,9 +126,21 @@ public final class App extends Application {
 
   @Subscribe
   public void onSuccessfulSignUp(SuccessfulSignUpEvent event) {
-    LOGGER.debug("Successful sign up (JWT Token = {})", event.getJwtToken());
+    String token = event.getJwtToken();
+    LOGGER.debug("Successful sign up (JWT Token = {})", token);
+    UserJwtTokenStorage.setToken(token);
     Platform.runLater(() -> stage.setScene(homeScene));
     accessTokenReceiver.close();
+  }
+
+  // Easiest way I found to change scenes :c
+  @Subscribe
+  public void onChangeScene(ChangeSceneEvent event) {
+    switch (event.getScene()) {
+      case AUTH -> Platform.runLater(() -> stage.setScene(authScene));
+      case ADMIN -> Platform.runLater(() -> stage.setScene(adminScene));
+      case HOME -> Platform.runLater(() -> stage.setScene(homeScene));
+    }
   }
 
   @Subscribe

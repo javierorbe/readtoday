@@ -5,6 +5,8 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
+import dev.team.readtoday.client.navigation.ChangeSceneEvent;
+import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.search.SearchResultReceivedEvent;
 import java.net.URL;
@@ -27,6 +29,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 public final class HomeView implements Initializable {
 
@@ -111,6 +114,12 @@ public final class HomeView implements Initializable {
     String categoryName = channelsByCategory.getText();
     eventBus.post(new SearchChannelsByCategoryEvent(categoryName));
   }
+
+  @FXML
+  public void goToAdmin() {
+    eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
+  }
+
 
   @Subscribe
   public void onSearchResultReceived(SearchResultReceivedEvent event) {
