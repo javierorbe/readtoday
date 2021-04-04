@@ -16,10 +16,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/auth/singin")
-public final class SingInController {
+public final class SignInController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SingInController.class);
-
+  private static final Logger LOGGER = LoggerFactory.getLogger(SignInController.class);
 
   @Inject
   private SignInUser signInUser;
@@ -32,7 +31,7 @@ public final class SingInController {
   @Consumes(MediaType.APPLICATION_JSON)
 
   @Produces(MediaType.APPLICATION_JSON)
-  public Response singIn(SingInRequest request) {
+  public Response singIn(SignInRequest request) {
     LOGGER.trace("Recived sing in request");
 
     try {
@@ -49,5 +48,4 @@ public final class SingInController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
   }
-
 }
