@@ -6,14 +6,14 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
-import dev.team.readtoday.client.usecase.auth.SignUpFailedEvent;
-import dev.team.readtoday.client.usecase.auth.SuccessfulSignUpEvent;
-import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
-import dev.team.readtoday.client.usecase.create.ChannelCreationListener;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
-import dev.team.readtoday.client.usecase.search.SearchRequestListener;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
+import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
+import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
+import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
+import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
+import dev.team.readtoday.client.usecase.create.ChannelCreationListener;
+import dev.team.readtoday.client.usecase.search.SearchRequestListener;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
@@ -121,6 +121,7 @@ public final class App extends Application {
       case AUTH -> Platform.runLater(() -> stage.setScene(authScene));
       case ADMIN -> Platform.runLater(() -> stage.setScene(adminScene));
       case HOME -> Platform.runLater(() -> stage.setScene(homeScene));
+      default -> throw new IllegalStateException("Unreachable");
     }
   }
 

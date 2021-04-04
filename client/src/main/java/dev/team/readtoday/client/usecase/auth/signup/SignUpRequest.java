@@ -1,11 +1,11 @@
-package dev.team.readtoday.client.usecase.auth;
+package dev.team.readtoday.client.usecase.auth.signup;
 
 public final class SignUpRequest {
 
   private final String accessToken;
   private final String username;
 
-  SignUpRequest(String accessToken, String username) {
+  public SignUpRequest(String accessToken, String username) {
     this.accessToken = accessToken;
     this.username = username;
   }
