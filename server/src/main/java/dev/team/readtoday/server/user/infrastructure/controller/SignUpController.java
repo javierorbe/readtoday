@@ -1,5 +1,7 @@
 package dev.team.readtoday.server.user.infrastructure.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.AuthToken;
@@ -14,8 +16,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Path("/auth/signup")
 public final class SignUpController {
@@ -34,10 +34,8 @@ public final class SignUpController {
     LOGGER.trace("Received sign up request.");
 
     try {
-      User user = signUpUser.signUp(
-          new AuthToken(request.getAccessToken()),
-          new Username(request.getUsername())
-      );
+      User user = signUpUser.signUp(new AuthToken(request.getAccessToken()),
+          new Username(request.getUsername()));
       String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
 
       LOGGER.debug("Successful user sign up.");
