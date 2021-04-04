@@ -1,7 +1,5 @@
-package dev.team.readtoday.server.user.infrastructure.controller;
+package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.AuthToken;
@@ -16,6 +14,8 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/auth/signup")
 public final class SignUpController {

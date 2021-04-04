@@ -1,17 +1,17 @@
 package dev.team.readtoday.server.subscription.infrastructure;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SUBSCRIPTION;
+
+import dev.team.readtoday.server.channel.domain.ChannelId;
+import dev.team.readtoday.server.subscription.domain.Subscription;
+import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
+import dev.team.readtoday.server.user.domain.UserId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.jooq.Result;
-import dev.team.readtoday.server.channel.domain.ChannelId;
-import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
-import dev.team.readtoday.server.subscription.domain.Subscription;
-import dev.team.readtoday.server.user.domain.UserId;
-
 
 public class JooqSubscriptionRepository implements SubscriptionRepository {
 
@@ -60,7 +60,5 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
     }
     Subscription subscription = new Subscription(idU, idC);
     return Optional.of(subscription);
-
   }
-
 }

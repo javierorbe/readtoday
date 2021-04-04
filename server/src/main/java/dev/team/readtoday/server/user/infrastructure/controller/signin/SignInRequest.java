@@ -1,6 +1,6 @@
-package dev.team.readtoday.server.user.infrastructure.controller;
+package dev.team.readtoday.server.user.infrastructure.controller.signin;
 
-public final class SingInRequest {
+public final class SignInRequest {
 
   private String token;
 
