@@ -9,6 +9,8 @@ import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.search.SearchResultReceivedEvent;
+import dev.team.readtoday.client.storage.UserJwtTokenStorage;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,6 +23,7 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -29,7 +32,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
 
 public final class HomeView implements Initializable {
 
@@ -126,6 +128,12 @@ public final class HomeView implements Initializable {
     ObservableList<Channel> list =
         FXCollections.observableList(new ArrayList<>(event.getChannels()));
     Platform.runLater(() -> newChannelListView.setItems(list));
+  }
+
+  @FXML
+  private void signOut(ActionEvent event) throws IOException {
+    UserJwtTokenStorage.removeToken();
+    eventBus.post(new ChangeSceneEvent(SceneType.AUTH));
   }
 
   private final class CustomListCell extends ListCell<Channel> {
