@@ -1,33 +1,32 @@
 package dev.team.readtoday.server.subscription.domain;
 
-import java.util.Objects;
-
 import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.user.domain.UserId;
+import java.util.Objects;
 
 public final class Subscription {
 
- private final UserId idUser;
- private final ChannelId idChannel;
-	 
- public Subscription(UserId idUser,
-		 			 ChannelId idChannel) {
-   Objects.requireNonNull(idUser);
-   Objects.requireNonNull(idChannel);
+  private final UserId idUser;
+  private final ChannelId idChannel;
 
-   this.idUser = idUser;
-   this.idChannel = idChannel;
- }
- 
- public static Subscription create(UserId idUser, ChannelId idChannel ) {
-	    return new Subscription(idUser, idChannel);
- }
+  public Subscription(UserId idUser,
+                      ChannelId idChannel) {
+    Objects.requireNonNull(idUser);
+    Objects.requireNonNull(idChannel);
 
- public UserId getIdUser() {
-	 return idUser;
- }
+    this.idUser = idUser;
+    this.idChannel = idChannel;
+  }
 
- public ChannelId getIdChannel() {
-	 return idChannel;
- }
+  public static Subscription create(UserId idUser, ChannelId idChannel) {
+    return new Subscription(idUser, idChannel);
+  }
+
+  public UserId getIdUser() {
+    return idUser;
+  }
+
+  public ChannelId getIdChannel() {
+    return idChannel;
+  }
 }
