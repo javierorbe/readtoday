@@ -20,15 +20,15 @@
   <top>
     <ToolBar nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
       <items>
-        <MenuBar>
-          <menus>
-            <Menu mnemonicParsing="false" text="Opciones">
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#handleButtonAction" text="Cerrar sesion" />
-              </items>
-            </Menu>
-          </menus>
-        </MenuBar>
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="Opciones">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#handleButtonAction" text="Cerrar sesion" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
         <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>
         <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category"/>
       </items>
