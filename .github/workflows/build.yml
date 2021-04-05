@@ -36,11 +36,17 @@ jobs:
         run: |
           cd server
           mvn --batch-mode --update-snapshots verify
+      - name: Upload server coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          directory: ./server
+          flags: server
       - name: Build with Maven (client)
         run: |
           cd client
           mvn --batch-mode --update-snapshots verify
-      - name: Upload coverage to Codecov
+      - name: Upload client coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./client
+          flags: client
