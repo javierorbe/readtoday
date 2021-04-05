@@ -7,15 +7,7 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.net.MalformedURLException;
-import java.util.Optional;
-import org.jooq.DSLContext;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+
 import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
@@ -29,6 +21,14 @@ import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
+import java.util.Optional;
+import org.jooq.DSLContext;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
@@ -43,16 +43,23 @@ final class JooqSubscriptionRepositoryTest {
   static void setup() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     repository = new JooqSubscriptionRepository(jooq.getContext());
+    repositoryChannel = new JooqChannelRepository(jooq.getContext());
+    repositoryUser = new JooqUserRepository(jooq.getContext());
+    clearRepositories();
+  }
 
+  @AfterAll
+  static void clean() {
+    clearRepositories();
+    jooq.close();
+  }
+
+  private static void clearRepositories() {
     DSLContext ctx = jooq.getContext();
     ctx.deleteFrom(SUBSCRIPTION).execute();
     ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
     ctx.deleteFrom(CHANNEL).execute();
     ctx.deleteFrom(USER).execute();
-
-    repositoryChannel = new JooqChannelRepository(jooq.getContext());
-
-    repositoryUser = new JooqUserRepository(jooq.getContext());
   }
 
   @Test
@@ -60,11 +67,10 @@ final class JooqSubscriptionRepositoryTest {
     Subscription subscription = SubscriptionMother.random();
 
     assertDoesNotThrow(() -> repository.save(subscription));
-
   }
 
   @Test
-  void shouldReturnAnExistingSubscription() throws MalformedURLException {
+  void shouldReturnAnExistingSubscription() {
 
     User user = UserMother.random();
     Channel channel = ChannelMother.random();
@@ -82,16 +88,5 @@ final class JooqSubscriptionRepositoryTest {
     assertEquals(originalSubscription.getIdUser(), subscription.getIdUser());
     assertEquals(originalSubscription.getIdChannel(), subscription.getIdChannel());
 
-  }
-
-  @AfterAll
-  static void clean() {
-
-    DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(SUBSCRIPTION).execute();
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CHANNEL).execute();
-    ctx.deleteFrom(USER).execute();
-    jooq.close();
   }
 }

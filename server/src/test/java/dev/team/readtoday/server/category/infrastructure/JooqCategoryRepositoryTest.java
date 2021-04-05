@@ -37,16 +37,19 @@ final class JooqCategoryRepositoryTest {
   static void setup() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     repository = new JooqCategoryRepository(jooq.getContext());
-
-    DSLContext ctx = jooq.getContext();
-
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CATEGORY).execute();
+    clearRepositories();
   }
 
   @AfterAll
   static void clean() {
+    clearRepositories();
     jooq.close();
+  }
+
+  private static void clearRepositories() {
+    DSLContext ctx = jooq.getContext();
+    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
+    ctx.deleteFrom(CATEGORY).execute();
   }
 
   @Test

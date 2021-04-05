@@ -81,32 +81,40 @@ public final class ChannelSearchControllerTest {
   private final Map<ChannelId, Channel> channelCache = new HashMap<>();
 
   @Before
-  public void initServer() throws FileNotFoundException {
-    JsonObject config = loadConfig();
-    baseUri = config.get("baseUri").getAsString();
-
-    jwtTokenManager = new JwtTokenManager(Algorithm.HMAC256("sup3rs3cr3t"));
-
+  public void setUp() throws FileNotFoundException {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
+    clearRepositories();
+
     userRepository = new JooqUserRepository(jooq.getContext());
     channelRepository = new JooqChannelRepository(jooq.getContext());
     categoryRepository = new JooqCategoryRepository(jooq.getContext());
 
+    jwtTokenManager = new JwtTokenManager(Algorithm.HMAC256("sup3rs3cr3t"));
+
+    initServer();
+  }
+
+  @After
+  public void tearDown() {
+    clearRepositories();
+    jooq.close();
+    server.shutdownNow();
+  }
+
+  private void initServer() throws FileNotFoundException {
+    JsonObject config = loadConfig();
+    baseUri = config.get("baseUri").getAsString();
+
+    ResourceConfig jerseyConfig = new ChannelSearchTestingJerseyConfig(jwtTokenManager,
+        channelRepository, categoryRepository);
+    server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), jerseyConfig);
+  }
+
+  private void clearRepositories() {
     jooq.getContext().deleteFrom(CHANNEL_CATEGORIES).execute();
     jooq.getContext().deleteFrom(CATEGORY).execute();
     jooq.getContext().deleteFrom(CHANNEL).execute();
     jooq.getContext().deleteFrom(USER).execute();
-
-    ResourceConfig jerseyConfig = new ChannelSearchTestingJerseyConfig(jwtTokenManager,
-        channelRepository, categoryRepository);
-
-    server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), jerseyConfig);
-  }
-
-  @After
-  public void stopServer() {
-    jooq.close();
-    server.shutdownNow();
   }
 
   private static JsonObject loadConfig() throws FileNotFoundException {

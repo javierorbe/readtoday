@@ -79,6 +79,7 @@ public final class ChannelCreationControllerTest {
 
   @After
   public void tearDown() {
+    clearRepositories();
     jooq.close();
     server.shutdownNow();
   }

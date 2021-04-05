@@ -31,22 +31,25 @@ final class JooqChannelRepositoryTest {
   private static JooqConnectionBuilder jooq;
   private static ChannelRepository channelRepository;
   private static CategoryRepository categoryRepository;
-  private static DSLContext ctx;
 
   @BeforeAll
   static void setup() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     channelRepository = new JooqChannelRepository(jooq.getContext());
     categoryRepository = new JooqCategoryRepository(jooq.getContext());
-
-    ctx = jooq.getContext();
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CHANNEL).execute();
+    clearRepositories();
   }
 
   @AfterAll
   static void clean() {
+    clearRepositories();
     jooq.close();
+  }
+
+  private static void clearRepositories() {
+    DSLContext ctx = jooq.getContext();
+    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
+    ctx.deleteFrom(CHANNEL).execute();
   }
 
   @Test
