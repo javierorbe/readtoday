@@ -3,6 +3,7 @@ package dev.team.readtoday.client.view.auth;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
+import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.signin.SignInFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
 import java.awt.Desktop;
@@ -103,6 +104,13 @@ public final class AuthView implements Initializable, AuthInfoProvider {
       alert.setContentText("Reason: " + event.getReason());
       alert.show();
     });
+  }
+
+  @Subscribe
+  public void onSignedOut(SignedOutEvent event) {
+    usernameField.setText("");
+    signUpBtn.setDisable(false);
+    signInBtn.setDisable(false);
   }
 
   private void openAuthUri() {

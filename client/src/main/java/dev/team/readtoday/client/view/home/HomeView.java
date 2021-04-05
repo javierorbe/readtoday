@@ -7,11 +7,10 @@ import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
-import dev.team.readtoday.client.storage.UserJwtTokenStorage;
+import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.search.SearchResultReceivedEvent;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,7 +132,7 @@ public final class HomeView implements Initializable {
   }
 
   @Subscribe
-  public void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
+  public static void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
     Platform.runLater(() -> {
       Alert alert = new Alert(AlertType.ERROR, "Category not found");
       alert.show();
@@ -141,9 +140,8 @@ public final class HomeView implements Initializable {
   }
 
   @FXML
-  private void signOut(ActionEvent event) throws IOException {
-    UserJwtTokenStorage.removeToken();
-    eventBus.post(new ChangeSceneEvent(SceneType.AUTH));
+  private void signOut(ActionEvent event) {
+    eventBus.post(new SignedOutEvent());
   }
 
   private final class CustomListCell extends ListCell<Channel> {

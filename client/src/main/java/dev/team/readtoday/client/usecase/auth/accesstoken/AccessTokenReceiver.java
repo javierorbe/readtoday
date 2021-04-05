@@ -8,15 +8,28 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 
 public final class AccessTokenReceiver implements AutoCloseable {
 
-  private final HttpServer server;
+  private final URI baseUri;
+  private final EventBus eventBus;
+  private final AuthInfoProvider authInfoProvider;
+
+  private HttpServer server;
 
   public AccessTokenReceiver(URI baseUri, EventBus eventBus, AuthInfoProvider authInfoProvider) {
+    this.baseUri = baseUri;
+    this.eventBus = eventBus;
+    this.authInfoProvider = authInfoProvider;
+    start();
+  }
+
+  public void start() {
     server = GrizzlyHttpServerFactory
         .createHttpServer(baseUri, new JerseyConfig(eventBus, authInfoProvider));
   }
 
   @Override
   public void close() {
-    server.shutdownNow();
+    if (server.isStarted()) {
+      server.shutdownNow();
+    }
   }
 }
