@@ -2,13 +2,13 @@ package dev.team.readtoday.server.user.infrastructure.controller.signin;
 
 public final class SignInRequest {
 
-  private String token;
+  private String accessToken;
 
-  String getToken() {
-    return token;
+  String getAccessToken() {
+    return accessToken;
   }
 
-  public void setToken(String token) {
-    this.token = token;
+  public void setAccessToken(String accessToken) {
+    this.accessToken = accessToken;
   }
 }

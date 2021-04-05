@@ -25,7 +25,7 @@ final class SignUpUserTest {
 
   @Test
   void shouldThrowExceptionIfUserAlreadyExists() throws AuthProcessFailed {
-    AuthToken token = AuthTokenMother.random();
+    AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token))).thenReturn(email);
@@ -40,7 +40,7 @@ final class SignUpUserTest {
 
   @Test
   void shouldNotThrowExceptionIfUserDoesNotExist() throws AuthProcessFailed {
-    AuthToken token = AuthTokenMother.random();
+    AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token))).thenReturn(email);
@@ -54,7 +54,7 @@ final class SignUpUserTest {
 
   @Test
   void shouldSaveUserInRepositoryIfUserDoesNotExist() throws Exception {
-    AuthToken token = AuthTokenMother.random();
+    AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token))).thenReturn(email);
@@ -70,7 +70,7 @@ final class SignUpUserTest {
 
   @Test
   void shouldThrowExceptionIfFailsGettingTheAccessToken() throws AuthProcessFailed {
-    AuthToken token = AuthTokenMother.random();
+    AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token)))

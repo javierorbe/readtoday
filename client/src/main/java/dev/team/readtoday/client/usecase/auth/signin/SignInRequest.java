@@ -2,13 +2,13 @@ package dev.team.readtoday.client.usecase.auth.signin;
 
 public final class SignInRequest {
 
-  private final String token;
+  private final String accessToken;
 
-  public SignInRequest(String token) {
-    this.token = token;
+  public SignInRequest(String accessToken) {
+    this.accessToken = accessToken;
   }
 
-  public String getToken() {
-    return token;
+  public String getAccessToken() {
+    return accessToken;
   }
 }
