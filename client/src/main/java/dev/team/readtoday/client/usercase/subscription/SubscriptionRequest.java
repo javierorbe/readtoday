@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.subscription;
+package dev.team.readtoday.client.usercase.subscription;
 
 public class SubscriptionRequest {
 
