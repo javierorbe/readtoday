@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
-import dev.team.readtoday.server.user.application.AuthToken;
+import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import java.io.IOException;
@@ -44,7 +44,7 @@ public final class GoogleProfileFetcher implements ProfileFetcher {
   }
 
   @Override
-  public EmailAddress fetchEmailAddress(AuthToken token) throws AuthProcessFailed {
+  public EmailAddress fetchEmailAddress(AccessToken token) throws AuthProcessFailed {
     try {
       OAuth2AccessToken accessToken = service.getAccessToken(token.toString());
 
