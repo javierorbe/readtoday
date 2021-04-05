@@ -30,17 +30,21 @@ final class JooqUserRepositoryTest {
   private static UserRepository repository;
 
   @BeforeAll
-  static void setUp() {
+  static void beforeAll() {
     jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
     repository = new JooqUserRepository(jooq.getContext());
-
-    DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(USER).execute();
+    clearRepositories();
   }
 
   @AfterAll
-  static void cleanUp() {
+  static void afterAll() {
+    clearRepositories();
     jooq.close();
+  }
+
+  private static void clearRepositories() {
+    DSLContext ctx = jooq.getContext();
+    ctx.deleteFrom(USER).execute();
   }
 
   @Test

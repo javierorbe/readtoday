@@ -84,6 +84,7 @@ public final class SignUpControllerTest {
 
   @After
   public void tearDown() {
+    clearRepositories();
     jooq.close();
     server.shutdownNow();
   }
