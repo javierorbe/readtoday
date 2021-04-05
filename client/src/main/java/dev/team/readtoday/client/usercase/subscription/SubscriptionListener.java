@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.subscription;
+package dev.team.readtoday.client.usercase.subscription;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -6,8 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import dev.team.readtoday.client.create.ChannelCreationEvent;
-import dev.team.readtoday.client.create.ChannelCreationResponseEvent;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
@@ -30,14 +28,14 @@ public class SubscriptionListener {
   }
 
   @Subscribe
-  public void onChannelCreationRequestReceived(ChannelCreationEvent event) {
+  public void onChannelCreationRequestReceived(SubscriptionEvent event) {
 
     LOGGER.trace("Sending subscription request.");
     executorService.submit(() -> {
       Response response = subscriptionTarget.request(MediaType.APPLICATION_JSON)
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + UserJwtTokenStorage.getToken())
           .post(Entity.entity(event.getRequest(), MediaType.APPLICATION_JSON));
-      eventBus.post(new ChannelCreationResponseEvent(response));
+      eventBus.post(new SubscriptionResponseEvent(response));
     });
   }
 }

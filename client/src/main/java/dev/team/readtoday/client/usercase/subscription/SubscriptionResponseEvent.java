@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.subscription;
+package dev.team.readtoday.client.usercase.subscription;
 
 import jakarta.ws.rs.core.Response;
 
