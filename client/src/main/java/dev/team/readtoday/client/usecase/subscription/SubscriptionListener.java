@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usercase.subscription;
+package dev.team.readtoday.client.usecase.subscription;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
