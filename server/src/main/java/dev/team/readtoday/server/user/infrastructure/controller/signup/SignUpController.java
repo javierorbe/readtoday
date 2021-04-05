@@ -1,8 +1,8 @@
 package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
-import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.AccessToken;
+import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.SignUpUser;
 import dev.team.readtoday.server.user.domain.AlreadyExistingUser;
 import dev.team.readtoday.server.user.domain.User;
