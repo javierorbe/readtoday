@@ -10,8 +10,8 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.AccessToken;
+import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import java.io.IOException;
@@ -33,8 +33,8 @@ public final class GoogleProfileFetcher implements ProfileFetcher {
    * @param clientId Google OAuth 2.0 client ID
    * @param clientSecret Google OAuth 2.0 client secret
    * @param redirect determines how Google's authorization server sends a response to the app
-   *
-   * @see <a href="https://developers.google.com/identity/protocols/oauth2/native-app#step-2:-send-a-request-to-googles-oauth-2.0-server">Send a request to Google's OAuth 2.0 Server - Google Developers</a>
+   * @see <a href="https://developers.google.com/identity/protocols/oauth2/native-app#step-2:-send-a-request-to-googles-oauth-2.0-server">Send
+   * a request to Google's OAuth 2.0 Server - Google Developers</a>
    */
   public GoogleProfileFetcher(String clientId, String clientSecret, URI redirect) {
     service = new ServiceBuilder(clientId)
