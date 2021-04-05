@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SubscriptionListener {
+public final class SubscriptionListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionListener.class);
 
@@ -28,14 +28,28 @@ public class SubscriptionListener {
   }
 
   @Subscribe
-  public void onChannelCreationRequestReceived(SubscriptionEvent event) {
-
-    LOGGER.trace("Sending subscription request.");
+  public void onSubscriptionRequested(SubscriptionRequestedEvent event) {
+    String channelId = event.getChannelId();
+    LOGGER.trace("Subscription requested for channel: {}", channelId);
     executorService.submit(() -> {
+      SubscriptionRequest request = new SubscriptionRequest(channelId);
       Response response = subscriptionTarget.request(MediaType.APPLICATION_JSON)
           .header(HttpHeaders.AUTHORIZATION, "Bearer " + UserJwtTokenStorage.getToken())
-          .post(Entity.entity(event.getRequest(), MediaType.APPLICATION_JSON));
-      eventBus.post(new SubscriptionResponseEvent(response));
+          .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+
+      if (isResponseStatusCreated(response)) {
+        eventBus.post(new SuccessfulSubscriptionEvent(channelId));
+      } else {
+        eventBus.post(new SubscriptionFailedEvent(channelId, getResponseReason(response)));
+      }
     });
+  }
+
+  private static boolean isResponseStatusCreated(Response response) {
+    return response.getStatus() == Response.Status.CREATED.getStatusCode();
+  }
+
+  private static String getResponseReason(Response response) {
+    return Response.Status.fromStatusCode(response.getStatus()).getReasonPhrase();
   }
 }

@@ -1,14 +1,14 @@
 package dev.team.readtoday.client.usercase.subscription;
 
-public class SubscriptionRequest {
+public final class SubscriptionRequestedEvent {
 
   private final String channelId;
 
-  public SubscriptionRequest(String channelId) {
+  public SubscriptionRequestedEvent(String channelId) {
     this.channelId = channelId;
   }
 
-  public String getChannelId() {
+  String getChannelId() {
     return channelId;
   }
 }
