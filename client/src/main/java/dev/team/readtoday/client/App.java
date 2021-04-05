@@ -9,6 +9,7 @@ import com.google.gson.stream.JsonReader;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
+import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
@@ -48,8 +49,6 @@ public final class App extends Application {
 
   private static final String CONFIG_FILE = "/config.json";
   private static final Gson GSON = new Gson();
-
-  private static final long AUTH_RESPONSE_LISTENER_SHUTDOWN_DELAY = 5L;
 
   private final ExecutorService eventBusExecutor = Executors.newSingleThreadExecutor();
   private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
@@ -121,7 +120,13 @@ public final class App extends Application {
     accessTokenReceiver.close();
   }
 
-  // Easiest way I found to change scenes :c
+  @Subscribe
+  public void onSignedOut(SignedOutEvent event) {
+    UserJwtTokenStorage.removeToken();
+    accessTokenReceiver.start();
+    Platform.runLater(() -> stage.setScene(authScene));
+  }
+
   @Subscribe
   public void onChangeScene(ChangeSceneEvent event) {
     switch (event.getScene()) {
