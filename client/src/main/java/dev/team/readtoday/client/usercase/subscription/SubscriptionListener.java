@@ -1,9 +1,5 @@
 package dev.team.readtoday.client.usercase.subscription;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
@@ -12,10 +8,14 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SubscriptionListener {
 
-  Logger LOGGER = LoggerFactory.getLogger(SubscriptionListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionListener.class);
 
   private final EventBus eventBus;
   private final WebTarget subscriptionTarget;
