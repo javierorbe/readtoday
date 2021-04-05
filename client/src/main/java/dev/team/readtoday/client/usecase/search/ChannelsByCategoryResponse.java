@@ -12,8 +12,8 @@ public final class ChannelsByCategoryResponse {
   private List<ChannelResponse> channels;
   private List<CategoryResponse> categories;
 
-  public List<CategoryResponse> getCategories() {
-    return categories;
+  public void setChannels(List<ChannelResponse> channels) {
+    this.channels = channels;
   }
 
   public void setCategories(List<CategoryResponse> categories) {
