@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure.controller;
+package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +16,7 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.channel.infrastructure.controller.search.ChannelSearchControllerTest;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
-import dev.team.readtoday.server.user.application.AuthToken;
+import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
@@ -63,7 +63,7 @@ public final class SignUpControllerTest {
   private UserRepository userRepository;
   private ProfileFetcher profileFetcher;
 
-  private final AuthToken authToken = new AuthToken("someAccessToken");
+  private final AccessToken accessToken = new AccessToken("someAccessToken");
   private EmailAddress currentEmail;
 
   private Response response;
@@ -121,9 +121,9 @@ public final class SignUpControllerTest {
 
   @And("I have a valid access token")
   public void iHaveAValidAccessToken() throws AuthProcessFailed {
-    when(profileFetcher.fetchEmailAddress(eq(authToken)))
+    when(profileFetcher.fetchEmailAddress(eq(accessToken)))
         .thenReturn(currentEmail);
-    when(profileFetcher.fetchEmailAddress(not(eq(authToken))))
+    when(profileFetcher.fetchEmailAddress(not(eq(accessToken))))
         .thenThrow(AuthProcessFailed.class);
   }
 
@@ -139,7 +139,7 @@ public final class SignUpControllerTest {
     WebTarget baseTarget = client.target(baseUri);
     WebTarget signUpTarget = baseTarget.path("auth/signup");
 
-    TestSignUpRequest request = new TestSignUpRequest(authToken.toString(), username);
+    TestSignUpRequest request = new TestSignUpRequest(accessToken.toString(), username);
 
     response = signUpTarget
         .request(MediaType.APPLICATION_JSON)

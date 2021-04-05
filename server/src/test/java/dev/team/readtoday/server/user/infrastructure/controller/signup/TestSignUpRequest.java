@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure.controller;
+package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
 public final class TestSignUpRequest {
 
