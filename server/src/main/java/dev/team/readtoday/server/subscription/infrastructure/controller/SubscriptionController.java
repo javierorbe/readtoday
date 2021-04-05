@@ -1,8 +1,8 @@
 package dev.team.readtoday.server.subscription.infrastructure.controller;
 
+import dev.team.readtoday.server.channel.domain.ChannelId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.CreateSubscription;
-import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserId;
@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RequiresAuth
-@Path("subscription")
+@Path("subscriptions")
 public final class SubscriptionController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
@@ -36,10 +36,11 @@ public final class SubscriptionController {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response createSubscription(SubscriptionRequest newSubscription) {
+  public Response createSubscription(SubscriptionRequest request) {
+    LOGGER.trace("Received subscription request");
 
-    LOGGER.trace("Recived subscription request");
-    Optional<User> optUser = searchUserById.search(getUserId());
+    UserId userId = getUserId();
+    Optional<User> optUser = searchUserById.search(userId);
 
     if (optUser.isEmpty()) {
       LOGGER.debug("Unauthorized subscription");
@@ -47,11 +48,11 @@ public final class SubscriptionController {
     }
 
     try {
-      Subscription subscription = newSubscription.toSubscription();
-      createSubscription.createSubscription(subscription);
+      ChannelId channelId = ChannelId.fromString(request.getChannelId());
+      createSubscription.create(userId, channelId);
 
-      LOGGER.trace("Succesful subscription request");
-      return Response.ok().build();
+      LOGGER.trace("Successful subscription request");
+      return Response.status(Status.CREATED).build();
     } catch (RuntimeException e) {
       LOGGER.debug("Error creating subscription.", e);
       return Response.status(Status.BAD_REQUEST).build();
@@ -60,9 +61,7 @@ public final class SubscriptionController {
 
   private UserId getUserId() {
     Principal principal = securityContext.getUserPrincipal();
-
     String userId = principal.getName();
-
     return UserId.fromString(userId);
   }
 }
