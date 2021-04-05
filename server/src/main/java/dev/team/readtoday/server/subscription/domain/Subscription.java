@@ -18,10 +18,6 @@ public final class Subscription {
     this.idChannel = idChannel;
   }
 
-  public static Subscription create(UserId idUser, ChannelId idChannel) {
-    return new Subscription(idUser, idChannel);
-  }
-
   public UserId getIdUser() {
     return idUser;
   }

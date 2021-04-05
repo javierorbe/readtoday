@@ -52,7 +52,7 @@ public final class ImageUrl extends StringValueObject {
 
     // Include image/svg+xml?
     return switch (type.toString()) {
-      case "image/jpeg", "image/png" -> true;
+      case "image/jpeg", "image/png", "image/x-icon" -> true;
       default -> false;
     };
   }

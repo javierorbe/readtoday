@@ -102,9 +102,9 @@ public final class ChannelCreationController {
 
     return createChannel.create(
         new ChannelTitle(title),
-        new RssUrl(rssUrl),
+        RssUrl.create(rssUrl),
         new ChannelDescription(description),
-        new ImageUrl(imageUrl),
+        ImageUrl.create(imageUrl),
         categories
     );
   }
