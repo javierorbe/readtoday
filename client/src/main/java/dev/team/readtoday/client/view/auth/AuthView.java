@@ -6,17 +6,15 @@ import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.signin.SignInFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
+import dev.team.readtoday.client.view.AlertLauncher;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
@@ -76,54 +74,35 @@ public final class AuthView implements Initializable, AuthInfoProvider {
 
   @Subscribe
   public void onSignUpFailed(SignUpFailedEvent event) {
-    LOGGER.debug("Sign in failed (reason: {}).", event.getReason());
-
-    signUpBtn.setDisable(false);
-    signInBtn.setDisable(false);
-
-    Platform.runLater(() -> {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Sign up failed");
-      alert.setHeaderText("Sign up failed");
-      alert.setContentText("Reason: " + event.getReason());
-      alert.show();
-    });
+    toggleAuthButtons(false);
+    AlertLauncher.error("Sign up failed", event.getReason());
   }
 
   @Subscribe
   public void onSignInFailed(SignInFailedEvent event) {
-    LOGGER.debug("Sign up failed (reason: {}).", event.getReason());
-
-    signUpBtn.setDisable(false);
-    signInBtn.setDisable(false);
-
-    Platform.runLater(() -> {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Sign in failed");
-      alert.setHeaderText("Sign in failed");
-      alert.setContentText("Reason: " + event.getReason());
-      alert.show();
-    });
+    toggleAuthButtons(false);
+    AlertLauncher.error("Sign in failed", event.getReason());
   }
 
   @Subscribe
   public void onSignedOut(SignedOutEvent event) {
     usernameField.setText("");
-    signUpBtn.setDisable(false);
-    signInBtn.setDisable(false);
+    toggleAuthButtons(false);
+  }
+
+  private void toggleAuthButtons(boolean state) {
+    signUpBtn.setDisable(state);
+    signInBtn.setDisable(state);
   }
 
   private void openAuthUri() {
     try {
-      signUpBtn.setDisable(true);
-      signInBtn.setDisable(true);
-
+      toggleAuthButtons(true);
       LOGGER.debug("Google OAuth Link: {}", googleAccessTokenUri);
       Desktop.getDesktop().browse(googleAccessTokenUri);
     } catch (IOException e) {
       LOGGER.error("Error opening OAuth URI.", e);
-      signUpBtn.setDisable(false);
-      signInBtn.setDisable(false);
+      toggleAuthButtons(false);
     }
   }
 }

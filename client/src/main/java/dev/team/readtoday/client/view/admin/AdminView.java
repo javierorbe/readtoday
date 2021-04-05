@@ -5,10 +5,10 @@ import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.usecase.create.ChannelCreationEvent;
+import dev.team.readtoday.client.usecase.create.ChannelCreationFailedEvent;
 import dev.team.readtoday.client.usecase.create.ChannelCreationRequest;
-import dev.team.readtoday.client.usecase.create.ChannelCreationResponseEvent;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
+import dev.team.readtoday.client.usecase.create.ChannelSuccessfullyCreatedEvent;
+import dev.team.readtoday.client.view.AlertLauncher;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Objects;
@@ -16,12 +16,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public final class AdminView implements Initializable {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(AdminView.class);
 
   @FXML
   private TextField title;
@@ -67,18 +63,13 @@ public final class AdminView implements Initializable {
     eventBus.post(new ChangeSceneEvent(SceneType.HOME));
   }
 
-  /** When server sends a response. */
   @Subscribe
-  public void onChannelCreationResponseReceived(ChannelCreationResponseEvent event) {
-    LOGGER.debug("A response was received.");
-    Response response = event.getResponse();
-    Status status = Status.fromStatusCode(response.getStatus());
+  public static void onChannelSuccessfullyCreated(ChannelSuccessfullyCreatedEvent event) {
+    AlertLauncher.info("Channel was created");
+  }
 
-    switch (status) {
-      case UNAUTHORIZED -> LOGGER.debug("You have no permission.");
-      case BAD_REQUEST -> LOGGER.debug("Invalid data.");
-      case CREATED -> LOGGER.debug("Channel was created.");
-      default -> LOGGER.debug("Status code not supported: {}", status.getStatusCode());
-    }
+  @Subscribe
+  public static void onChannelCreationFailedEvent(ChannelCreationFailedEvent event) {
+    AlertLauncher.error("Channel creation failed", event.getReason());
   }
 }
