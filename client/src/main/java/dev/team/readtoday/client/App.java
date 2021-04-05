@@ -10,6 +10,7 @@ import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
+import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.create.ChannelCreationListener;
@@ -113,6 +114,15 @@ public final class App extends Application {
     Platform.runLater(() -> stage.setScene(homeScene));
     accessTokenReceiver.close();
   }
+
+    @Subscribe
+    public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
+        String token = event.getJwtToken();
+        LOGGER.debug("Successful sign in (JWT Token = {})", token);
+        Platform.runLater(() -> stage.setScene(homeScene));
+        accessTokenReceiver.close();
+
+    }
 
   // Easiest way I found to change scenes :c
   @Subscribe
