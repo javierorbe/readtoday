@@ -16,7 +16,7 @@ public final class SignInUser {
     this.repository = repository;
   }
 
-  public User signIn(AuthToken token) throws AuthProcessFailed, NonExistingUser {
+  public User signIn(AccessToken token) throws AuthProcessFailed, NonExistingUser {
     EmailAddress email = profileFetcher.fetchEmailAddress(token);
 
     Optional<User> optUser = repository.getByEmailAddress(email);

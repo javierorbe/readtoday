@@ -2,12 +2,12 @@ package dev.team.readtoday.server.user.application;
 
 import com.github.javafaker.Faker;
 
-enum AuthTokenMother {
+enum AccessTokenMother {
   ;
 
   private static final Faker FAKER = Faker.instance();
 
-  static AuthToken random() {
-    return new AuthToken(FAKER.random().hex());
+  static AccessToken random() {
+    return new AccessToken(FAKER.random().hex());
   }
 }

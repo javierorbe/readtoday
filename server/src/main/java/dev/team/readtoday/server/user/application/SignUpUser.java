@@ -19,7 +19,7 @@ public final class SignUpUser {
     this.repository = repository;
   }
 
-  public User signUp(AuthToken token, Username username)
+  public User signUp(AccessToken token, Username username)
       throws AuthProcessFailed, AlreadyExistingUser {
     EmailAddress email = profileFetcher.fetchEmailAddress(token);
 
