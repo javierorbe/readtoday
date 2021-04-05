@@ -8,6 +8,7 @@ import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.storage.UserJwtTokenStorage;
+import dev.team.readtoday.client.usecase.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.search.SearchResultReceivedEvent;
 import java.io.IOException;
@@ -26,6 +27,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -122,12 +125,19 @@ public final class HomeView implements Initializable {
     eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
   }
 
-
   @Subscribe
   public void onSearchResultReceived(SearchResultReceivedEvent event) {
     ObservableList<Channel> list =
         FXCollections.observableList(new ArrayList<>(event.getChannels()));
     Platform.runLater(() -> newChannelListView.setItems(list));
+  }
+
+  @Subscribe
+  public void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.ERROR, "Category not found");
+      alert.show();
+    });
   }
 
   @FXML

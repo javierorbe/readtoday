@@ -3,6 +3,7 @@ package dev.team.readtoday.client.view.auth;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
+import dev.team.readtoday.client.usecase.auth.signin.SignInFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
 import java.awt.Desktop;
 import java.io.IOException;
@@ -10,8 +11,11 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
@@ -71,8 +75,34 @@ public final class AuthView implements Initializable, AuthInfoProvider {
 
   @Subscribe
   public void onSignUpFailed(SignUpFailedEvent event) {
+    LOGGER.debug("Sign in failed (reason: {}).", event.getReason());
+
     signUpBtn.setDisable(false);
     signInBtn.setDisable(false);
+
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Sign up failed");
+      alert.setHeaderText("Sign up failed");
+      alert.setContentText("Reason: " + event.getReason());
+      alert.show();
+    });
+  }
+
+  @Subscribe
+  public void onSignInFailed(SignInFailedEvent event) {
+    LOGGER.debug("Sign up failed (reason: {}).", event.getReason());
+
+    signUpBtn.setDisable(false);
+    signInBtn.setDisable(false);
+
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.ERROR);
+      alert.setTitle("Sign in failed");
+      alert.setHeaderText("Sign in failed");
+      alert.setContentText("Reason: " + event.getReason());
+      alert.show();
+    });
   }
 
   private void openAuthUri() {
