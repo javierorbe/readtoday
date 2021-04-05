@@ -8,7 +8,7 @@ public final class ChannelCreationEvent {
     this.request = request;
   }
 
-  public ChannelCreationRequest getRequest() {
+  ChannelCreationRequest getRequest() {
     return request;
   }
 }

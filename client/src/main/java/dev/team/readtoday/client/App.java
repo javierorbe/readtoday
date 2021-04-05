@@ -7,14 +7,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
-import dev.team.readtoday.client.storage.UserJwtTokenStorage;
-import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
+import dev.team.readtoday.client.usecase.auth.signin.SignInRequestListener;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
+import dev.team.readtoday.client.usecase.auth.signup.SignUpRequestListener;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.create.ChannelCreationListener;
 import dev.team.readtoday.client.usecase.search.SearchRequestListener;
+import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
+import dev.team.readtoday.client.usecase.shared.AuthorizedJerseyHttpRequestBuilder;
+import dev.team.readtoday.client.usecase.shared.JerseyHttpRequestBuilder;
+import dev.team.readtoday.client.usecase.subscription.SubscriptionListener;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
@@ -40,7 +44,7 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class App extends Application {
+public final class App extends Application implements AuthTokenSupplier {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
@@ -48,9 +52,8 @@ public final class App extends Application {
   private static final double WINDOW_HEIGHT = 400.0;
 
   private static final String CONFIG_FILE = "/config.json";
-  private static final Gson GSON = new Gson();
 
-  private final ExecutorService eventBusExecutor = Executors.newSingleThreadExecutor();
+  private final ExecutorService eventBusExecutor = Executors.newCachedThreadPool();
   private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
 
   private Stage stage;
@@ -59,6 +62,7 @@ public final class App extends Application {
   private Scene adminScene;
 
   private AccessTokenReceiver accessTokenReceiver;
+  private String authToken;
 
   @Override
   public void init() throws IOException {
@@ -67,15 +71,13 @@ public final class App extends Application {
     URI baseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
     URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
-    AuthView authView = new AuthView(googleAccessTokenUri);
-    HomeView homeView = new HomeView(eventBus, List.of());
-    AdminView adminView = new AdminView(eventBus);
+    final AuthView authView = new AuthView(googleAccessTokenUri);
+    final HomeView homeView = new HomeView(eventBus, List.of());
+    final AdminView adminView = new AdminView(eventBus);
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
 
-    eventBus.register(new AuthRequestListener(eventBus, serverBaseTarget));
-    eventBus.register(new SearchRequestListener(eventBus, serverBaseTarget));
-    eventBus.register(new ChannelCreationListener(eventBus, serverBaseTarget));
+    registerRequestListeners(serverBaseTarget, this);
     eventBus.register(authView);
     eventBus.register(homeView);
     eventBus.register(adminView);
@@ -86,6 +88,19 @@ public final class App extends Application {
     adminScene = createScene("channelCreation.fxml", adminView);
 
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
+  }
+
+  private void registerRequestListeners(WebTarget baseTarget, AuthTokenSupplier ats) {
+    eventBus.register(new SignUpRequestListener(eventBus,
+        new JerseyHttpRequestBuilder(baseTarget, "/auth/signup")));
+    eventBus.register(new SignInRequestListener(eventBus,
+        new JerseyHttpRequestBuilder(baseTarget, "/auth/signin")));
+    eventBus.register(new SearchRequestListener(eventBus,
+        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/channels")));
+    eventBus.register(new ChannelCreationListener(eventBus,
+        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/channels")));
+    eventBus.register(new SubscriptionListener(eventBus,
+        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/subscriptions")));
   }
 
   @Override
@@ -104,27 +119,23 @@ public final class App extends Application {
 
   @Subscribe
   public void onSuccessfulSignUp(SuccessfulSignUpEvent event) {
-    String token = event.getJwtToken();
-    LOGGER.debug("Successful sign up (JWT Token = {})", token);
-    UserJwtTokenStorage.setToken(token);
-    Platform.runLater(() -> stage.setScene(homeScene));
+    authToken = event.getJwtToken();
+    setScene(homeScene);
     accessTokenReceiver.close();
   }
 
   @Subscribe
   public void onSuccessfulSignIn(SuccessfulSignInEvent event) {
-    String token = event.getJwtToken();
-    LOGGER.debug("Successful sign in (JWT Token = {})", token);
-    UserJwtTokenStorage.setToken(token);
-    Platform.runLater(() -> stage.setScene(homeScene));
+    authToken = event.getJwtToken();
+    setScene(homeScene);
     accessTokenReceiver.close();
   }
 
   @Subscribe
   public void onSignedOut(SignedOutEvent event) {
-    UserJwtTokenStorage.removeToken();
+    authToken = null;
     accessTokenReceiver.start();
-    Platform.runLater(() -> stage.setScene(authScene));
+    setScene(authScene);
   }
 
   @Subscribe
@@ -135,6 +146,15 @@ public final class App extends Application {
       case HOME -> Platform.runLater(() -> stage.setScene(homeScene));
       default -> throw new IllegalStateException("Unreachable");
     }
+  }
+
+  @Override
+  public String getAuthToken() {
+    return authToken;
+  }
+
+  private void setScene(Scene scene) {
+    Platform.runLater(() -> stage.setScene(scene));
   }
 
   private static Scene createScene(String fxmlFile, Object controller) throws IOException {
@@ -148,7 +168,8 @@ public final class App extends Application {
   private static JsonObject loadConfig() throws FileNotFoundException {
     URL fileUrl = Objects.requireNonNull(App.class.getResource(CONFIG_FILE));
     String file = fileUrl.getFile();
-    return GSON.fromJson(new JsonReader(new FileReader(file)), JsonObject.class);
+    Gson gson = new Gson();
+    return gson.fromJson(new JsonReader(new FileReader(file)), JsonObject.class);
   }
 
   private static WebTarget getServerBaseTarget(JsonObject config) {

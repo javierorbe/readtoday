@@ -35,7 +35,6 @@ public final class ChannelSearchController {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public Response getAllByCategoryName(@QueryParam("categoryName") CategoryName categoryName) {
-
     LOGGER.trace("Received get channels by category name request: {}", categoryName);
 
     try {
