@@ -116,7 +116,7 @@ public final class App extends Application {
   }
 
   @Subscribe
-  public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
+  public void onSuccessfulSignIn(SuccessfulSignInEvent event) {
     String token = event.getJwtToken();
     LOGGER.debug("Successful sign in (JWT Token = {})", token);
     UserJwtTokenStorage.setToken(token);
