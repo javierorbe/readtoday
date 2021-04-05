@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usercase.subscription;
+package dev.team.readtoday.client.usecase.subscription;
 
 public final class SuccessfulSubscriptionEvent {
 
