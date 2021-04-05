@@ -115,15 +115,14 @@ public final class App extends Application {
     accessTokenReceiver.close();
   }
 
-    @Subscribe
-    public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
-      String token = event.getJwtToken();
-      LOGGER.debug("Successful sign in (JWT Token = {})", token);
-      UserJwtTokenStorage.setToken(token);
-      Platform.runLater(() -> stage.setScene(homeScene));
-      accessTokenReceiver.close();
-
-    }
+  @Subscribe
+  public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
+    String token = event.getJwtToken();
+    LOGGER.debug("Successful sign in (JWT Token = {})", token);
+    UserJwtTokenStorage.setToken(token);
+    Platform.runLater(() -> stage.setScene(homeScene));
+    accessTokenReceiver.close();
+  }
 
   // Easiest way I found to change scenes :c
   @Subscribe
