@@ -1,9 +1,5 @@
 package dev.team.readtoday.server.subscription.infrastructure.controller;
 
-import java.security.Principal;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.CreateSubscription;
 import dev.team.readtoday.server.subscription.domain.Subscription;
@@ -19,6 +15,10 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.SecurityContext;
+import java.security.Principal;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RequiresAuth
 @Path("subscription")
@@ -45,8 +45,6 @@ public final class SubscriptionController {
       LOGGER.debug("Unauthorized subscription");
       return Response.status(Status.UNAUTHORIZED).build();
     }
-
-    User user = optUser.get();
 
     try {
       Subscription subscription = newSubscription.toSubscription();
