@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.infrastructure.controller;
+package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
