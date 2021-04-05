@@ -1,8 +1,8 @@
 # ReadToday
 
 [![Build](https://github.com/javierorbe/readtoday/actions/workflows/build.yml/badge.svg)](https://github.com/javierorbe/readtoday/actions/workflows/build.yml)
-[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=server&label=coverage%20%7C%20server)](https://app.codecov.io/gh/javierorbe/readtoday)
-[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=client&label=coverage%20%7C%20client)](https://app.codecov.io/gh/javierorbe/readtoday)
+[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=server&label=Coverage%20%7C%20server)](https://app.codecov.io/gh/javierorbe/readtoday)
+[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=client&label=Coverage%20%7C%20client)](https://app.codecov.io/gh/javierorbe/readtoday)
 
 ## Building
 
