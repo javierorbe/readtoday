@@ -13,7 +13,7 @@ public final class ChannelResponse {
   private final String rssUrl;
   private final String description;
   private final String imageUrl;
-  private final List<String> categories;
+  private final List<String> categoryIds;
 
   private ChannelResponse(Channel channel) {
     id = channel.getId().toString();
@@ -21,7 +21,7 @@ public final class ChannelResponse {
     rssUrl = channel.getRssUrl().toString();
     description = channel.getDescription().toString();
     imageUrl = channel.getImageUrl().toString();
-    categories = channel.getCategories().stream()
+    categoryIds = channel.getCategories().stream()
         .map(Identifier::toString)
         .collect(Collectors.toList());
   }
@@ -46,8 +46,8 @@ public final class ChannelResponse {
     return imageUrl;
   }
 
-  public List<String> getCategories() {
-    return categories;
+  public List<String> getCategoryIds() {
+    return categoryIds;
   }
 
   static List<ChannelResponse> fromChannels(Collection<Channel> channels) {
