@@ -117,10 +117,11 @@ public final class App extends Application {
 
     @Subscribe
     public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
-        String token = event.getJwtToken();
-        LOGGER.debug("Successful sign in (JWT Token = {})", token);
-        Platform.runLater(() -> stage.setScene(homeScene));
-        accessTokenReceiver.close();
+      String token = event.getJwtToken();
+      LOGGER.debug("Successful sign in (JWT Token = {})", token);
+      UserJwtTokenStorage.setToken(token);
+      Platform.runLater(() -> stage.setScene(homeScene));
+      accessTokenReceiver.close();
 
     }
 
