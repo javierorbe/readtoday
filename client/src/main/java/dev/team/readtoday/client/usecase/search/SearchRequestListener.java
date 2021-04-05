@@ -8,6 +8,7 @@ import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,11 +30,25 @@ public final class SearchRequestListener {
         channelsTarget.queryParam("categoryName", event.getCategoryName());
 
     executorService.submit(() -> {
-      ChannelsByCategoryResponse response = categoryNameTarget.request(MediaType.APPLICATION_JSON)
-          .header(HttpHeaders.AUTHORIZATION, "Bearer " + UserJwtTokenStorage.getToken())
-          .get(ChannelsByCategoryResponse.class);
-      ImmutableCollection<Channel> channels = response.toChannelCollection();
-      eventBus.post(new SearchResultReceivedEvent(channels));
+      Response response = categoryNameTarget.request(MediaType.APPLICATION_JSON)
+          .header(HttpHeaders.AUTHORIZATION, "Bearer " + UserJwtTokenStorage.getToken()).get();
+
+      if (isResponseStatusOk(response)) {
+        ChannelsByCategoryResponse entity = response.readEntity(ChannelsByCategoryResponse.class);
+        ImmutableCollection<Channel> channels = entity.toChannelCollection();
+        eventBus.post(new SearchResultReceivedEvent(channels));
+      } else {
+        String reason = getResponseReason(response);
+        eventBus.post(new ChannelSearchRequestFailedEvent(reason));
+      }
     });
+  }
+
+  private static boolean isResponseStatusOk(Response response) {
+    return response.getStatus() == Response.Status.OK.getStatusCode();
+  }
+
+  private static String getResponseReason(Response response) {
+    return Response.Status.fromStatusCode(response.getStatus()).getReasonPhrase();
   }
 }

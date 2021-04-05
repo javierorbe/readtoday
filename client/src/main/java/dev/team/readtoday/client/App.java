@@ -11,7 +11,6 @@ import dev.team.readtoday.client.storage.UserJwtTokenStorage;
 import dev.team.readtoday.client.usecase.auth.AuthRequestListener;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
-import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.create.ChannelCreationListener;
 import dev.team.readtoday.client.usecase.search.SearchRequestListener;
@@ -36,8 +35,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -115,15 +112,14 @@ public final class App extends Application {
     accessTokenReceiver.close();
   }
 
-    @Subscribe
-    public void onSuccessfullSignIn(SuccessfulSignInEvent event) {
-      String token = event.getJwtToken();
-      LOGGER.debug("Successful sign in (JWT Token = {})", token);
-      UserJwtTokenStorage.setToken(token);
-      Platform.runLater(() -> stage.setScene(homeScene));
-      accessTokenReceiver.close();
-
-    }
+  @Subscribe
+  public void onSuccessfulSignIn(SuccessfulSignInEvent event) {
+    String token = event.getJwtToken();
+    LOGGER.debug("Successful sign in (JWT Token = {})", token);
+    UserJwtTokenStorage.setToken(token);
+    Platform.runLater(() -> stage.setScene(homeScene));
+    accessTokenReceiver.close();
+  }
 
   // Easiest way I found to change scenes :c
   @Subscribe
@@ -134,19 +130,6 @@ public final class App extends Application {
       case HOME -> Platform.runLater(() -> stage.setScene(homeScene));
       default -> throw new IllegalStateException("Unreachable");
     }
-  }
-
-  @Subscribe
-  public static void onSignUpFailed(SignUpFailedEvent event) {
-    LOGGER.debug("Sign up failed (reason: {}).", event.getReason());
-
-    Platform.runLater(() -> {
-      Alert alert = new Alert(AlertType.ERROR);
-      alert.setTitle("Sign up failed");
-      alert.setHeaderText("Sign up failed");
-      alert.setContentText("Reason: " + event.getReason());
-      alert.show();
-    });
   }
 
   private static Scene createScene(String fxmlFile, Object controller) throws IOException {
