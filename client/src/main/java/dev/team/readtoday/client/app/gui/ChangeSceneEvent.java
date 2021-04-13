@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.navigation;
+package dev.team.readtoday.client.app.gui;
 
 public class ChangeSceneEvent {
 

@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilderFactory;
-import dev.team.readtoday.client.navigation.ChangeSceneEvent;
+import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.usecase.auth.signin.SignInRequestListener;
