@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.user.infrastructure.controller.signin;
 
+import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
@@ -12,20 +13,24 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/auth/signin")
-public final class SignInController {
+public final class SignInController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SignInController.class);
 
-  @Autowired
-  private SignInUser signInUser;
+  private final SignInUser signInUser;
+  private final JwtTokenManager jwtTokenManager;
 
   @Autowired
-  private JwtTokenManager jwtTokenManager;
+  public SignInController(SignInUser signInUser, JwtTokenManager jwtTokenManager) {
+    this.signInUser = signInUser;
+    this.jwtTokenManager = jwtTokenManager;
+  }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -41,10 +46,10 @@ public final class SignInController {
       return Response.ok(jwtToken).build();
     } catch (AuthProcessFailed e) {
       LOGGER.debug("Sign in failed.", e);
-      return Response.status(Response.Status.UNAUTHORIZED).build();
+      return response(Status.UNAUTHORIZED);
     } catch (NonExistingUser e) {
       LOGGER.debug("Sign in failed.", e);
-      return Response.status(Response.Status.NOT_FOUND).build();
+      return response(Status.NOT_FOUND);
     }
   }
 }
