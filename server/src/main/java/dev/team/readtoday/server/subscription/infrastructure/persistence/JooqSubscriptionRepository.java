@@ -3,6 +3,7 @@ package dev.team.readtoday.server.subscription.infrastructure.persistence;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SUBSCRIPTION;
 
 import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 import dev.team.readtoday.server.shared.domain.UserId;
@@ -13,6 +14,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record2;
 import org.jooq.Result;
 
+@Service
 public class JooqSubscriptionRepository implements SubscriptionRepository {
 
   private final DSLContext dsl;

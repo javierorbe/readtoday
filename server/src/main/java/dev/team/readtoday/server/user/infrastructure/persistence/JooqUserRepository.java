@@ -4,10 +4,11 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import dev.team.readtoday.server.shared.domain.Service;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.domain.Username;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import org.jooq.DSLContext;
 import org.jooq.Record3;
 
+@Service
 public final class JooqUserRepository implements UserRepository {
 
   private static final BiMap<Role, String> ROLE_MAP = HashBiMap.create(Map.of(

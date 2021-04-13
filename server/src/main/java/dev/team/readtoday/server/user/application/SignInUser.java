@@ -1,11 +1,13 @@
 package dev.team.readtoday.server.user.application;
 
+import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.NonExistingUser;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import java.util.Optional;
 
+@Service
 public final class SignInUser {
 
   private final ProfileFetcher profileFetcher;

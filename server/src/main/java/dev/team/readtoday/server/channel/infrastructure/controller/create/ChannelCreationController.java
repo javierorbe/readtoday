@@ -7,11 +7,10 @@ import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.shared.domain.UserId;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -29,6 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("channels")
@@ -36,9 +36,10 @@ public final class ChannelCreationController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelCreationController.class);
 
-  @Inject
+  @Autowired
   private CreateChannel createChannel;
-  @Inject
+
+  @Autowired
   private SearchUserById searchUserById;
 
   @Context

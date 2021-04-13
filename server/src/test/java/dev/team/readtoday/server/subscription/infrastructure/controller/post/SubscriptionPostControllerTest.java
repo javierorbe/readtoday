@@ -22,7 +22,7 @@ import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelR
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
-import dev.team.readtoday.server.subscription.infrastructure.JooqSubscriptionRepository;
+import dev.team.readtoday.server.subscription.infrastructure.persistence.JooqSubscriptionRepository;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;

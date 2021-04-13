@@ -7,7 +7,6 @@ import dev.team.readtoday.server.user.application.SignUpUser;
 import dev.team.readtoday.server.user.domain.AlreadyExistingUser;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.Username;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -16,15 +15,17 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/auth/signup")
 public final class SignUpController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SignUpController.class);
 
-  @Inject
+  @Autowired
   private SignUpUser signUpUser;
-  @Inject
+
+  @Autowired
   private JwtTokenManager jwtTokenManager;
 
   @POST

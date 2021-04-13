@@ -58,13 +58,50 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.2.0</version>
+        <groupId>org.jooq</groupId>
+        <artifactId>jooq-codegen-maven</artifactId>
+        <version>3.14.8</version>
+        <executions>
+          <execution>
+            <id>jooq-codegen</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.23</version>
+          </dependency>
+        </dependencies>
         <configuration>
-          <show>private</show>
-          <nohelp>true</nohelp>
+          <configurationFiles>
+            <configurationFile>jooq-config.xml</configurationFile>
+          </configurationFiles>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
+        <executions>
+          <execution>
+            <id>add-source</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <!-- Add jOOQ generated sources -->
+                <source>${project.build.directory}/generated-sources/jooq</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -106,6 +143,7 @@
         </executions>
         <configuration>
           <excludes>
+            <!-- Exclude jOOQ generated files -->
             <exclude>dev/team/readtoday/server/shared/infrastructure/jooq/**/*</exclude>
           </excludes>
         </configuration>
@@ -127,49 +165,13 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.jooq</groupId>
-        <artifactId>jooq-codegen-maven</artifactId>
-        <version>3.14.8</version>
-        <executions>
-          <execution>
-            <id>jooq-codegen</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.23</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <configurationFiles>
-            <configurationFile>jooq-config.xml</configurationFile>
-          </configurationFiles>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.2.0</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.build.directory}/generated-sources/jooq</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <show>private</show>
+          <nohelp>true</nohelp>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -185,6 +187,7 @@
   </build>
 
   <dependencies>
+    <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -198,23 +201,26 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>5.8.0-M1</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.7.1</version>
       <scope>test</scope>
     </dependency>
+    <!-- JUnit Vintage Engine (required by Cucumber) -->
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.8.0-M1</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Mockito -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>3.8.0</version>
       <scope>test</scope>
     </dependency>
+    <!-- Cucumber -->
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
@@ -227,32 +233,44 @@
       <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Java Faker (fake data generator) -->
     <dependency>
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
       <version>1.0.2</version>
       <scope>test</scope>
     </dependency>
+    <!-- SLF4J (logger facade) -->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>1.7.30</version>
     </dependency>
+    <!-- Log4j2 (logger implementation) -->
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>
       <artifactId>log4j-slf4j-impl</artifactId>
       <version>2.14.1</version>
     </dependency>
+    <!-- Guava (general utilities) -->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>30.1-jre</version>
     </dependency>
+    <!-- Spring Context (IoC / DI) -->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>5.3.5</version>
+    </dependency>
+    <!-- Apache Apache Validator (data validation) -->
     <dependency>
       <groupId>commons-validator</groupId>
       <artifactId>commons-validator</artifactId>
       <version>1.7</version>
     </dependency>
+    <!-- Jersey -->
     <dependency>
       <groupId>org.glassfish.jersey.containers</groupId>
       <artifactId>jersey-container-grizzly2-http</artifactId>
@@ -269,40 +287,63 @@
       <version>3.0.1</version>
     </dependency>
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>javax.servlet-api</artifactId>
+      <version>4.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.hk2</groupId>
+      <artifactId>spring-bridge</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-spring5</artifactId>
+      <version>2.33</version>
+    </dependency>
+    <!-- TomlJ (TOML parser) -->
+    <dependency>
+      <groupId>org.tomlj</groupId>
+      <artifactId>tomlj</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <!-- jOOQ (SQL querying) -->
+    <dependency>
       <groupId>org.jooq</groupId>
       <artifactId>jooq</artifactId>
       <version>3.14.8</version>
     </dependency>
+    <!-- MySQL JDBC connector -->
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.23</version>
     </dependency>
+    <!-- HikariCP (JDBC connection pool) -->
     <dependency>
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>4.0.3</version>
     </dependency>
+    <!-- ScribeJava (OAuth) -->
     <dependency>
       <groupId>com.github.scribejava</groupId>
       <artifactId>scribejava-apis</artifactId>
       <version>8.1.0</version>
     </dependency>
+    <!-- GSON (JSON parser) -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.8.6</version>
     </dependency>
+    <!-- Java JWT (JSON Web Tokens) -->
     <dependency>
       <groupId>com.auth0</groupId>
       <artifactId>java-jwt</artifactId>
       <version>3.14.0</version>
     </dependency>
-    <dependency>
-      <groupId>net.andreinc</groupId>
-      <artifactId>mockneat</artifactId>
-      <version>0.4.6</version>
-    </dependency>
+    <!-- Rome (RSS) -->
     <dependency>
       <groupId>com.rometools</groupId>
       <artifactId>rome</artifactId>

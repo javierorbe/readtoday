@@ -1,16 +1,11 @@
 package dev.team.readtoday.server.subscription.infrastructure.controller.unsubscribe;
 
-import java.security.Principal;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.DeleteSubscription;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.shared.domain.UserId;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
@@ -20,6 +15,11 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.SecurityContext;
+import java.security.Principal;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("subscriptions")
@@ -27,9 +27,10 @@ public final class UnsubscribeController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeController.class);
 
-  @Inject
+  @Autowired
   private DeleteSubscription deleteSubscription;
-  @Inject
+
+  @Autowired
   private SearchUserById searchUserById;
 
   @Context

@@ -12,6 +12,7 @@ import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,6 +21,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record5;
 import org.jooq.impl.DSL;
 
+@Service
 public final class JooqChannelRepository implements ChannelRepository {
 
   private final DSLContext dsl;
