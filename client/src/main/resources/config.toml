@@ -1,0 +1,11 @@
+# ReadToday server base URI.
+server = "http://localhost:8080"
+
+[oauth]
+# Google authorization base URL. The client_id and the redirect_uri parameters
+# are appended to this URL at runtime.
+base_url = "https://accounts.google.com/o/oauth2/v2/auth?access_type=offline&prompt=consent&response_type=code&scope=email"
+# Google application client ID.
+client_id = ""
+# URI to which Google's authorization server sends a response.
+redirect_uri = "http://127.0.0.1:38492"
