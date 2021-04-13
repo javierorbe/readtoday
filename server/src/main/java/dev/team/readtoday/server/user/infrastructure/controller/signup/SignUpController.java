@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.user.infrastructure.controller.signup;
 
+import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
@@ -13,20 +14,24 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/auth/signup")
-public final class SignUpController {
+public final class SignUpController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SignUpController.class);
 
-  @Autowired
-  private SignUpUser signUpUser;
+  private final SignUpUser signUpUser;
+  private final JwtTokenManager jwtTokenManager;
 
   @Autowired
-  private JwtTokenManager jwtTokenManager;
+  public SignUpController(SignUpUser signUpUser, JwtTokenManager jwtTokenManager) {
+    this.signUpUser = signUpUser;
+    this.jwtTokenManager = jwtTokenManager;
+  }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
@@ -40,13 +45,13 @@ public final class SignUpController {
       String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
 
       LOGGER.debug("Successful user sign up.");
-      return Response.status(Response.Status.CREATED).entity(jwtToken).build();
+      return Response.status(Status.CREATED).entity(jwtToken).build();
     } catch (AuthProcessFailed e) {
       LOGGER.debug("Sign up failed.", e);
-      return Response.status(Response.Status.UNAUTHORIZED).build();
+      return response(Status.UNAUTHORIZED);
     } catch (AlreadyExistingUser e) {
       LOGGER.debug("Sign up failed.", e);
-      return Response.status(Response.Status.CONFLICT).build();
+      return response(Status.CONFLICT);
     }
   }
 }
