@@ -1,25 +1,27 @@
 package dev.team.readtoday.client.usecase.channel.search;
 
 import com.google.common.collect.ImmutableCollection;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import dev.team.readtoday.client.app.eventbus.SubscribedComponent;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+@SubscribedComponent
 public final class SearchRequestListener {
 
   private final EventBus eventBus;
   private final HttpRequestBuilder requestBuilder;
 
-  public SearchRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+  SearchRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
     requestBuilder = factory.buildWithAuth("/channels");
-    eventBus.register(this);
   }
 
-  @Subscribe
+  @Subscribe(threadMode = ThreadMode.ASYNC)
   public void onSearchChannelsByCategory(SearchChannelsByCategoryEvent event) {
     HttpResponse response =
         requestBuilder.withParam("categoryName", event.getCategoryName()).get();

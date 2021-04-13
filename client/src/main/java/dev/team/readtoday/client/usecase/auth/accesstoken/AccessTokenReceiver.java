@@ -1,6 +1,6 @@
 package dev.team.readtoday.client.usecase.auth.accesstoken;
 
-import com.google.common.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;

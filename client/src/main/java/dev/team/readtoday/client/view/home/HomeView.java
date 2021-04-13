@@ -1,8 +1,8 @@
 package dev.team.readtoday.client.view.home;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
@@ -134,7 +134,7 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @Subscribe
-  public static void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
+  public void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
     AlertLauncher.error("Category not found");
   }
 }
