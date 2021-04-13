@@ -2,6 +2,7 @@ package dev.team.readtoday.client.usecase.auth.accesstoken;
 
 import com.google.common.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
+import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.signin.SignInRequestReadyEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpRequestReadyEvent;
 import jakarta.inject.Inject;
@@ -10,13 +11,18 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.function.Consumer;
 
 @Path("/oauth")
 public final class AccessTokenController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(AccessTokenController.class);
+  private final Map<AuthProcess, Consumer<String>> eventDispatcherMap = new EnumMap<>(Map.of(
+      AuthProcess.SIGN_IN, this::postSignInRequestReadyEvent,
+      AuthProcess.SIGN_UP, this::postSignUpRequestReadyEvent
+  ));
 
   @Inject
   private EventBus eventBus;
@@ -27,15 +33,21 @@ public final class AccessTokenController {
   @GET
   @Produces(MediaType.TEXT_PLAIN)
   public String receiveAccessToken(@QueryParam("code") String accessToken) {
-    LOGGER.debug("Access token received: {}", accessToken);
-
-    switch (authInfoProvider.getAuthProcess()) {
-      case SIGN_UP -> eventBus
-          .post(new SignUpRequestReadyEvent(accessToken, authInfoProvider.getUsername()));
-      case SIGN_IN -> eventBus.post(new SignInRequestReadyEvent(accessToken));
-      default -> throw new IllegalStateException("Unreachable");
-    }
-
+    postReadyEvent(accessToken);
     return "OK! Check the app.";
+  }
+
+  private void postReadyEvent(String accessToken) {
+    AuthProcess authProcess = Objects.requireNonNull(authInfoProvider.getAuthProcess());
+    eventDispatcherMap.get(authProcess).accept(accessToken);
+  }
+
+  private void postSignUpRequestReadyEvent(String accessToken) {
+    String username = authInfoProvider.getUsername();
+    eventBus.post(new SignUpRequestReadyEvent(accessToken, username));
+  }
+
+  private void postSignInRequestReadyEvent(String accessToken) {
+    eventBus.post(new SignInRequestReadyEvent(accessToken));
   }
 }
