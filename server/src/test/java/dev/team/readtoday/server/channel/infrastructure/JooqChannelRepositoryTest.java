@@ -6,17 +6,13 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.category.domain.CategoryRepository;
-import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
 import dev.team.readtoday.server.channel.domain.Channel;
-import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
-import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
+import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
 import java.util.Optional;
-import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -26,30 +22,19 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
-final class JooqChannelRepositoryTest {
+final class JooqChannelRepositoryTest extends BaseJooqIntegrationTest {
 
-  private static JooqConnectionBuilder jooq;
   private static ChannelRepository channelRepository;
-  private static CategoryRepository categoryRepository;
 
   @BeforeAll
-  static void setup() {
-    jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
-    channelRepository = new JooqChannelRepository(jooq.getContext());
-    categoryRepository = new JooqCategoryRepository(jooq.getContext());
-    clearRepositories();
+  static void beforeAll() {
+    start(CHANNEL_CATEGORIES, CHANNEL);
+    channelRepository = getRepository(JooqChannelRepository.class);
   }
 
   @AfterAll
-  static void clean() {
-    clearRepositories();
-    jooq.close();
-  }
-
-  private static void clearRepositories() {
-    DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CHANNEL).execute();
+  static void afterAll() {
+    clearAndShutdown();
   }
 
   @Test

@@ -8,12 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;
-import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
+import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionMother;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
@@ -23,7 +22,6 @@ import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
 import java.util.Optional;
-import org.jooq.DSLContext;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.MethodOrderer;
@@ -33,41 +31,30 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
-final class JooqSubscriptionRepositoryTest {
+final class JooqSubscriptionRepositoryTest extends BaseJooqIntegrationTest {
 
-  private static JooqConnectionBuilder jooq;
-  private static SubscriptionRepository repository;
+  private static SubscriptionRepository subRepository;
   private static UserRepository repositoryUser;
   private static ChannelRepository repositoryChannel;
 
   @BeforeAll
   static void setup() {
-    jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
-    repository = new JooqSubscriptionRepository(jooq.getContext());
-    repositoryChannel = new JooqChannelRepository(jooq.getContext());
-    repositoryUser = new JooqUserRepository(jooq.getContext());
-    clearRepositories();
+    start(SUBSCRIPTION, CHANNEL_CATEGORIES, CHANNEL, USER);
+    subRepository = getRepository(JooqSubscriptionRepository.class);
+    repositoryUser = getRepository(JooqUserRepository.class);
+    repositoryChannel = getRepository(JooqChannelRepository.class);
   }
 
   @AfterAll
   static void clean() {
-    clearRepositories();
-    jooq.close();
-  }
-
-  private static void clearRepositories() {
-    DSLContext ctx = jooq.getContext();
-    ctx.deleteFrom(SUBSCRIPTION).execute();
-    ctx.deleteFrom(CHANNEL_CATEGORIES).execute();
-    ctx.deleteFrom(CHANNEL).execute();
-    ctx.deleteFrom(USER).execute();
+    clearAndShutdown();
   }
 
   @Test
   void shouldSaveSubscription() {
     Subscription subscription = SubscriptionMother.random();
 
-    assertDoesNotThrow(() -> repository.save(subscription));
+    assertDoesNotThrow(() -> subRepository.save(subscription));
   }
 
   @Test
@@ -79,10 +66,10 @@ final class JooqSubscriptionRepositoryTest {
 
     repositoryChannel.save(channel);
     repositoryUser.save(user);
-    repository.save(originalSubscription);
+    subRepository.save(originalSubscription);
 
     Optional<Subscription> optSubscription =
-        repository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+        subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
     assertTrue(optSubscription.isPresent());
     Subscription subscription = optSubscription.get();
 
