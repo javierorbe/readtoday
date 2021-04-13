@@ -23,7 +23,7 @@ Feature: Create a channel
       | rssUrl      | https://hnrss.org/frontpage              |
       | description | Hacker News RSS                          |
       | imageUrl    | https://news.ycombinator.com/favicon.ico |
-    Then the response status code should be 401
+    Then the response status code should be 403
 
   Scenario: I fail to create a channel because I don't have a valid authentication token
     Given I have an invalid authentication token

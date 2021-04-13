@@ -2,67 +2,52 @@ package dev.team.readtoday.server.subscription.infrastructure.controller.subscri
 
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.CreateSubscription;
-import dev.team.readtoday.server.user.application.SearchUserById;
-import dev.team.readtoday.server.user.domain.User;
+import dev.team.readtoday.server.subscription.domain.SubscriptionAlreadyExists;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import jakarta.ws.rs.core.SecurityContext;
-import java.security.Principal;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("subscriptions")
-public final class SubscriptionController {
+public final class SubscriptionController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
 
-  @Autowired
-  private CreateSubscription createSubscription;
+  private final CreateSubscription createSubscription;
 
   @Autowired
-  private SearchUserById searchUserById;
-
-  @Context
-  private SecurityContext securityContext;
-
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response createSubscription(SubscriptionRequest request) {
-    LOGGER.trace("Received subscription request");
-
-    UserId userId = getUserId();
-    Optional<User> optUser = searchUserById.search(userId);
-
-    if (optUser.isEmpty()) {
-      LOGGER.debug("Unauthorized subscription");
-      return Response.status(Status.UNAUTHORIZED).build();
-    }
-
-    try {
-      ChannelId channelId = ChannelId.fromString(request.getChannelId());
-      createSubscription.create(userId, channelId);
-
-      LOGGER.trace("Successful subscription request");
-      return Response.status(Status.CREATED).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error creating subscription.", e);
-      return Response.status(Status.BAD_REQUEST).build();
-    }
+  public SubscriptionController(CreateSubscription createSubscription) {
+    this.createSubscription = createSubscription;
   }
 
-  private UserId getUserId() {
-    Principal principal = securityContext.getUserPrincipal();
-    String userId = principal.getName();
-    return UserId.fromString(userId);
+  @POST
+  @Path("/{channelId}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response subscribe(@PathParam("channelId") String channelIdStr) {
+    UserId userId = getRequestUserId();
+    LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
+        userId, channelIdStr);
+
+    try {
+      ChannelId channelId = ChannelId.fromString(channelIdStr);
+      createSubscription.create(userId, channelId);
+      LOGGER.trace("Successful subscription request.");
+      return response(Status.CREATED);
+    } catch (SubscriptionAlreadyExists e) {
+      return response(Status.CONFLICT, "Already subscribed.");
+    } catch (RuntimeException e) {
+      LOGGER.debug("Error creating subscription.", e);
+      return response(Status.BAD_REQUEST);
+    }
   }
 }
