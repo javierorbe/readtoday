@@ -1,7 +1,6 @@
 package dev.team.readtoday.server.shared.infrastructure.controller;
 
 import jakarta.annotation.Priority;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
@@ -12,6 +11,7 @@ import jakarta.ws.rs.ext.Provider;
 import java.security.Principal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Provider
@@ -23,8 +23,12 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
   private static final String REALM = "auth";
   private static final String AUTHENTICATION_SCHEME = "Bearer";
 
-  @Inject
-  private JwtTokenManager jwtTokenManager;
+  private final JwtTokenManager jwtTokenManager;
+
+  @Autowired
+  public AuthenticationFilter(JwtTokenManager jwtTokenManager) {
+    this.jwtTokenManager = jwtTokenManager;
+  }
 
   @Override
   public void filter(ContainerRequestContext requestContext) {

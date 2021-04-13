@@ -7,7 +7,7 @@ import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
-import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
@@ -18,13 +18,10 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.security.Principal;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,39 +29,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("channels")
-public final class ChannelCreationController {
+public final class ChannelCreationController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelCreationController.class);
 
-  @Autowired
-  private CreateChannel createChannel;
-
-  @Autowired
-  private SearchUserById searchUserById;
-
-  @Context
-  private SecurityContext securityContext;
+  private final CreateChannel createChannel;
+  private final SearchUserById searchUserById;
 
   @Context
   private UriInfo uriInfo;
+
+  @Autowired
+  public ChannelCreationController(CreateChannel createChannel, SearchUserById searchUserById) {
+    this.createChannel = createChannel;
+    this.searchUserById = searchUserById;
+  }
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createChannel(ChannelCreationRequest request) {
     LOGGER.trace("Received channel creation request: {}", request);
 
-    Optional<User> optRequester = searchUserById.search(getRequestUserId());
+    User user = searchUserById.search(getRequestUserId());
 
-    // If not user found
-    if (optRequester.isEmpty()) {
-      LOGGER.debug("Channel creation, Unauthorized requester");
-      return Response.status(Status.UNAUTHORIZED).build();
-    }
-
-    User requester = optRequester.get();
-
-    if (!requester.isAdmin()) {
-      return Response.status(Status.UNAUTHORIZED).build();
+    if (!user.isAdmin()) {
+      return response(Status.FORBIDDEN);
     }
 
     try {
@@ -74,14 +63,8 @@ public final class ChannelCreationController {
       return Response.created(location).build();
     } catch (RuntimeException e) {
       LOGGER.debug("Error creating the channel.", e);
-      return Response.status(Status.BAD_REQUEST).build();
+      return response(Status.BAD_REQUEST);
     }
-  }
-
-  private UserId getRequestUserId() {
-    Principal principal = securityContext.getUserPrincipal();
-    String userId = principal.getName();
-    return UserId.fromString(userId);
   }
 
   private URI buildResourceLocation(Channel channel) {

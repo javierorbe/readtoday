@@ -107,17 +107,16 @@ public final class SubscriptionPostControllerTest extends BaseAcceptanceTest {
   }
 
   @When("I request to subscribe to the channel with ID {string}")
-  public void iRequestToSubscribeToTheChannelWithID(String channelIdStr) {
+  public void iRequestToSubscribeToTheChannelWithId(String channelIdStr) {
     Client client = ClientBuilder.newClient();
     WebTarget baseTarget = client.target(getServerBaseUri());
     WebTarget subscriptionTarget = baseTarget.path("subscriptions");
 
-    TestSubscriptionPostRequest request = new TestSubscriptionPostRequest(channelIdStr);
-
     response = subscriptionTarget
+        .path(channelIdStr)
         .request(MediaType.APPLICATION_JSON)
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userJwtToken)
-        .post(Entity.entity(request, MediaType.APPLICATION_JSON));
+        .post(Entity.json(null));
   }
 
   @Then("the response status code should be {int}")
