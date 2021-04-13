@@ -1,6 +1,5 @@
 package dev.team.readtoday.client.usecase.auth.accesstoken;
 
-import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.signin.SignInRequestReadyEvent;
@@ -15,6 +14,7 @@ import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
+import org.greenrobot.eventbus.EventBus;
 
 @Path("/")
 public final class AccessTokenController {

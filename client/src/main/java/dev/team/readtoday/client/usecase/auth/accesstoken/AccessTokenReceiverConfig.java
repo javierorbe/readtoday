@@ -1,9 +1,9 @@
 package dev.team.readtoday.client.usecase.auth.accesstoken;
 
-import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.greenrobot.eventbus.EventBus;
 
 final class AccessTokenReceiverConfig extends ResourceConfig {
 

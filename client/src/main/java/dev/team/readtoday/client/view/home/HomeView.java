@@ -1,8 +1,6 @@
 package dev.team.readtoday.client.view.home;
 
 import com.google.common.collect.ImmutableList;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
@@ -31,6 +29,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public final class HomeView implements ViewController, Initializable {
 

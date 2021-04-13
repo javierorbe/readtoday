@@ -1,7 +1,7 @@
 package dev.team.readtoday.client.app;
 
-import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
+import org.greenrobot.eventbus.EventBus;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.tomlj.TomlTable;
 

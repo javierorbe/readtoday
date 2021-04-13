@@ -1,7 +1,5 @@
 package dev.team.readtoday.client.view.auth;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
@@ -19,6 +17,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public final class AuthView implements ViewController, Initializable, AuthInfoPr
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 
   private final URI googleAccessTokenUri;
-  private AuthProcess selectedAuthProcess = null;
+  private AuthProcess selectedAuthProcess;
 
   @FXML
   private TextField usernameField;

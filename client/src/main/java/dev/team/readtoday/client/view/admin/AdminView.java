@@ -1,7 +1,5 @@
 package dev.team.readtoday.client.view.admin;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
@@ -18,6 +16,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public final class AdminView implements ViewController, Initializable {
 
