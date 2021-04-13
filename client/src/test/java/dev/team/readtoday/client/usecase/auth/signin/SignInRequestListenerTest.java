@@ -6,7 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.google.common.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;

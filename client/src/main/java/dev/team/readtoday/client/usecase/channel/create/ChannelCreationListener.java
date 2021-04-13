@@ -1,13 +1,16 @@
 package dev.team.readtoday.client.usecase.channel.create;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import dev.team.readtoday.client.app.eventbus.SubscribedComponent;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SubscribedComponent
 public final class ChannelCreationListener {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelCreationListener.class);
@@ -15,13 +18,12 @@ public final class ChannelCreationListener {
   private final EventBus eventBus;
   private final HttpRequestBuilder requestBuilder;
 
-  public ChannelCreationListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+  ChannelCreationListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
     requestBuilder = factory.buildWithAuth("/channels");
-    eventBus.register(this);
   }
 
-  @Subscribe
+  @Subscribe(threadMode = ThreadMode.ASYNC)
   public void onChannelCreationRequestReceived(ChannelCreationEvent event) {
     LOGGER.trace("Sending channel creation request.");
     HttpResponse response = requestBuilder.post(event.getRequest());

@@ -6,8 +6,10 @@ import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
+import org.springframework.stereotype.Component;
 import org.tomlj.TomlTable;
 
+@Component
 public final class JerseyHttpRequestBuilderFactory implements HttpRequestBuilderFactory {
 
   private final WebTarget baseTarget;

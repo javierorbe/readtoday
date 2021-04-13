@@ -1,6 +1,6 @@
 package dev.team.readtoday.client.usecase.auth.accesstoken;
 
-import com.google.common.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.signin.SignInRequestReadyEvent;
@@ -33,7 +33,11 @@ public final class AccessTokenController {
   @GET
   @Produces(MediaType.TEXT_PLAIN)
   public String receiveAccessToken(@QueryParam("code") String accessToken) {
-    postReadyEvent(accessToken);
+    try {
+      postReadyEvent(accessToken);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     return "OK! Check the app.";
   }
 

@@ -1,7 +1,7 @@
 package dev.team.readtoday.client.view.admin;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
@@ -72,12 +72,12 @@ public final class AdminView implements ViewController, Initializable {
   }
 
   @Subscribe
-  public static void onChannelSuccessfullyCreated(ChannelSuccessfullyCreatedEvent event) {
+  public void onChannelSuccessfullyCreated(ChannelSuccessfullyCreatedEvent event) {
     AlertLauncher.info("Channel was created");
   }
 
   @Subscribe
-  public static void onChannelCreationFailedEvent(ChannelCreationFailedEvent event) {
+  public void onChannelCreationFailedEvent(ChannelCreationFailedEvent event) {
     AlertLauncher.error("Channel creation failed", event.getReason());
   }
 }

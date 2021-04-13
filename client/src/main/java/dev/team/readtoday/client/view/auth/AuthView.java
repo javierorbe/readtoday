@@ -1,7 +1,7 @@
 package dev.team.readtoday.client.view.auth;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;

@@ -1,55 +1,46 @@
 package dev.team.readtoday.client.app;
 
-import com.google.common.eventbus.AsyncEventBus;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.app.gui.SceneContainer;
 import dev.team.readtoday.client.app.gui.SceneType;
-import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
-import dev.team.readtoday.client.usecase.auth.signin.SignInRequestListener;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
-import dev.team.readtoday.client.usecase.auth.signup.SignUpRequestListener;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
-import dev.team.readtoday.client.usecase.channel.create.ChannelCreationListener;
-import dev.team.readtoday.client.usecase.channel.search.SearchRequestListener;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
-import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionListener;
 import dev.team.readtoday.client.view.ViewController;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
 import jakarta.ws.rs.core.UriBuilder;
-import java.io.IOException;
 import java.net.URI;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.tomlj.TomlParseResult;
 
 public final class App extends Application implements AuthTokenSupplier {
 
-  private final ExecutorService eventBusExecutor = Executors.newCachedThreadPool();
-  private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
-
-  private Stage stage;
-
-  private AccessTokenReceiver accessTokenReceiver;
-  private String authToken;
-
-  private SceneContainer sceneContainer;
-
   private final TomlParseResult config = ConfigurationLoader.load();
 
-  @Override
-  public void init() throws IOException {
-    registerRequestListeners(this);
-    eventBus.register(this);
+  private final ExecutorService eventBusExecutor = Executors.newCachedThreadPool();
+  private final EventBus eventBus;
 
+  private final AppContext context;
+
+  private Stage stage;
+  private final SceneContainer sceneContainer;
+
+  private final AccessTokenReceiver accessTokenReceiver;
+  private String authToken;
+
+  public App() {
+    eventBus = EventBus.builder().executorService(eventBusExecutor).eventInheritance(false).build();
     final AuthView authView = new AuthView(eventBus, buildGoogleAuthUrl());
 
     Map<SceneType, ViewController> controllers = Map.of(
@@ -59,32 +50,27 @@ public final class App extends Application implements AuthTokenSupplier {
     );
 
     sceneContainer = new SceneContainer(eventBus, controllers, () -> stage);
-
     accessTokenReceiver = new AccessTokenReceiver(config, eventBus, authView);
-  }
 
-  private void registerRequestListeners(AuthTokenSupplier ats) {
-    var factory = new JerseyHttpRequestBuilderFactory(config, ats);
+    context = new AppContext(eventBus, config, this);
 
-    new SignUpRequestListener(eventBus, factory);
-    new SignInRequestListener(eventBus, factory);
-    new SearchRequestListener(eventBus, factory);
-    new ChannelCreationListener(eventBus, factory);
-    new SubscriptionListener(eventBus, factory);
+    eventBus.register(this);
   }
 
   @Override
-  public void start(Stage stage) {
-    this.stage = stage;
+  public void start(Stage primaryStage) {
+    this.stage = primaryStage;
 
-    stage.setOnHiding(event -> {
+    primaryStage.setOnHiding(event -> {
       accessTokenReceiver.close();
+      context.close();
       eventBusExecutor.shutdownNow();
+      Platform.exit();
     });
 
     sceneContainer.setScene(SceneType.AUTH);
-    stage.setTitle("ReadToday");
-    stage.show();
+    primaryStage.setTitle("ReadToday");
+    primaryStage.show();
   }
 
   @Subscribe

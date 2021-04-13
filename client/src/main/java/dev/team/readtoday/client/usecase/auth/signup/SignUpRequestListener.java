@@ -1,23 +1,25 @@
 package dev.team.readtoday.client.usecase.auth.signup;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+import dev.team.readtoday.client.app.eventbus.SubscribedComponent;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
+@SubscribedComponent
 public final class SignUpRequestListener {
 
   private final EventBus eventBus;
   private final HttpRequestBuilder requestBuilder;
 
-  public SignUpRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+  SignUpRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
     requestBuilder = factory.build("/auth/signup");
-    eventBus.register(this);
   }
 
-  @Subscribe
+  @Subscribe(threadMode = ThreadMode.ASYNC)
   public void signUp(SignUpRequestReadyEvent event) {
     SignUpRequest request = new SignUpRequest(event.getAccessToken(), event.getUsername());
     HttpResponse response = requestBuilder.post(request);
