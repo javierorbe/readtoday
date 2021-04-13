@@ -6,6 +6,7 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilderFactory;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
@@ -16,8 +17,6 @@ import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationListener;
 import dev.team.readtoday.client.usecase.channel.search.SearchRequestListener;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
-import dev.team.readtoday.client.app.jersey.AuthorizedJerseyHttpRequestBuilder;
-import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilder;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionListener;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
@@ -75,9 +74,7 @@ public final class App extends Application implements AuthTokenSupplier {
     final HomeView homeView = new HomeView(eventBus, List.of());
     final AdminView adminView = new AdminView(eventBus);
 
-    WebTarget serverBaseTarget = getServerBaseTarget(config);
-
-    registerRequestListeners(serverBaseTarget, this);
+    registerRequestListeners(config, this);
     eventBus.register(this);
 
     authScene = createScene("auth.fxml", authView);
@@ -87,17 +84,14 @@ public final class App extends Application implements AuthTokenSupplier {
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
   }
 
-  private void registerRequestListeners(WebTarget baseTarget, AuthTokenSupplier ats) {
-    eventBus.register(new SignUpRequestListener(eventBus,
-        new JerseyHttpRequestBuilder(baseTarget, "/auth/signup")));
-    eventBus.register(new SignInRequestListener(eventBus,
-        new JerseyHttpRequestBuilder(baseTarget, "/auth/signin")));
-    eventBus.register(new SearchRequestListener(eventBus,
-        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/channels")));
-    eventBus.register(new ChannelCreationListener(eventBus,
-        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/channels")));
-    eventBus.register(new SubscriptionListener(eventBus,
-        new AuthorizedJerseyHttpRequestBuilder(ats, baseTarget, "/subscriptions")));
+  private void registerRequestListeners(JsonObject config, AuthTokenSupplier ats) {
+    var factory = new JerseyHttpRequestBuilderFactory(config, ats);
+
+    new SignUpRequestListener(eventBus, factory);
+    new SignInRequestListener(eventBus, factory);
+    new SearchRequestListener(eventBus, factory);
+    new ChannelCreationListener(eventBus, factory);
+    new SubscriptionListener(eventBus, factory);
   }
 
   @Override
