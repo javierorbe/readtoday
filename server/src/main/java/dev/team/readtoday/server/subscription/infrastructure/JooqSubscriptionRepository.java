@@ -24,7 +24,7 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
   @Override
   public void save(Subscription subscription) {
     dsl.insertInto(SUBSCRIPTION, SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID)
-        .values(subscription.getIdUser().toString(), subscription.getIdChannel().toString())
+        .values(subscription.getUserId().toString(), subscription.getChannelId().toString())
         .onDuplicateKeyIgnore().execute();
   }
 
@@ -45,8 +45,8 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
 
   @Override
   public void remove(Subscription subscription) {
-    dsl.deleteFrom(SUBSCRIPTION).where(SUBSCRIPTION.USER_ID.eq(subscription.getIdUser().toString()))
-        .and(SUBSCRIPTION.CHANNEL_ID.eq(subscription.getIdChannel().toString())).execute();
+    dsl.deleteFrom(SUBSCRIPTION).where(SUBSCRIPTION.USER_ID.eq(subscription.getUserId().toString()))
+        .and(SUBSCRIPTION.CHANNEL_ID.eq(subscription.getChannelId().toString())).execute();
   }
 
   @Override

@@ -81,12 +81,12 @@ final class JooqSubscriptionRepositoryTest {
     repository.save(originalSubscription);
 
     Optional<Subscription> optSubscription =
-        repository.getFromId(originalSubscription.getIdUser(), originalSubscription.getIdChannel());
+        repository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
     assertTrue(optSubscription.isPresent());
     Subscription subscription = optSubscription.get();
 
-    assertEquals(originalSubscription.getIdUser(), subscription.getIdUser());
-    assertEquals(originalSubscription.getIdChannel(), subscription.getIdChannel());
+    assertEquals(originalSubscription.getUserId(), subscription.getUserId());
+    assertEquals(originalSubscription.getChannelId(), subscription.getChannelId());
 
   }
 }

@@ -14,15 +14,10 @@ public final class User {
               Username username,
               EmailAddress emailAddress,
               Role role) {
-    Objects.requireNonNull(id);
-    Objects.requireNonNull(username);
-    Objects.requireNonNull(emailAddress);
-    Objects.requireNonNull(role);
-
-    this.id = id;
-    this.username = username;
-    this.emailAddress = emailAddress;
-    this.role = role;
+    this.id = Objects.requireNonNull(id);
+    this.username = Objects.requireNonNull(username);
+    this.emailAddress = Objects.requireNonNull(emailAddress);
+    this.role = Objects.requireNonNull(role);
   }
 
   public static User create(Username username, EmailAddress email, Role role) {

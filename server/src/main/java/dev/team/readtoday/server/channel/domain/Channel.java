@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.ChannelId;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 public final class Channel {
@@ -24,19 +24,12 @@ public final class Channel {
       ChannelDescription description,
       ImageUrl imageUrl,
       Collection<CategoryId> categories) {
-
-    Objects.requireNonNull(title);
-    Objects.requireNonNull(rssUrl);
-    Objects.requireNonNull(description);
-    Objects.requireNonNull(imageUrl);
-    Objects.requireNonNull(categories);
-
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.rssUrl = rssUrl;
-    this.description = description;
-    this.categories = new ArrayList<>(categories);
+    this.id = Objects.requireNonNull(id);
+    this.title = Objects.requireNonNull(title);
+    this.rssUrl = Objects.requireNonNull(rssUrl);
+    this.description = Objects.requireNonNull(description);
+    this.imageUrl = Objects.requireNonNull(imageUrl);
+    this.categories = new HashSet<>(categories);
   }
 
   public static Channel create(
@@ -81,11 +74,11 @@ public final class Channel {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof Channel)) {
+    if ((o == null) || (getClass() != o.getClass())) {
       return false;
     }
     Channel channel = (Channel) o;
-    return Objects.equals(id, channel.id);
+    return id.equals(channel.id);
   }
 
   @Override
