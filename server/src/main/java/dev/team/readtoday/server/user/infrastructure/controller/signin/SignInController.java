@@ -6,7 +6,6 @@ import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.SignInUser;
 import dev.team.readtoday.server.user.domain.NonExistingUser;
 import dev.team.readtoday.server.user.domain.User;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -15,16 +14,17 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Path("/auth/signin")
 public final class SignInController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SignInController.class);
 
-  @Inject
+  @Autowired
   private SignInUser signInUser;
 
-  @Inject
+  @Autowired
   private JwtTokenManager jwtTokenManager;
 
   @POST

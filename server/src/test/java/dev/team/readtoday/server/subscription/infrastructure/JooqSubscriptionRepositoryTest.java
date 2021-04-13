@@ -17,6 +17,7 @@ import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectio
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionMother;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
+import dev.team.readtoday.server.subscription.infrastructure.persistence.JooqSubscriptionRepository;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;

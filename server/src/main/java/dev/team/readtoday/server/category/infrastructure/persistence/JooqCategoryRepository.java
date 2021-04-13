@@ -6,12 +6,14 @@ import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
 
+@Service
 public final class JooqCategoryRepository implements CategoryRepository {
 
   private final DSLContext dsl;

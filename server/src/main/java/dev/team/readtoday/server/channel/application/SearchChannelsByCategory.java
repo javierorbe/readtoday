@@ -6,9 +6,11 @@ import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 import java.util.Optional;
 
+@Service
 public final class SearchChannelsByCategory {
 
   private final ChannelRepository repository;

@@ -8,7 +8,6 @@ import dev.team.readtoday.server.channel.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -19,6 +18,7 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("channels")
@@ -26,10 +26,10 @@ public final class ChannelSearchController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 
-  @Inject
+  @Autowired
   private SearchChannelsByCategory searchChannelsByCategory;
 
-  @Inject
+  @Autowired
   private SearchCategoriesById searchCategoriesById;
 
   @GET

@@ -1,12 +1,11 @@
 package dev.team.readtoday.server.subscription.infrastructure.controller.subscribe;
 
 import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.CreateSubscription;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.shared.domain.UserId;
-import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -19,6 +18,7 @@ import java.security.Principal;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("subscriptions")
@@ -26,9 +26,10 @@ public final class SubscriptionController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
 
-  @Inject
+  @Autowired
   private CreateSubscription createSubscription;
-  @Inject
+
+  @Autowired
   private SearchUserById searchUserById;
 
   @Context

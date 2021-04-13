@@ -7,8 +7,10 @@ import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 
+@Service
 public final class CreateChannel {
 
   private final ChannelRepository repository;
