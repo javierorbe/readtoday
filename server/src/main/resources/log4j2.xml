@@ -9,6 +9,9 @@
     <Root level="trace">
       <AppenderRef ref="Console"/>
     </Root>
+    <Logger name="org.springframework" level="info">
+      <AppenderRef ref="Console"/>
+    </Logger>
     <Logger name="com.zaxxer.hikari" level="info">
       <AppenderRef ref="Console"/>
     </Logger>
