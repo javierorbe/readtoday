@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.search;
+package dev.team.readtoday.client.usecase.channel.search;
 
 import com.google.common.collect.ImmutableCollection;
 import dev.team.readtoday.client.model.Channel;

@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.unsubscribe;
+package dev.team.readtoday.client.usecase.subscription.unsubscribe;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

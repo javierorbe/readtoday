@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.create;
+package dev.team.readtoday.client.usecase.channel.create;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
