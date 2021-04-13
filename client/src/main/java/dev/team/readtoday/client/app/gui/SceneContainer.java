@@ -1,7 +1,5 @@
 package dev.team.readtoday.client.app.gui;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
@@ -12,6 +10,8 @@ import java.util.function.Supplier;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public final class SceneContainer {
 
