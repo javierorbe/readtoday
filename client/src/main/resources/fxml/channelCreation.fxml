@@ -1,109 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="400.0" prefWidth="600.0">
   <top>
-    <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-      <items>
-        <Label text="Create a channel">
-          <font>
-            <Font size="18.0" />
-          </font>
-        </Label>
-      </items>
-    </ToolBar>
+    <MenuBar BorderPane.alignment="CENTER">
+      <Menu mnemonicParsing="false" text="Account">
+        <MenuItem mnemonicParsing="false" onAction="#exitAdminMode" text="Exit Admin Mode"/>
+        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out"/>
+      </Menu>
+    </MenuBar>
   </top>
   <center>
-    <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <top>
-        <HBox BorderPane.alignment="CENTER">
-          <children>
-            <VBox alignment="CENTER" HBox.hgrow="NEVER">
-              <children>
-                <Label contentDisplay="CENTER" prefHeight="25.0" text="Title">
+    <BorderPane>
+      <top>
+        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <Label text="Create a channel">
+            <font>
+              <Font size="18.0"/>
+            </font>
+          </Label>
+        </ToolBar>
+      </top>
+      <center>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <top>
+            <HBox BorderPane.alignment="CENTER">
+              <BorderPane.margin>
+                <Insets top="20.0"/>
+              </BorderPane.margin>
+              <VBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+                <HBox.margin>
+                  <Insets left="10.0"/>
+                </HBox.margin>
+                <Label contentDisplay="CENTER" prefHeight="25.0" text="Title:">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </Label>
-                <Label prefHeight="25.0" text="Rss URL">
+                <Label prefHeight="25.0" text="RSS URL:">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </Label>
-                <Label prefHeight="25.0" text="Descripción">
+                <Label prefHeight="25.0" text="Description:">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </Label>
-                <Label prefHeight="25.0" text="Image URL">
+                <Label prefHeight="25.0" text="Image URL:">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </Label>
-              </children>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-            </VBox>
-            <VBox HBox.hgrow="ALWAYS">
-              <children>
+              </VBox>
+              <VBox HBox.hgrow="ALWAYS">
+                <HBox.margin>
+                  <Insets/>
+                </HBox.margin>
+                <padding>
+                  <Insets left="10.0" right="10.0"/>
+                </padding>
                 <TextField fx:id="title">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </TextField>
                 <TextField fx:id="rssUrl">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </TextField>
                 <TextField fx:id="description">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </TextField>
                 <TextField fx:id="imageUrl">
                   <VBox.margin>
-                    <Insets bottom="5.0" top="5.0" />
+                    <Insets bottom="5.0" top="5.0"/>
                   </VBox.margin>
                 </TextField>
-              </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-            </VBox>
-          </children>
-               <BorderPane.margin>
-                  <Insets top="20.0" />
-               </BorderPane.margin>
-        </HBox>
-         </top>
-         <center>
-        <CheckBox mnemonicParsing="false" text="Pick many categories" BorderPane.alignment="CENTER" />
-         </center>
-         <bottom>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-               <children>
-                <Button mnemonicParsing="false" onAction="#createChannel" text="Create">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button mnemonicParsing="false" onAction="#exitAdminMode" text="Exit admin mode">
-                     <HBox.margin>
-                        <Insets left="5.0" right="5.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
+              </VBox>
             </HBox>
-         </bottom>
+          </top>
+          <center>
+            <CheckBox mnemonicParsing="false" text="Pick many categories"
+                      BorderPane.alignment="CENTER"/>
+          </center>
+          <bottom>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                  BorderPane.alignment="CENTER">
+              <Button mnemonicParsing="false" onAction="#createChannel" text="Create">
+                <HBox.margin>
+                  <Insets left="5.0" right="5.0"/>
+                </HBox.margin>
+              </Button>
+            </HBox>
+          </bottom>
+        </BorderPane>
+      </center>
     </BorderPane>
   </center>
 </BorderPane>

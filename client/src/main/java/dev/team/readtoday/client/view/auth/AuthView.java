@@ -1,5 +1,6 @@
 package dev.team.readtoday.client.view.auth;
 
+import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.auth.AuthInfoProvider;
 import dev.team.readtoday.client.usecase.auth.AuthProcess;
@@ -25,6 +26,7 @@ public final class AuthView implements Initializable, AuthInfoProvider {
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 
   private final URI googleAccessTokenUri;
+  private AuthProcess selectedAuthProcess = null;
 
   @FXML
   private TextField usernameField;
@@ -33,10 +35,9 @@ public final class AuthView implements Initializable, AuthInfoProvider {
   @FXML
   private Button signInBtn;
 
-  private AuthProcess selectedAuthProcess = null;
-
-  public AuthView(URI googleAccessTokenUri) {
+  public AuthView(EventBus eventBus, URI googleAccessTokenUri) {
     this.googleAccessTokenUri = googleAccessTokenUri;
+    eventBus.register(this);
   }
 
   @Override
