@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.shared.domain;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class StringValueObject {
@@ -7,7 +8,7 @@ public class StringValueObject {
   private final String value;
 
   protected StringValueObject(String value) {
-    this.value = value;
+    this.value = Objects.requireNonNull(value);
   }
 
   protected StringValueObject(String value, Pattern pattern) {

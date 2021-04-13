@@ -1,6 +1,7 @@
 package dev.team.readtoday.server.category.domain;
 
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import java.util.Objects;
 
 public final class Category {
 
@@ -8,8 +9,8 @@ public final class Category {
   private final CategoryName name;
 
   public Category(CategoryId id, CategoryName name) {
-    this.id = id;
-    this.name = name;
+    this.id = Objects.requireNonNull(id);
+    this.name = Objects.requireNonNull(name);
   }
 
   public CategoryId getId() {

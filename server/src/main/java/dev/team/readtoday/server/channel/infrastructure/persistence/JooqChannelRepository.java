@@ -6,12 +6,12 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNE
 
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
-import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;

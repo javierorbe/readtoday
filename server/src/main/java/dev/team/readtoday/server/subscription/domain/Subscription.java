@@ -6,23 +6,20 @@ import java.util.Objects;
 
 public final class Subscription {
 
-  private final UserId idUser;
-  private final ChannelId idChannel;
+  private final UserId userId;
+  private final ChannelId channelId;
 
-  public Subscription(UserId idUser,
-                      ChannelId idChannel) {
-    Objects.requireNonNull(idUser);
-    Objects.requireNonNull(idChannel);
-
-    this.idUser = idUser;
-    this.idChannel = idChannel;
+  public Subscription(UserId userId,
+                      ChannelId channelId) {
+    this.userId = Objects.requireNonNull(userId);
+    this.channelId = Objects.requireNonNull(channelId);
   }
 
-  public UserId getIdUser() {
-    return idUser;
+  public UserId getUserId() {
+    return userId;
   }
 
-  public ChannelId getIdChannel() {
-    return idChannel;
+  public ChannelId getChannelId() {
+    return channelId;
   }
 }
