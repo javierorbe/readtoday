@@ -1,25 +1,25 @@
 package dev.team.readtoday.client.app.jersey;
 
-import com.google.gson.JsonObject;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
 import jakarta.ws.rs.client.WebTarget;
+import org.tomlj.TomlTable;
 
 public final class JerseyHttpRequestBuilderFactory implements HttpRequestBuilderFactory {
 
   private final WebTarget baseTarget;
   private final AuthTokenSupplier authTokenSupplier;
 
-  public JerseyHttpRequestBuilderFactory(JsonObject config, AuthTokenSupplier authTokenSupplier) {
+  public JerseyHttpRequestBuilderFactory(TomlTable config, AuthTokenSupplier authTokenSupplier) {
     baseTarget = buildServerBaseTarget(config);
     this.authTokenSupplier = authTokenSupplier;
   }
 
-  private static WebTarget buildServerBaseTarget(JsonObject config) {
-    String serverBaseUri = config.get("serverBaseUri").getAsString();
+  private static WebTarget buildServerBaseTarget(TomlTable config) {
+    String serverBaseUri = config.getString("server");
     Client client = ClientBuilder.newClient();
     return client.target(serverBaseUri);
   }

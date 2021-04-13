@@ -6,28 +6,22 @@ import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
+import org.tomlj.TomlTable;
 
 public final class AccessTokenReceiver implements AutoCloseable {
 
   private final URI baseUri;
-  private final EventBus eventBus;
-  private final AuthInfoProvider authInfoProvider;
-
-  private ResourceConfig config;
-
+  private final ResourceConfig resourceConfig;
   private HttpServer server;
 
-  public AccessTokenReceiver(URI baseUri, EventBus eventBus, AuthInfoProvider authInfoProvider) {
-    this.baseUri = baseUri;
-    this.eventBus = eventBus;
-    this.authInfoProvider = authInfoProvider;
-    config = new AccessTokenReceiverConfig(eventBus, authInfoProvider);
+  public AccessTokenReceiver(TomlTable config, EventBus eventBus, AuthInfoProvider authInfoProvider) {
+    baseUri = URI.create(config.getString("oauth.redirect_uri"));
+    resourceConfig = new AccessTokenReceiverConfig(eventBus, authInfoProvider);
     start();
   }
 
   public void start() {
-    server = GrizzlyHttpServerFactory
-        .createHttpServer(baseUri, config);
+    server = GrizzlyHttpServerFactory.createHttpServer(baseUri, resourceConfig);
   }
 
   @Override

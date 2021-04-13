@@ -16,7 +16,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@Path("/oauth")
+@Path("/")
 public final class AccessTokenController {
 
   private final Map<AuthProcess, Consumer<String>> eventDispatcherMap = new EnumMap<>(Map.of(

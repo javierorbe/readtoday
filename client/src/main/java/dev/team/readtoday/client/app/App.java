@@ -3,9 +3,6 @@ package dev.team.readtoday.client.app;
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
 import dev.team.readtoday.client.app.gui.SceneContainer;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilderFactory;
@@ -23,33 +20,18 @@ import dev.team.readtoday.client.view.ViewController;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
-import jakarta.ws.rs.client.Client;
-import jakarta.ws.rs.client.ClientBuilder;
-import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.UriBuilder;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.tomlj.TomlParseResult;
 
 public final class App extends Application implements AuthTokenSupplier {
-
-  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
-
-  private static final double WINDOW_WIDTH = 600.0;
-  private static final double WINDOW_HEIGHT = 400.0;
-
-  private static final String CONFIG_FILE = "/config.json";
 
   private final ExecutorService eventBusExecutor = Executors.newCachedThreadPool();
   private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
@@ -61,18 +43,14 @@ public final class App extends Application implements AuthTokenSupplier {
 
   private SceneContainer sceneContainer;
 
+  private final TomlParseResult config = ConfigurationLoader.load();
+
   @Override
   public void init() throws IOException {
-    JsonObject config = loadConfig();
-
-    URI baseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
-    URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
-
-
-    registerRequestListeners(config, this);
+    registerRequestListeners(this);
     eventBus.register(this);
 
-    final AuthView authView = new AuthView(eventBus, googleAccessTokenUri);
+    final AuthView authView = new AuthView(eventBus, buildGoogleAuthUrl());
 
     Map<SceneType, ViewController> controllers = Map.of(
         SceneType.AUTH, authView,
@@ -82,10 +60,10 @@ public final class App extends Application implements AuthTokenSupplier {
 
     sceneContainer = new SceneContainer(eventBus, controllers, () -> stage);
 
-    accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
+    accessTokenReceiver = new AccessTokenReceiver(config, eventBus, authView);
   }
 
-  private void registerRequestListeners(JsonObject config, AuthTokenSupplier ats) {
+  private void registerRequestListeners(AuthTokenSupplier ats) {
     var factory = new JerseyHttpRequestBuilderFactory(config, ats);
 
     new SignUpRequestListener(eventBus, factory);
@@ -132,30 +110,13 @@ public final class App extends Application implements AuthTokenSupplier {
     return authToken;
   }
 
-  private static JsonObject loadConfig() throws FileNotFoundException {
-    URL fileUrl = Objects.requireNonNull(App.class.getResource(CONFIG_FILE));
-    String file = fileUrl.getFile();
-    Gson gson = new Gson();
-    return gson.fromJson(new JsonReader(new FileReader(file)), JsonObject.class);
-  }
-
-  private static WebTarget getServerBaseTarget(JsonObject config) {
-    String serverBaseUri = config.get("serverBaseUri").getAsString();
-    Client client = ClientBuilder.newClient();
-    return client.target(serverBaseUri);
-  }
-
-  private static URI buildGoogleAccessTokenUri(JsonObject config, URI baseRedirectUri) {
-    URI googleOauthBaseUri = URI.create(config.get("googleOauthBaseUri").getAsString());
-    String googleClientId = config.get("googleClientId").getAsString();
-
-    URI oauthRedirectUri = UriBuilder.fromUri(baseRedirectUri)
-        .path("oauth")
-        .build();
-
-    return UriBuilder.fromUri(googleOauthBaseUri)
-        .queryParam("client_id", googleClientId)
-        .queryParam("redirect_uri", oauthRedirectUri)
+  private URI buildGoogleAuthUrl() {
+    String baseUri = config.getString("oauth.base_url");
+    String clientId = config.getString("oauth.client_id");
+    String redirectUri = config.getString("oauth.redirect_uri");
+    return UriBuilder.fromUri(baseUri)
+        .queryParam("client_id", clientId)
+        .queryParam("redirect_uri", redirectUri)
         .build();
   }
 }
