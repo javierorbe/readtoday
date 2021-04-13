@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.auth0.jwt.algorithms.Algorithm;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;

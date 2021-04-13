@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.subscription.infrastructure.controller;
+package dev.team.readtoday.server.subscription.infrastructure.controller.subscribe;
 
 public class SubscriptionRequest {
 

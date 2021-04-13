@@ -3,6 +3,7 @@ package dev.team.readtoday.server.channel.domain;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;

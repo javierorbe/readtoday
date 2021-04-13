@@ -1,6 +1,7 @@
 package dev.team.readtoday.server.channel.domain;
 
 import com.github.javafaker.Faker;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import java.util.List;
 import java.util.Set;
 

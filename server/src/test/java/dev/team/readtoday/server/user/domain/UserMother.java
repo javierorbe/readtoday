@@ -1,5 +1,7 @@
 package dev.team.readtoday.server.user.domain;
 
+import dev.team.readtoday.server.shared.domain.UserId;
+
 public enum UserMother {
   ;
 
