@@ -8,24 +8,17 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.auth0.jwt.algorithms.Algorithm;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonReader;
-import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.channel.infrastructure.controller.search.ChannelSearchControllerTest;
-import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
-import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
+import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
+import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
 import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.domain.Username;
-import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
@@ -38,27 +31,11 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.net.URI;
-import java.net.URL;
 import java.util.Map;
-import java.util.Objects;
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
 
-public final class SignUpControllerTest {
+public final class SignUpControllerTest extends BaseAcceptanceTest {
 
-  private static final String CONFIG_FILE = "/config.json";
-  private static final Gson GSON = new Gson();
-
-  private String baseUri;
-  private HttpServer server;
-  private JooqConnectionBuilder jooq;
-
-  private final JwtTokenManager jwtTokenManager =
-      new JwtTokenManager(Algorithm.HMAC256("sup3rs3cr3t"));
+  private AcceptanceTestAppContext context;
 
   private UserRepository userRepository;
   private ProfileFetcher profileFetcher;
@@ -69,41 +46,26 @@ public final class SignUpControllerTest {
   private Response response;
 
   @Before
-  public void setUp() throws FileNotFoundException {
-    jooq = new JooqConnectionBuilder(new HikariConfig("/datasource.properties"));
+  public void setUp() {
+    profileFetcher = mock(ProfileFetcher.class);
+    context = new AcceptanceTestAppContext(profileFetcher);
+
     clearRepositories();
 
-    userRepository = new JooqUserRepository(jooq.getContext());
+    userRepository = context.getBean(UserRepository.class);
 
-    profileFetcher = mock(ProfileFetcher.class);
-
-    ResourceConfig jerseyConfig =
-        new SignUpTestingJerseyConfig(jwtTokenManager, userRepository, profileFetcher);
-    initServer(jerseyConfig);
+    initServer(context);
   }
 
   @After
   public void tearDown() {
     clearRepositories();
-    jooq.close();
-    server.shutdownNow();
-  }
-
-  private void initServer(ResourceConfig jerseyConfig) throws FileNotFoundException {
-    JsonObject config = loadConfig();
-    baseUri = config.get("baseUri").getAsString();
-    server = GrizzlyHttpServerFactory.createHttpServer(URI.create(baseUri), jerseyConfig);
+    closeServer();
+    context.close();
   }
 
   private void clearRepositories() {
-    jooq.getContext().deleteFrom(USER).execute();
-  }
-
-  private static JsonObject loadConfig() throws FileNotFoundException {
-    URL fileUrl =
-        Objects.requireNonNull(ChannelSearchControllerTest.class.getResource(CONFIG_FILE));
-    String file = fileUrl.getFile();
-    return GSON.fromJson(new JsonReader(new FileReader(file)), JsonObject.class);
+    context.clearTables(USER);
   }
 
   @Given("there is a user:")
@@ -137,7 +99,7 @@ public final class SignUpControllerTest {
   @When("I request to sign up as {string}")
   public void iRequestToSignUpAs(String username) {
     Client client = ClientBuilder.newClient();
-    WebTarget baseTarget = client.target(baseUri);
+    WebTarget baseTarget = client.target(getServerBaseUri());
     WebTarget signUpTarget = baseTarget.path("auth/signup");
 
     TestSignUpRequest request = new TestSignUpRequest(accessToken.toString(), username);

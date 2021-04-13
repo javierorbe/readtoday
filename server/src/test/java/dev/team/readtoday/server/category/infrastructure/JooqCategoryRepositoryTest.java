@@ -25,7 +25,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
 final class JooqCategoryRepositoryTest {
