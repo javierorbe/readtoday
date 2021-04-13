@@ -1,5 +1,6 @@
-package dev.team.readtoday.client.usecase.shared;
+package dev.team.readtoday.client.app.jersey;
 
+import dev.team.readtoday.client.usecase.shared.HttpResponse;
 import jakarta.ws.rs.core.Response;
 
 public final class JerseyResponse implements HttpResponse {
