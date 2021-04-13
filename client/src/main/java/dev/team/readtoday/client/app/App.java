@@ -6,8 +6,9 @@ import com.google.common.eventbus.Subscribe;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
+import dev.team.readtoday.client.app.gui.SceneContainer;
+import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.app.jersey.JerseyHttpRequestBuilderFactory;
-import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.accesstoken.AccessTokenReceiver;
 import dev.team.readtoday.client.usecase.auth.signin.SignInRequestListener;
@@ -18,6 +19,7 @@ import dev.team.readtoday.client.usecase.channel.create.ChannelCreationListener;
 import dev.team.readtoday.client.usecase.channel.search.SearchRequestListener;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionListener;
+import dev.team.readtoday.client.view.ViewController;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
@@ -30,15 +32,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,12 +55,11 @@ public final class App extends Application implements AuthTokenSupplier {
   private final EventBus eventBus = new AsyncEventBus(eventBusExecutor);
 
   private Stage stage;
-  private Scene homeScene;
-  private Scene authScene;
-  private Scene adminScene;
 
   private AccessTokenReceiver accessTokenReceiver;
   private String authToken;
+
+  private SceneContainer sceneContainer;
 
   @Override
   public void init() throws IOException {
@@ -70,16 +68,19 @@ public final class App extends Application implements AuthTokenSupplier {
     URI baseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
     URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
-    final AuthView authView = new AuthView(eventBus, googleAccessTokenUri);
-    final HomeView homeView = new HomeView(eventBus, List.of());
-    final AdminView adminView = new AdminView(eventBus);
 
     registerRequestListeners(config, this);
     eventBus.register(this);
 
-    authScene = createScene("auth.fxml", authView);
-    homeScene = createScene("home.fxml", homeView);
-    adminScene = createScene("channelCreation.fxml", adminView);
+    final AuthView authView = new AuthView(eventBus, googleAccessTokenUri);
+
+    Map<SceneType, ViewController> controllers = Map.of(
+        SceneType.AUTH, authView,
+        SceneType.HOME, new HomeView(eventBus, Set.of()),
+        SceneType.ADMIN, new AdminView(eventBus)
+    );
+
+    sceneContainer = new SceneContainer(eventBus, controllers, () -> stage);
 
     accessTokenReceiver = new AccessTokenReceiver(baseRedirectUri, eventBus, authView);
   }
@@ -103,22 +104,20 @@ public final class App extends Application implements AuthTokenSupplier {
       eventBusExecutor.shutdownNow();
     });
 
+    sceneContainer.setScene(SceneType.AUTH);
     stage.setTitle("ReadToday");
-    stage.setScene(authScene);
     stage.show();
   }
 
   @Subscribe
   public void onSuccessfulSignUp(SuccessfulSignUpEvent event) {
     authToken = event.getJwtToken();
-    setScene(homeScene);
     accessTokenReceiver.close();
   }
 
   @Subscribe
   public void onSuccessfulSignIn(SuccessfulSignInEvent event) {
     authToken = event.getJwtToken();
-    setScene(homeScene);
     accessTokenReceiver.close();
   }
 
@@ -126,34 +125,11 @@ public final class App extends Application implements AuthTokenSupplier {
   public void onSignedOut(SignedOutEvent event) {
     authToken = null;
     accessTokenReceiver.start();
-    setScene(authScene);
-  }
-
-  @Subscribe
-  public void onChangeScene(ChangeSceneEvent event) {
-    switch (event.getScene()) {
-      case AUTH -> Platform.runLater(() -> stage.setScene(authScene));
-      case ADMIN -> Platform.runLater(() -> stage.setScene(adminScene));
-      case HOME -> Platform.runLater(() -> stage.setScene(homeScene));
-      default -> throw new IllegalStateException("Unreachable");
-    }
   }
 
   @Override
   public String getAuthToken() {
     return authToken;
-  }
-
-  private void setScene(Scene scene) {
-    Platform.runLater(() -> stage.setScene(scene));
-  }
-
-  private static Scene createScene(String fxmlFile, Object controller) throws IOException {
-    FXMLLoader fxmlLoader = new FXMLLoader();
-    fxmlLoader.setLocation(App.class.getResource("/fxml/" + fxmlFile));
-    fxmlLoader.setController(controller);
-    Parent root = fxmlLoader.load();
-    return new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
   }
 
   private static JsonObject loadConfig() throws FileNotFoundException {

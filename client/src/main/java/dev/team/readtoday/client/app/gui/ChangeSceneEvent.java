@@ -1,8 +1,8 @@
 package dev.team.readtoday.client.app.gui;
 
-public class ChangeSceneEvent {
+public final class ChangeSceneEvent {
 
-  private SceneType scene;
+  private final SceneType scene;
 
   public ChangeSceneEvent(SceneType scene) {
     this.scene = scene;
@@ -10,9 +10,5 @@ public class ChangeSceneEvent {
 
   public SceneType getScene() {
     return scene;
-  }
-
-  public void setScene(SceneType scene) {
-    this.scene = scene;
   }
 }
