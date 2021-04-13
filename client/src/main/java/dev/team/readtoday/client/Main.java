@@ -1,5 +1,6 @@
 package dev.team.readtoday.client;
 
+import dev.team.readtoday.client.app.App;
 import javafx.application.Application;
 
 public enum Main {
