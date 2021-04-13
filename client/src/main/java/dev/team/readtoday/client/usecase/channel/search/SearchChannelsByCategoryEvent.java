@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.search;
+package dev.team.readtoday.client.usecase.channel.search;
 
 public final class SearchChannelsByCategoryEvent {
 

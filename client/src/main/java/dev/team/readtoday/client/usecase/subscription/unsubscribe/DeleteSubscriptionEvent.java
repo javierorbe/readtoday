@@ -1,6 +1,6 @@
-package dev.team.readtoday.client.usecase.unsubscribe;
+package dev.team.readtoday.client.usecase.subscription.unsubscribe;
 
-public class DeleteSubscriptionEvent {
+public final class DeleteSubscriptionEvent {
 
   private final String channelId;
 
@@ -8,8 +8,7 @@ public class DeleteSubscriptionEvent {
     this.channelId = channelId;
   }
 
-  public String getChannelId() {
+  String getChannelId() {
     return channelId;
   }
-
 }

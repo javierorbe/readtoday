@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.create;
+package dev.team.readtoday.client.usecase.channel.create;
 
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
@@ -6,11 +6,11 @@ import java.util.List;
 
 public final class ChannelCreationRequest {
 
-  private String title;
-  private String rssUrl;
-  private String description;
-  private String imageUrl;
-  private ImmutableList<String> categoryIds;
+  private final String title;
+  private final String rssUrl;
+  private final String description;
+  private final String imageUrl;
+  private final ImmutableList<String> categoryIds;
 
   public ChannelCreationRequest(String title,
                                 String rssUrl,

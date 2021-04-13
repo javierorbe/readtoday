@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.create;
+package dev.team.readtoday.client.usecase.channel.create;
 
 public final class ChannelCreationEvent {
 

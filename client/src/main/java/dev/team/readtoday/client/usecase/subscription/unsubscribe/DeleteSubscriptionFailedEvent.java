@@ -1,11 +1,11 @@
-package dev.team.readtoday.client.usecase.subscription;
+package dev.team.readtoday.client.usecase.subscription.unsubscribe;
 
-public final class SubscriptionFailedEvent {
+public final class DeleteSubscriptionFailedEvent {
 
   private final String channelId;
   private final String reason;
 
-  public SubscriptionFailedEvent(String channelId, String reason) {
+  DeleteSubscriptionFailedEvent(String channelId, String reason) {
     this.channelId = channelId;
     this.reason = reason;
   }
