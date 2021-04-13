@@ -2,9 +2,14 @@ package dev.team.readtoday.client.usecase.shared;
 
 public interface HttpResponse {
 
+  /** Status code 200. */
   boolean isStatusOk();
 
+  /** Status code 201. */
   boolean isStatusCreated();
+
+  /** Status code 204. */
+  boolean isStatusNoContent();
 
   String getStatusReason();
 

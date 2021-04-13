@@ -3,6 +3,7 @@ package dev.team.readtoday.client.usecase.auth.signin;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
+import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
 
 public final class SignInRequestListener {
@@ -10,9 +11,10 @@ public final class SignInRequestListener {
   private final EventBus eventBus;
   private final HttpRequestBuilder requestBuilder;
 
-  public SignInRequestListener(EventBus eventBus, HttpRequestBuilder requestBuilder) {
+  public SignInRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
-    this.requestBuilder = requestBuilder;
+    requestBuilder = factory.build("/auth/signin");
+    eventBus.register(this);
   }
 
   @Subscribe
