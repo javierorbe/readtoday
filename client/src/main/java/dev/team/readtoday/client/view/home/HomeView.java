@@ -28,15 +28,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public final class HomeView implements Initializable {
 
-  private static final double CHANNEL_FAVICON_FIT_HEIGHT = 16.0;
+  private final EventBus eventBus;
+
+  private final ImmutableList<Channel> allChannels;
+  private final Map<Category, List<Channel>> categoryToChannel;
 
   @FXML
   private ListView<Channel> channelListView;
@@ -48,13 +48,6 @@ public final class HomeView implements Initializable {
   @FXML
   private ComboBox<Category> channelCategorySelector;
 
-  private final Map<Channel, Image> channelImageCache = new HashMap<>();
-
-  private final EventBus eventBus;
-
-  private final ImmutableList<Channel> allChannels;
-  private final Map<Category, List<Channel>> categoryToChannel;
-
   @FXML
   private TextField channelsByCategory;
 
@@ -63,12 +56,16 @@ public final class HomeView implements Initializable {
     allChannels = ImmutableList.sortedCopyOf(subscribedChannels);
     observableChannelList = FXCollections.observableArrayList(allChannels);
     categoryToChannel = createCategoryToChannelMap(subscribedChannels);
+
+    eventBus.register(this);
   }
 
   @Override
   public void initialize(URL url, ResourceBundle resourceBundle) {
     Objects.requireNonNull(channelListView);
+    Objects.requireNonNull(newChannelListView);
     Objects.requireNonNull(channelCategorySelector);
+    Objects.requireNonNull(channelsByCategory);
 
     // Set selector categories.
     List<Category> categories = new ArrayList<>(categoryToChannel.keySet());
@@ -86,8 +83,8 @@ public final class HomeView implements Initializable {
       }
     });
 
-    channelListView.setCellFactory(listView -> new CustomListCell());
-    newChannelListView.setCellFactory(listView -> new CustomListCell());
+    channelListView.setCellFactory(listView -> new ChannelCell());
+    newChannelListView.setCellFactory(listView -> new ChannelCell());
   }
 
   private static Map<Category, List<Channel>> createCategoryToChannelMap(
@@ -123,6 +120,11 @@ public final class HomeView implements Initializable {
     eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
   }
 
+  @FXML
+  private void signOut(ActionEvent event) {
+    eventBus.post(new SignedOutEvent());
+  }
+
   @Subscribe
   public void onSearchResultReceived(SearchResultReceivedEvent event) {
     ObservableList<Channel> list =
@@ -133,37 +135,5 @@ public final class HomeView implements Initializable {
   @Subscribe
   public static void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
     AlertLauncher.error("Category not found");
-  }
-
-  @FXML
-  private void signOut(ActionEvent event) {
-    eventBus.post(new SignedOutEvent());
-  }
-
-  private final class CustomListCell extends ListCell<Channel> {
-
-    private final ImageView imageView = new ImageView();
-
-    private CustomListCell() {
-      imageView.setPreserveRatio(true);
-      imageView.setFitHeight(CHANNEL_FAVICON_FIT_HEIGHT);
-    }
-
-    @Override
-    protected void updateItem(Channel channel, boolean empty) {
-      super.updateItem(channel, empty);
-
-      if (empty) {
-        setText(null);
-        setGraphic(null);
-      } else {
-        Image image = channelImageCache.computeIfAbsent(channel,
-            ignored -> new Image(channel.getFaviconImageUrl()));
-        imageView.setImage(image);
-
-        setText(channel.getName());
-        setGraphic(imageView);
-      }
-    }
   }
 }

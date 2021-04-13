@@ -4,6 +4,7 @@ import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
 import dev.team.readtoday.client.navigation.ChangeSceneEvent;
 import dev.team.readtoday.client.navigation.SceneType;
+import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationFailedEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationRequest;
@@ -19,6 +20,8 @@ import javafx.scene.control.TextField;
 
 public final class AdminView implements Initializable {
 
+  private final EventBus eventBus;
+
   @FXML
   private TextField title;
   @FXML
@@ -30,10 +33,9 @@ public final class AdminView implements Initializable {
 
   // TODO: Adds categories ids
 
-  private final EventBus eventBus;
-
   public AdminView(EventBus eventBus) {
     this.eventBus = eventBus;
+    eventBus.register(this);
   }
 
   @Override
@@ -61,6 +63,11 @@ public final class AdminView implements Initializable {
   @FXML
   public void exitAdminMode() {
     eventBus.post(new ChangeSceneEvent(SceneType.HOME));
+  }
+
+  @FXML
+  private void signOut() {
+    eventBus.post(new SignedOutEvent());
   }
 
   @Subscribe

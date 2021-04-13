@@ -71,16 +71,13 @@ public final class App extends Application implements AuthTokenSupplier {
     URI baseRedirectUri = URI.create(config.get("oAuthBaseRedirectUri").getAsString());
     URI googleAccessTokenUri = buildGoogleAccessTokenUri(config, baseRedirectUri);
 
-    final AuthView authView = new AuthView(googleAccessTokenUri);
+    final AuthView authView = new AuthView(eventBus, googleAccessTokenUri);
     final HomeView homeView = new HomeView(eventBus, List.of());
     final AdminView adminView = new AdminView(eventBus);
 
     WebTarget serverBaseTarget = getServerBaseTarget(config);
 
     registerRequestListeners(serverBaseTarget, this);
-    eventBus.register(authView);
-    eventBus.register(homeView);
-    eventBus.register(adminView);
     eventBus.register(this);
 
     authScene = createScene("auth.fxml", authView);
