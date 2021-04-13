@@ -1,5 +1,7 @@
-package dev.team.readtoday.client.usecase.shared;
+package dev.team.readtoday.client.app.jersey;
 
+import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
+import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.HttpHeaders;
