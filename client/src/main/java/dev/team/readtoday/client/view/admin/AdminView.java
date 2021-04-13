@@ -2,14 +2,15 @@ package dev.team.readtoday.client.view.admin;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import dev.team.readtoday.client.navigation.ChangeSceneEvent;
-import dev.team.readtoday.client.navigation.SceneType;
+import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
+import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationFailedEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationRequest;
 import dev.team.readtoday.client.usecase.channel.create.ChannelSuccessfullyCreatedEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
+import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Objects;
@@ -18,7 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-public final class AdminView implements Initializable {
+public final class AdminView implements ViewController, Initializable {
 
   private final EventBus eventBus;
 

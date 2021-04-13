@@ -8,6 +8,7 @@ import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.signin.SignInFailedEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SignUpFailedEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
+import dev.team.readtoday.client.view.ViewController;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -21,7 +22,7 @@ import javafx.scene.control.TextField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public final class AuthView implements Initializable, AuthInfoProvider {
+public final class AuthView implements ViewController, Initializable, AuthInfoProvider {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(AuthView.class);
 

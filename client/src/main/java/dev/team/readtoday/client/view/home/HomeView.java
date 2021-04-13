@@ -3,15 +3,16 @@ package dev.team.readtoday.client.view.home;
 import com.google.common.collect.ImmutableList;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
+import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
-import dev.team.readtoday.client.navigation.ChangeSceneEvent;
-import dev.team.readtoday.client.navigation.SceneType;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchResultReceivedEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
+import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,7 +32,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
-public final class HomeView implements Initializable {
+public final class HomeView implements ViewController, Initializable {
 
   private final EventBus eventBus;
 
