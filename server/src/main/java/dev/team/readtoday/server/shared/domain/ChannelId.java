@@ -1,6 +1,5 @@
-package dev.team.readtoday.server.channel.domain;
+package dev.team.readtoday.server.shared.domain;
 
-import dev.team.readtoday.server.shared.domain.Identifier;
 import java.util.UUID;
 
 public final class ChannelId extends Identifier {

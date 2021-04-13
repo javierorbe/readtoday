@@ -12,7 +12,7 @@ import com.google.gson.stream.JsonReader;
 import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
-import dev.team.readtoday.server.channel.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
@@ -26,7 +26,7 @@ import dev.team.readtoday.server.subscription.infrastructure.JooqSubscriptionRep
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.domain.Username;
 import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;

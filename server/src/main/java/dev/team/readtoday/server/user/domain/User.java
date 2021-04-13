@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.user.domain;
 
+import dev.team.readtoday.server.shared.domain.UserId;
 import java.util.Objects;
 
 public final class User {

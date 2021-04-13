@@ -1,6 +1,7 @@
 package dev.team.readtoday.server.channel.domain;
 
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import java.util.Collection;
 import java.util.Optional;
 

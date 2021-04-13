@@ -1,42 +1,43 @@
-package dev.team.readtoday.server.subscription.infrastructure.controller;
+package dev.team.readtoday.server.subscription.infrastructure.controller.unsubscribe;
 
-import dev.team.readtoday.server.channel.domain.ChannelId;
+import java.security.Principal;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
-import dev.team.readtoday.server.subscription.application.CreateSubscription;
+import dev.team.readtoday.server.subscription.application.DeleteSubscription;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.SecurityContext;
-import java.security.Principal;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RequiresAuth
 @Path("subscriptions")
-public final class SubscriptionController {
+public final class UnsubscribeController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeController.class);
 
   @Inject
-  private CreateSubscription createSubscription;
+  private DeleteSubscription deleteSubscription;
   @Inject
   private SearchUserById searchUserById;
 
   @Context
   private SecurityContext securityContext;
 
-  @POST
+  @DELETE
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response createSubscription(SubscriptionRequest request) {
+  public Response createSubscription(@QueryParam("channelId") String channelId) {
     LOGGER.trace("Received subscription request");
 
     UserId userId = getUserId();
@@ -48,13 +49,13 @@ public final class SubscriptionController {
     }
 
     try {
-      ChannelId channelId = ChannelId.fromString(request.getChannelId());
-      createSubscription.create(userId, channelId);
 
-      LOGGER.trace("Successful subscription request");
-      return Response.status(Status.CREATED).build();
+      deleteSubscription.delete(userId, ChannelId.fromString(channelId));
+
+      LOGGER.trace("Successful unsubscription request");
+      return Response.status(Status.NO_CONTENT).build();
     } catch (RuntimeException e) {
-      LOGGER.debug("Error creating subscription.", e);
+      LOGGER.debug("Error deleting subscription.", e);
       return Response.status(Status.BAD_REQUEST).build();
     }
   }

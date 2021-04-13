@@ -10,7 +10,7 @@ import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

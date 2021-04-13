@@ -10,7 +10,7 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
 import dev.team.readtoday.server.category.infrastructure.persistence.JooqCategoryRepository;
 import dev.team.readtoday.server.channel.domain.Channel;
-import dev.team.readtoday.server.channel.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.infrastructure.persistence.JooqChannelRepository;

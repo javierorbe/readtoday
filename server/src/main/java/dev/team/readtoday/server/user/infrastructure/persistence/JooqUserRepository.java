@@ -7,7 +7,7 @@ import com.google.common.collect.HashBiMap;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.domain.Username;
 import java.util.Map;

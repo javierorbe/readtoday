@@ -1,7 +1,7 @@
 package dev.team.readtoday.server.user.application;
 
 import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserId;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import java.util.Optional;
 
