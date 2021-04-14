@@ -19,8 +19,8 @@ public final class Publication {
 
   /**
    * Constructs a publication.
-   * <p>
-   * All elements are optional, however ID should not be null and at least one of title or
+   *
+   * <p>All elements are optional, however ID should not be null and at least one of title or
    * description must be present.
    */
   public Publication(PublicationId id,
