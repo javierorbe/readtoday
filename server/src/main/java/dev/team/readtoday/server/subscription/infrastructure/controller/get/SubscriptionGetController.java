@@ -1,13 +1,13 @@
 package dev.team.readtoday.server.subscription.infrastructure.controller.get;
 
-import dev.team.readtoday.server.channel.infrastructure.controller.create.ChannelCreationController;
+
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.subscription.application.GetUserSubscriptions;
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionNotFound;
-import dev.team.readtoday.server.user.domain.User;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
-//@Path("subscriptions")
+@Path("subscriptions")
 public final class SubscriptionGetController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionGetController.class);
@@ -35,15 +35,16 @@ public final class SubscriptionGetController extends BaseController {
 
 
     try{
-        //Collection<Subscription> subscriptions = getUserSubscriptions.search(UserId userId);
+        Collection<Subscription> subscriptions = getUserSubscriptions.search(getRequestUserId());
         LOGGER.trace("Successful getting subscriptions request.");
-        //return Response.ok(subscriptions).build();
-        return response(Response.Status.ACCEPTED);
+        return Response.ok(subscriptions).build();
+
     }catch(SubscriptionNotFound e){
           LOGGER.debug("Error getting subscriptions.", e);
           return response(Response.Status.BAD_REQUEST);
     }
   }
+
 
 
 }
