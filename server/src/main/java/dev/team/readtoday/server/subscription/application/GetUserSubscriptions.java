@@ -6,6 +6,7 @@ import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +20,7 @@ public class GetUserSubscriptions {
         this.searchUserById = searchUserById;
     }
 
-    public Optional<List<Subscription>>search(UserId userId){
+    public Collection<Subscription> search(UserId userId){
         User user = searchUserById.search(userId);
         return repository.getAllByUserId(user.getId());
     }
