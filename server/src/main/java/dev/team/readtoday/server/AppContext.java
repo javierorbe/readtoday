@@ -1,6 +1,7 @@
 package dev.team.readtoday.server;
 
 import com.auth0.jwt.algorithms.Algorithm;
+import com.rometools.rome.io.SyndFeedInput;
 import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
@@ -26,6 +27,7 @@ final class AppContext extends AnnotationConfigApplicationContext {
     HikariConfig hikariConfig = new HikariConfig("/datasource.properties");
     jooq = new JooqConnectionBuilder(hikariConfig);
 
+    registerBean(SyndFeedInput.class, SyndFeedInput::new);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(JwtTokenManager.class, () -> jwtTokenManager);
     registerBean(DSLContext.class, jooq::getContext);
