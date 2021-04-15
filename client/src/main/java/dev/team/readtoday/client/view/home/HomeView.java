@@ -9,6 +9,7 @@ import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchResultReceivedEvent;
+import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
@@ -124,6 +125,14 @@ public final class HomeView implements ViewController, Initializable {
   @FXML
   private void signOut(ActionEvent event) {
     eventBus.post(new SignedOutEvent());
+  }
+
+  @FXML
+  public void unsubscribe() {
+      if(channelListView.getSelectionModel().getSelectedItem() != null){
+          String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
+          eventBus.post(new DeleteSubscriptionEvent(channelId));
+      }
   }
 
   @Subscribe
