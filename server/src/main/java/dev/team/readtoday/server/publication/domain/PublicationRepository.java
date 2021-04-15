@@ -1,7 +1,7 @@
 package dev.team.readtoday.server.publication.domain;
 
-import java.util.Optional;
 import dev.team.readtoday.server.shared.domain.PublicationId;
+import java.util.Optional;
 
 public interface PublicationRepository {
 
