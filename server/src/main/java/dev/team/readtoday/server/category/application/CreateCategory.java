@@ -15,10 +15,8 @@ public final class CreateCategory {
     this.repository = repository;
   }
 
-  public Category create(CategoryName name) {
-    CategoryId id = CategoryId.random();
+  public void create(CategoryId id, CategoryName name) {
     Category category = new Category(id, name);
     repository.save(category);
-    return category;
   }
 }

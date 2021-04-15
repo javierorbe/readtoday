@@ -8,6 +8,7 @@ import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.category.domain.CategoryNameMother;
 import dev.team.readtoday.server.category.domain.CategoryRepository;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -21,7 +22,7 @@ final class CreateCategoryTest {
     CategoryRepository repository = mock(CategoryRepository.class);
     CreateCategory createCategory = new CreateCategory(repository);
     CategoryName categoryName = CategoryNameMother.random();
-    createCategory.create(categoryName);
+    createCategory.create(CategoryId.random(), categoryName);
 
     var categoryCaptor = ArgumentCaptor.forClass(Category.class);
     verify(repository).save(categoryCaptor.capture());

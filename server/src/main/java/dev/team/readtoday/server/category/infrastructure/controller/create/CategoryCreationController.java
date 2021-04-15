@@ -1,8 +1,8 @@
 package dev.team.readtoday.server.category.infrastructure.controller.create;
 
 import dev.team.readtoday.server.category.application.CreateCategory;
-import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
+import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
 import dev.team.readtoday.server.user.application.SearchUserById;
@@ -51,10 +51,11 @@ public class CategoryCreationController extends BaseController {
     }
 
     try {
+      CategoryId categoryId = CategoryId.random();
       CategoryName categoryName = new CategoryName(request.getName());
-      Category category = createCategory.create(categoryName);
-      URI location = buildResourceLocation(category);
-      LOGGER.debug("Successful category creation request: {}", category);
+      createCategory.create(categoryId, categoryName);
+      URI location = buildResourceLocation(categoryId);
+      LOGGER.debug("Successful category creation request: {}", categoryId);
       return Response.created(location).build();
     } catch (RuntimeException e) {
       LOGGER.debug("Error creating the category.", e);
@@ -62,9 +63,9 @@ public class CategoryCreationController extends BaseController {
     }
   }
 
-  private URI buildResourceLocation(Category category) {
+  private URI buildResourceLocation(CategoryId categoryId) {
     UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
-    uriBuilder.path(category.getId().toString());
+    uriBuilder.path(categoryId.toString());
     return uriBuilder.build();
   }
 }
