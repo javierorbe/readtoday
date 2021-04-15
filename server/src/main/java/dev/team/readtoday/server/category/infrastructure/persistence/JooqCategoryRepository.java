@@ -63,7 +63,7 @@ public final class JooqCategoryRepository implements CategoryRepository {
   public Optional<Category> getByName(CategoryName categoryName) {
     Record1<String> record = dsl.select(CATEGORY.ID)
         .from(CATEGORY)
-        .where(CATEGORY.NAME.eq(categoryName.toString()))
+        .where(CATEGORY.NAME.equalIgnoreCase(categoryName.toString()))
         .fetchOne();
 
     if (record == null) {
