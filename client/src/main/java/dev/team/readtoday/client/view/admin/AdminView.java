@@ -1,9 +1,12 @@
 package dev.team.readtoday.client.view.admin;
 
+import com.google.common.collect.ImmutableCollection;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
 import dev.team.readtoday.client.app.gui.SceneCreator;
 import dev.team.readtoday.client.app.gui.SceneType;
+import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
+import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesSuccessfullyEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationFailedEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationRequest;
@@ -99,5 +102,11 @@ public final class AdminView implements ViewController, Initializable {
   @Subscribe
   public void onChannelCreationFailedEvent(ChannelCreationFailedEvent event) {
     AlertLauncher.error("Channel creation failed", event.getReason());
+  }
+
+  @Subscribe
+  public void onSearchAllCategoriesSuccessfullyEvent(SearchAllCategoriesSuccessfullyEvent event) {
+    // TODO: Get categories in admin view or at app start?
+    ImmutableCollection<Category> categories = event.getCategories();
   }
 }
