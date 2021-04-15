@@ -9,9 +9,11 @@ import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.jooq.DSLContext;
 import org.jooq.Record1;
+import org.jooq.Record2;
 
 @Service
 public final class JooqCategoryRepository implements CategoryRepository {
@@ -47,6 +49,17 @@ public final class JooqCategoryRepository implements CategoryRepository {
   }
 
   @Override
+  public Set<Category> getAll() {
+    var result = dsl.select(CATEGORY.ID, CATEGORY.NAME)
+        .from(CATEGORY)
+        .fetch();
+
+    return result.stream()
+        .map(this::createCategoryFromResult)
+        .collect(Collectors.toUnmodifiableSet());
+  }
+
+  @Override
   public Optional<Category> getByName(CategoryName categoryName) {
     Record1<String> record = dsl.select(CATEGORY.ID)
         .from(CATEGORY)
@@ -59,5 +72,11 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
     CategoryId categoryId = CategoryId.fromString(record.value1());
     return Optional.of(new Category(categoryId, categoryName));
+  }
+
+  private Category createCategoryFromResult(Record2<String, String> result){
+    CategoryId id = CategoryId.fromString(result.getValue(CATEGORY.ID));
+    CategoryName name = new CategoryName(result.getValue(CATEGORY.NAME));
+    return new Category(id, name);
   }
 }
