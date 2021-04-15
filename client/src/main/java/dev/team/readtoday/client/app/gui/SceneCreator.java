@@ -6,7 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
-enum SceneCreator {
+public enum SceneCreator {
   ;
 
   private static final double WINDOW_WIDTH = 600.0;
@@ -19,7 +19,7 @@ enum SceneCreator {
    * @param controller the controller associated with the view
    * @return the scene created from the FXML file
    */
-  static Scene createScene(String fxmlFile, ViewController controller) {
+  public static Scene createScene(String fxmlFile, ViewController controller) {
     FXMLLoader fxmlLoader = new FXMLLoader();
     fxmlLoader.setLocation(SceneCreator.class.getResource("/fxml/" + fxmlFile));
     fxmlLoader.setController(controller);

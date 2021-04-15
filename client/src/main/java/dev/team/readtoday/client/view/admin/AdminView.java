@@ -1,6 +1,7 @@
 package dev.team.readtoday.client.view.admin;
 
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
+import dev.team.readtoday.client.app.gui.SceneCreator;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationEvent;
@@ -15,13 +16,17 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public final class AdminView implements ViewController, Initializable {
 
   private final EventBus eventBus;
+
+  private final Stage categoryCreationStage;
 
   @FXML
   private TextField title;
@@ -37,6 +42,7 @@ public final class AdminView implements ViewController, Initializable {
   public AdminView(EventBus eventBus) {
     this.eventBus = eventBus;
     eventBus.register(this);
+    categoryCreationStage = new Stage();
   }
 
   @Override
@@ -59,6 +65,20 @@ public final class AdminView implements ViewController, Initializable {
     );
 
     eventBus.post(new ChannelCreationEvent(request));
+  }
+
+  @FXML
+  public void createCategory() {
+    Scene categoryCreationScene = SceneCreator.createScene(
+        "categoryCreation.fxml",
+        new CategoryCreationView(eventBus)
+    );
+
+    categoryCreationStage.setHeight(150);
+    categoryCreationStage.setWidth(300);
+    categoryCreationStage.setTitle("Category Creation");
+    categoryCreationStage.setScene(categoryCreationScene);
+    categoryCreationStage.show();
   }
 
   @FXML
