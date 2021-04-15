@@ -11,7 +11,9 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
@@ -20,6 +22,9 @@ public final class CategoryCreationView implements ViewController, Initializable
 
   @FXML
   private TextField name;
+
+  @FXML
+  private Button closeButton;
 
   public CategoryCreationView(EventBus eventBus) {
     this.eventBus = eventBus;
@@ -35,6 +40,12 @@ public final class CategoryCreationView implements ViewController, Initializable
   public void createCategory() {
     CategoryCreationRequest request = new CategoryCreationRequest(name.getText());
     eventBus.post(new CategoryCreationEvent(request));
+  }
+
+  @FXML
+  public void cancelCreation() {
+    Stage stage = (Stage) closeButton.getScene().getWindow();
+    stage.close();
   }
 
   @Subscribe
