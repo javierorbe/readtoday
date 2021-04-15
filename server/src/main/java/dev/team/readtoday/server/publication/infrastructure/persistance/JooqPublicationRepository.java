@@ -3,13 +3,7 @@ package dev.team.readtoday.server.publication.infrastructure.persistance;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.PUBLICATION;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.PUBLICATION_CATEGORIES;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import org.jooq.Configuration;
-import org.jooq.DSLContext;
-import org.jooq.Record5;
-import org.jooq.impl.DSL;
+
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationDate;
 import dev.team.readtoday.server.publication.domain.PublicationDescription;
@@ -18,6 +12,13 @@ import dev.team.readtoday.server.publication.domain.PublicationRepository;
 import dev.team.readtoday.server.publication.domain.PublicationTitle;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.jooq.Configuration;
+import org.jooq.DSLContext;
+import org.jooq.Record5;
+import org.jooq.impl.DSL;
 
 public class JooqPublicationRepository implements PublicationRepository {
 
