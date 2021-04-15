@@ -18,6 +18,14 @@ public final class CategoryResponse {
     this.name = name;
   }
 
+  public String getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
   static Map<String, Category> buildCategoryMap(Collection<CategoryResponse> categories) {
     return categories.stream()
         .collect(Collectors.toMap(cat -> cat.id, cat -> new Category(cat.id, cat.name)));
