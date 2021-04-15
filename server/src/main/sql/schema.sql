@@ -45,3 +45,18 @@ CREATE TABLE subscription (
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (channel_id) REFERENCES channel (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+CREATE TABLE publication (
+	PRIMARY KEY(id),
+    id CHAR(36) NOT NULL,
+    title CHAR(36) NOT NULL,
+    descrip CHAR(36),
+    date VARCHAR(20), 
+	link CHAR(36) NOT NULL
+);
+CREATE TABLE publication_categories (
+	publication_id CHAR(36) NOT NULL,
+    category_id  CHAR(36) NOT NULL,
+    FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    PRIMARY KEY (publication_id, category_id)
+);
