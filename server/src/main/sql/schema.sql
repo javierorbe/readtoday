@@ -49,8 +49,8 @@ CREATE TABLE publication (
 	PRIMARY KEY(id),
     id CHAR(36) NOT NULL,
     title CHAR(36) NOT NULL,
-    descrip CHAR(36),
-    date VARCHAR(20), 
+    descrip CHAR(255),
+    date VARCHAR(255), 
 	link CHAR(36) NOT NULL
 );
 CREATE TABLE publication_categories (

@@ -3,7 +3,14 @@ package dev.team.readtoday.server.publication.infrastructure.persistance;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.PUBLICATION;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.PUBLICATION_CATEGORIES;
-
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import org.jooq.Configuration;
+import org.jooq.DSLContext;
+import org.jooq.Record5;
+import org.jooq.impl.DSL;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationDate;
 import dev.team.readtoday.server.publication.domain.PublicationDescription;
@@ -12,13 +19,6 @@ import dev.team.readtoday.server.publication.domain.PublicationRepository;
 import dev.team.readtoday.server.publication.domain.PublicationTitle;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import org.jooq.Configuration;
-import org.jooq.DSLContext;
-import org.jooq.Record5;
-import org.jooq.impl.DSL;
 
 public class JooqPublicationRepository implements PublicationRepository {
 
@@ -56,12 +56,18 @@ public class JooqPublicationRepository implements PublicationRepository {
   }
 
   private static void savePublication(Configuration configuration, Publication publication) {
+
+    System.out.println("\n\n\n\n Date:" + publication.getDate().get() + "\n\n\n\n");
+    System.out.println(
+        "\n\n\n\n LocalDate:" + publication.getDate().get().getDateTime().toString() + "\n\n\n\n");
+
     DSL.using(configuration)
         .insertInto(PUBLICATION, PUBLICATION.ID, PUBLICATION.TITLE, PUBLICATION.DESCRIP,
             PUBLICATION.DATE, PUBLICATION.LINK)
-        .values(publication.getId().toString(), publication.getTitle().toString(),
-            publication.getDescription().toString(), publication.getDate().toString(),
-            publication.getLink().toString())
+        .values(publication.getId().toString(), publication.getTitle().get().toString(),
+            publication.getDescription().get().toString(),
+            publication.getDate().get().getDateTime().toString(),
+            publication.getLink().get().toString())
         .onDuplicateKeyIgnore().execute();
   }
 
@@ -84,10 +90,13 @@ public class JooqPublicationRepository implements PublicationRepository {
   private Publication createPublicationFromResult(
       Record5<String, String, String, String, String> result) {
 
+    System.out.println("\n\n\n\n DB:" + result.getValue(PUBLICATION.DATE) + "\n\n\n\n");
+
     PublicationId id = new PublicationId(result.getValue(PUBLICATION.ID));
     PublicationTitle title = new PublicationTitle(result.getValue(PUBLICATION.TITLE));
     PublicationDescription desc = new PublicationDescription(result.getValue(PUBLICATION.DESCRIP));
-    PublicationDate date = PublicationDate.fromString(result.getValue(PUBLICATION.DATE));
+    PublicationDate date =
+        new PublicationDate(LocalDateTime.parse(result.getValue(PUBLICATION.DATE)));
     PublicationLink link = new PublicationLink(result.getValue(PUBLICATION.LINK));
 
     Collection<CategoryId> categories = getCategoriesFromPublicaiton(id);
@@ -102,6 +111,4 @@ public class JooqPublicationRepository implements PublicationRepository {
     return result.stream().map(record -> CategoryId.fromString(record.value1()))
         .collect(Collectors.toSet());
   }
-
-
 }
