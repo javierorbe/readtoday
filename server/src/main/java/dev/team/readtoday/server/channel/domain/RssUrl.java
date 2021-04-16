@@ -7,15 +7,16 @@ import dev.team.readtoday.server.shared.domain.StringValueObject;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import org.apache.commons.validator.routines.UrlValidator;
 
 public final class RssUrl extends StringValueObject {
 
   public RssUrl(String value) {
     super(value);
 
-    if (!UrlValidator.getInstance().isValid(value)) {
-      throw new InvalidImageUrl("Invalid URL.");
+    try {
+      new URL(value);
+    } catch (MalformedURLException e) {
+      throw new InvalidRssUrl("Invalid URL.", e);
     }
   }
 

@@ -1,8 +1,15 @@
 # ReadToday
 
 [![Build](https://github.com/javierorbe/readtoday/actions/workflows/build.yml/badge.svg)](https://github.com/javierorbe/readtoday/actions/workflows/build.yml)
-[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=server&label=Coverage%20%7C%20server)](https://app.codecov.io/gh/javierorbe/readtoday)
-[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?flag=client&label=Coverage%20%7C%20client)](https://app.codecov.io/gh/javierorbe/readtoday)
+[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?color=373737&flag=server&label=Coverage%20%7C%20server)](https://app.codecov.io/gh/javierorbe/readtoday)
+[![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?color=373737&flag=client&label=Coverage%20%7C%20client)](https://app.codecov.io/gh/javierorbe/readtoday)
+
+## Configuration
+
+To configure the applications, set the Google OAuth 2.0 credentials in the
+*config.toml* files ([on the server](/server/src/main/resources/config.toml)
+and [on the client](/client/src/main/resources/config.toml)). You can generate
+those credentials in the [Google Cloud Platform](https://console.cloud.google.com/apis/dashboard).
 
 ## Building
 
@@ -17,12 +24,6 @@ Build and execute all tests:
 ```
 mvn test
 ```
-
-## Configuration
-
-To configure the applications, set the Google OAuth 2.0 credentials in the
-*config.json* files (on the server and on the client). You can generate
-those credentials in the [Google Cloud Platform](https://console.cloud.google.com/apis/dashboard).
 
 ## Running the server
 

@@ -2,12 +2,16 @@ package dev.team.readtoday.server.channel.domain;
 
 import java.io.Serial;
 
-final class InvalidRssUrl extends RuntimeException {
+public final class InvalidRssUrl extends RuntimeException {
 
   @Serial
   private static final long serialVersionUID = -97648641568113697L;
 
-  InvalidRssUrl(String msg, Exception e) {
+  public InvalidRssUrl(String msg, Exception e) {
     super(msg, e);
+  }
+
+  InvalidRssUrl(String msg) {
+    super(msg);
   }
 }

@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SplitPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <top>
     <MenuBar BorderPane.alignment="CENTER">
       <Menu mnemonicParsing="false" text="Account">
-        <MenuItem mnemonicParsing="false" onAction="#goToAdmin" text="Admin Mode"/>
-        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out"/>
+        <MenuItem mnemonicParsing="false" onAction="#goToAdmin" text="Admin Mode" />
+        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
       </Menu>
     </MenuBar>
   </top>
@@ -28,49 +17,50 @@
     <BorderPane>
       <top>
         <ToolBar nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER">
-          <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>
-          <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category"/>
+          <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
+          <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category" />
         </ToolBar>
       </top>
       <center>
         <SplitPane dividerPositions="0.3" BorderPane.alignment="CENTER">
           <BorderPane>
             <center>
-              <ListView fx:id="channelListView"/>
+              <ListView fx:id="channelListView" />
             </center>
             <top>
               <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                 <Label text="Filter by category:">
                   <VBox.margin>
-                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
+                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
                   </VBox.margin>
                 </Label>
                 <HBox>
-                  <ComboBox fx:id="channelCategorySelector" maxWidth="Infinity"
-                            HBox.hgrow="SOMETIMES">
+                  <ComboBox fx:id="channelCategorySelector" maxWidth="Infinity" HBox.hgrow="SOMETIMES">
                     <HBox.margin>
-                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </HBox.margin>
                   </ComboBox>
-                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#unselectCategory"
-                          text="Clear">
+                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#unselectCategory" text="Clear">
                     <HBox.margin>
-                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
+                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
                     </HBox.margin>
                   </Button>
                 </HBox>
                 <opaqueInsets>
-                  <Insets/>
+                  <Insets />
                 </opaqueInsets>
                 <BorderPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </BorderPane.margin>
               </VBox>
             </top>
+                  <bottom>
+                     <Button mnemonicParsing="false" onAction="#unsubscribe" text="Unsubscribe" BorderPane.alignment="CENTER" />
+                  </bottom>
           </BorderPane>
           <BorderPane>
             <center>
-              <ListView fx:id="newChannelListView" BorderPane.alignment="CENTER"/>
+              <ListView fx:id="newChannelListView" BorderPane.alignment="CENTER" />
             </center>
           </BorderPane>
         </SplitPane>
