@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.subscription.application;
 
+import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
@@ -10,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class GetUserSubscriptions {
 
     private final SubscriptionRepository repository;
