@@ -33,48 +33,69 @@ import org.junit.jupiter.api.TestMethodOrder;
 @Tag("IntegrationTest")
 final class JooqSubscriptionRepositoryTest extends BaseJooqIntegrationTest {
 
-  private static SubscriptionRepository subRepository;
-  private static UserRepository repositoryUser;
-  private static ChannelRepository repositoryChannel;
+    private static SubscriptionRepository subRepository;
+    private static UserRepository repositoryUser;
+    private static ChannelRepository repositoryChannel;
 
-  @BeforeAll
-  static void setup() {
-    start(SUBSCRIPTION, CHANNEL_CATEGORIES, CHANNEL, USER);
-    subRepository = getRepository(JooqSubscriptionRepository.class);
-    repositoryUser = getRepository(JooqUserRepository.class);
-    repositoryChannel = getRepository(JooqChannelRepository.class);
-  }
+    @BeforeAll
+    static void setup() {
+        start(SUBSCRIPTION, CHANNEL_CATEGORIES, CHANNEL, USER);
+        subRepository = getRepository(JooqSubscriptionRepository.class);
+        repositoryUser = getRepository(JooqUserRepository.class);
+        repositoryChannel = getRepository(JooqChannelRepository.class);
+    }
 
-  @AfterAll
-  static void clean() {
-    clearAndShutdown();
-  }
+    @AfterAll
+    static void clean() {
+        clearAndShutdown();
+    }
 
-  @Test
-  void shouldSaveSubscription() {
-    Subscription subscription = SubscriptionMother.random();
+    @Test
+    void shouldSaveSubscription() {
+        Subscription subscription = SubscriptionMother.random();
 
-    assertDoesNotThrow(() -> subRepository.save(subscription));
-  }
+        assertDoesNotThrow(() -> subRepository.save(subscription));
+    }
 
-  @Test
-  void shouldReturnAnExistingSubscription() {
+    @Test
+    void shouldReturnAnExistingSubscription() {
 
-    User user = UserMother.random();
-    Channel channel = ChannelMother.random();
-    Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
+        User user = UserMother.random();
+        Channel channel = ChannelMother.random();
+        Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
 
-    repositoryChannel.save(channel);
-    repositoryUser.save(user);
-    subRepository.save(originalSubscription);
+        repositoryChannel.save(channel);
+        repositoryUser.save(user);
 
-    Optional<Subscription> optSubscription =
-        subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-    assertTrue(optSubscription.isPresent());
-    Subscription subscription = optSubscription.get();
+        Optional<Subscription> optSubscription =
+                subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+        if(!optSubscription.isPresent()) {
+            subRepository.save(originalSubscription);
+            optSubscription =
+                    subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+            assertTrue(optSubscription.isPresent());
+            Subscription subscription = optSubscription.get();
 
-    assertEquals(originalSubscription.getUserId(), subscription.getUserId());
-    assertEquals(originalSubscription.getChannelId(), subscription.getChannelId());
+            assertEquals(originalSubscription.getUserId(), subscription.getUserId());
+            assertEquals(originalSubscription.getChannelId(), subscription.getChannelId());
+        }
+    }
+    @Test
+    void shouldDeleteSubscription() {
+        User user = UserMother.random();
+        Channel channel = ChannelMother.random();
+        Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
 
-  }
+        repositoryChannel.save(channel);
+        repositoryUser.save(user);
+        Optional<Subscription> optSubscription =
+                subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+        subRepository.save(originalSubscription);
+
+        if(optSubscription.isPresent()){
+            subRepository.remove(originalSubscription);
+            assertTrue(!optSubscription.isPresent());
+
+        }
+    }
 }

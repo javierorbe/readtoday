@@ -8,6 +8,7 @@ import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.subscription.domain.Subscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.jooq.DSLContext;
@@ -31,7 +32,7 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
   }
 
   @Override
-  public Optional<List<Subscription>> getAllByUserId(UserId userId) {
+  public Collection<Subscription> getAllByUserId(UserId userId) {
     Result<Record2<String, String>> result =
         dsl.select(SUBSCRIPTION.USER_ID, SUBSCRIPTION.CHANNEL_ID).from(SUBSCRIPTION)
             .where(SUBSCRIPTION.USER_ID.eq(userId.toString())).fetch();
@@ -42,7 +43,9 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
       ChannelId idChannel = ChannelId.fromString(results.getValue(SUBSCRIPTION.CHANNEL_ID));
       subscriptions.add(new Subscription(userId, idChannel));
     }
-    return Optional.of(subscriptions);
+      Collection<Subscription> collection = subscriptions;
+    return collection ;
+
   }
 
   @Override

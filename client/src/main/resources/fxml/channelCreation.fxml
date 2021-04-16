@@ -13,8 +13,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+  xmlns:fx="http://javafx.com/fxml/1">
   <top>
     <MenuBar BorderPane.alignment="CENTER">
       <Menu mnemonicParsing="false" text="Account">
@@ -98,11 +98,11 @@
           </top>
           <center>
             <CheckBox mnemonicParsing="false" text="Pick many categories"
-                      BorderPane.alignment="CENTER"/>
+              BorderPane.alignment="CENTER"/>
           </center>
           <bottom>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
-                  BorderPane.alignment="CENTER">
+              BorderPane.alignment="CENTER">
               <Button mnemonicParsing="false" onAction="#createChannel" text="Create">
                 <HBox.margin>
                   <Insets left="5.0" right="5.0"/>
@@ -114,4 +114,8 @@
       </center>
     </BorderPane>
   </center>
+  <bottom>
+    <Button mnemonicParsing="false" onAction="#createCategory" text="Create Category"
+      BorderPane.alignment="CENTER"/>
+  </bottom>
 </BorderPane>

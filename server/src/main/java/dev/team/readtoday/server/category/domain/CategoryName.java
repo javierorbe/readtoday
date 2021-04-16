@@ -1,8 +1,8 @@
 package dev.team.readtoday.server.category.domain;
 
-import dev.team.readtoday.server.shared.domain.StringValueObject;
+import dev.team.readtoday.server.shared.domain.IgnoreCaseStringValueObject;
 
-public final class CategoryName extends StringValueObject {
+public final class CategoryName extends IgnoreCaseStringValueObject {
 
   public CategoryName(String value) {
     super(value);

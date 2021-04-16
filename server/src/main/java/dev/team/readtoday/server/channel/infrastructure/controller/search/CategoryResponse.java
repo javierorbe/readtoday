@@ -23,7 +23,7 @@ public final class CategoryResponse {
     return name;
   }
 
-  static List<CategoryResponse> fromCategories(Collection<Category> categories) {
+  public static List<CategoryResponse> fromCategories(Collection<Category> categories) {
     return categories.stream()
         .map(CategoryResponse::new)
         .collect(Collectors.toList());
