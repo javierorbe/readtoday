@@ -10,9 +10,11 @@ public final class PublicationDate {
     this.dateTime = dateTime;
   }
 
-  public static PublicationDate fromString(String date) {
-    return new PublicationDate(LocalDateTime.parse(date));
+
+  public LocalDateTime getDateTime() {
+    return this.dateTime;
   }
+
 
   @Override
   public boolean equals(Object o) {
