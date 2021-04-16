@@ -62,6 +62,9 @@
             <center>
               <ListView fx:id="newChannelListView" BorderPane.alignment="CENTER" />
             </center>
+                  <bottom>
+                     <Button mnemonicParsing="false" onAction="#subscribe" text="Subscribe" BorderPane.alignment="CENTER" />
+                  </bottom>
           </BorderPane>
         </SplitPane>
       </center>

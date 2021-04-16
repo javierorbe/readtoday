@@ -9,6 +9,7 @@ import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.channel.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchResultReceivedEvent;
+import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionRequestedEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
@@ -133,6 +134,14 @@ public final class HomeView implements ViewController, Initializable {
           String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
           eventBus.post(new DeleteSubscriptionEvent(channelId));
       }
+  }
+
+  @FXML
+  public void subscribe() {
+    if(newChannelListView.getSelectionModel().getSelectedItem() != null){
+      String channelId = newChannelListView.getSelectionModel().getSelectedItem().getId();
+      eventBus.post(new SubscriptionRequestedEvent(channelId));
+    }
   }
 
   @Subscribe
