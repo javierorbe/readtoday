@@ -1,22 +1,22 @@
 ---
 name: Build
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     services:
-        mysql:
-            image: mysql:8.0
-            env:
-                MYSQL_USER: ${{ secrets.DB_USER }}
-                MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
-                MYSQL_ROOT_PASSWORD: S3CURE_P4SSW0RD
-                MYSQL_DATABASE: readtoday
-            ports:
-                - '3306:3306'
-            options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_USER: ${{ secrets.DB_USER }}
+          MYSQL_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: S3CURE_P4SSW0RD
+          MYSQL_DATABASE: readtoday
+        ports:
+          - '3306:3306'
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - uses: actions/checkout@v2
@@ -33,18 +33,14 @@ jobs:
       - name: Create database schema
         run: mysql -h 127.0.0.1 --port 3306 -u ${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }} readtoday < server/src/main/sql/schema.sql
       - name: Build with Maven (server)
-        run: |
-          cd server
-          mvn --batch-mode --update-snapshots verify
+        run: mvn -f ./server/pom.xml --batch-mode --update-snapshots verify
+      - name: Build with Maven (client)
+        run: mvn -f ./client/pom.xml --batch-mode --update-snapshots verify
       - name: Upload server coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
           directory: ./server
           flags: server
-      - name: Build with Maven (client)
-        run: |
-          cd client
-          mvn --batch-mode --update-snapshots verify
       - name: Upload client coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
