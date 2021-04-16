@@ -6,6 +6,7 @@ import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
+import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
 import dev.team.readtoday.client.usecase.channel.search.ChannelSearchRequestFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.SearchResultReceivedEvent;
@@ -121,6 +122,7 @@ public final class HomeView implements ViewController, Initializable {
   @FXML
   public void goToAdmin() {
     eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
+    eventBus.post(new SearchAllCategoriesEvent());
   }
 
   @FXML

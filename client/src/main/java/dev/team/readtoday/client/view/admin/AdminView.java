@@ -6,6 +6,8 @@ import dev.team.readtoday.client.app.gui.SceneCreator;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
+import dev.team.readtoday.client.usecase.category.create.events.CategorySuccessfullyCreatedEvent;
+import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesSuccessfullyEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationEvent;
 import dev.team.readtoday.client.usecase.channel.create.ChannelCreationFailedEvent;
@@ -14,13 +16,21 @@ import dev.team.readtoday.client.usecase.channel.create.ChannelSuccessfullyCreat
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -39,8 +49,12 @@ public final class AdminView implements ViewController, Initializable {
   private TextField description;
   @FXML
   private TextField imageUrl;
+  @FXML
+  private VBox categorySelector;
 
-  // TODO: Adds categories ids
+  private ObservableList<Node> observableCategories;
+
+  private Map<CheckBox, String> checkBoxCategoryIdMap;
 
   public AdminView(EventBus eventBus) {
     this.eventBus = eventBus;
@@ -54,17 +68,23 @@ public final class AdminView implements ViewController, Initializable {
     Objects.requireNonNull(rssUrl);
     Objects.requireNonNull(description);
     Objects.requireNonNull(imageUrl);
+    Objects.requireNonNull(categorySelector);
   }
 
   @FXML
   public void createChannel() {
+    List<String> selectedCategoriesIds = observableCategories.stream()
+        .map(node -> (CheckBox) node)
+        .filter(CheckBox::isSelected)
+        .map(checkBox -> checkBoxCategoryIdMap.get(checkBox))
+        .collect(Collectors.toList());
+
     ChannelCreationRequest request = new ChannelCreationRequest(
         title.getText(),
         rssUrl.getText(),
         description.getText(),
         imageUrl.getText(),
-        // TODO: Change for the real categories ids!
-        Collections.emptyList()
+        selectedCategoriesIds
     );
 
     eventBus.post(new ChannelCreationEvent(request));
@@ -106,7 +126,33 @@ public final class AdminView implements ViewController, Initializable {
 
   @Subscribe
   public void onSearchAllCategoriesSuccessfullyEvent(SearchAllCategoriesSuccessfullyEvent event) {
-    // TODO: Get categories in admin view or at app start?
     ImmutableCollection<Category> categories = event.getCategories();
+
+    // Load category map
+    Platform.runLater(() -> {
+      checkBoxCategoryIdMap = getCheckBoxCategoryIdMap(categories);
+      updateCategorySelectorGUI(checkBoxCategoryIdMap);
+    });
+  }
+
+  private void updateCategorySelectorGUI(Map<CheckBox, String> map) {
+    ObservableList<Node> children = categorySelector.getChildren();
+    // Adds categories to gui
+    children.setAll(map.keySet());
+    observableCategories = children;
+  }
+
+  private Map<CheckBox, String> getCheckBoxCategoryIdMap(ImmutableCollection<Category> categories) {
+    Map<CheckBox, String> categoriesIdByCheckbox = new HashMap<>();
+    for (Category category : categories) {
+      CheckBox checkBox = new CheckBox(category.getName());
+      categoriesIdByCheckbox.put(checkBox, category.getId());
+    }
+    return categoriesIdByCheckbox;
+  }
+
+  @Subscribe
+  public void onCategoryCreatedEvent(CategorySuccessfullyCreatedEvent event) {
+    eventBus.post(new SearchAllCategoriesEvent());
   }
 }
