@@ -27,7 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("publications")
 public final class ChannelPublicationListGetController extends BaseController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelPublicationListGetController.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(ChannelPublicationListGetController.class);
 
   private final SearchPublications searchPublications;
   private final SearchCategoriesById searchCategories;

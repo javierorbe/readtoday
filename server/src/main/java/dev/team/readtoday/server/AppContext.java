@@ -21,11 +21,11 @@ final class AppContext extends AnnotationConfigApplicationContext {
   private final JooqConnectionBuilder jooq;
 
   AppContext(TomlTable config) {
-    ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
-    JwtTokenManager jwtTokenManager = new JwtTokenManager(buildJwtSigningAlgorithm());
-
     HikariConfig hikariConfig = new HikariConfig("/datasource.properties");
     jooq = new JooqConnectionBuilder(hikariConfig);
+
+    ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
+    JwtTokenManager jwtTokenManager = new JwtTokenManager(buildJwtSigningAlgorithm());
 
     registerBean(SyndFeedInput.class, SyndFeedInput::new);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
