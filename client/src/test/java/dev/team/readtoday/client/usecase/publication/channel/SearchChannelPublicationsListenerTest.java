@@ -30,14 +30,17 @@ final class SearchChannelPublicationsListenerTest {
     HttpRequestBuilderFactory factory = mock(HttpRequestBuilderFactory.class);
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
     when(factory.buildWithAuth("/publications")).thenReturn(requestBuilder);
-    String channelId = "e53adf90-9996-4216-8e85-b2affdf5d55d";
+
     HttpRequestBuilder finalRequestBuilder = mock(HttpRequestBuilder.class);
+    String channelId = "e53adf90-9996-4216-8e85-b2affdf5d55d";
     when(requestBuilder.withParam("channelId", channelId)).thenReturn(finalRequestBuilder);
+
     HttpResponse response = mock(HttpResponse.class);
     when(finalRequestBuilder.get()).thenReturn(response);
     when(response.isStatusOk()).thenReturn(true);
     List<PublicationResponse> list = List.of();
     when(response.getEntity(eq(PUBLICATION_RESPONSE_LIST_TYPE))).thenReturn(list);
+
     EventBus eventBus = mock(EventBus.class);
     SearchChannelPublicationsListener listener = new SearchChannelPublicationsListener(eventBus, factory);
 
@@ -58,14 +61,17 @@ final class SearchChannelPublicationsListenerTest {
     HttpRequestBuilderFactory factory = mock(HttpRequestBuilderFactory.class);
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
     when(factory.buildWithAuth("/publications")).thenReturn(requestBuilder);
-    String channelId = "e53adf90-9996-4216-8e85-b2affdf5d55d";
+
     HttpRequestBuilder finalRequestBuilder = mock(HttpRequestBuilder.class);
+    String channelId = "e53adf90-9996-4216-8e85-b2affdf5d55d";
     when(requestBuilder.withParam("channelId", channelId)).thenReturn(finalRequestBuilder);
+
     HttpResponse response = mock(HttpResponse.class);
     when(finalRequestBuilder.get()).thenReturn(response);
     when(response.isStatusOk()).thenReturn(false);
     String statusReason = "someStatusReason";
     when(response.getStatusReason()).thenReturn(statusReason);
+
     EventBus eventBus = mock(EventBus.class);
     SearchChannelPublicationsListener listener = new SearchChannelPublicationsListener(eventBus, factory);
 

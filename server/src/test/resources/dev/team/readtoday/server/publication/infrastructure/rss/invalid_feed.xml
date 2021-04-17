@@ -1,0 +1,13 @@
+<somefeedtype version="2.0">
+  <whatisthis>
+    <title>TechCrunch</title>
+    <link>https://techcrunch.com</link>
+    <description>TechCrunch is a group-edited blog that profiles the companies, products and events defining and transforming the new web.</description>
+
+    <something>
+      <thing>http://feedproxy.google.com/~r/Techcrunch/~3/TgqvYS0lvtk/</thing>
+      <pubDate>Thu, 15 Apr 2021 15:32:23 +0000</pubDate>
+      <guid isPermaThing="false">https://techcrunch.com/?p=2139185</guid>
+    </something>
+  </whatisthis>
+</somefeedtype>
