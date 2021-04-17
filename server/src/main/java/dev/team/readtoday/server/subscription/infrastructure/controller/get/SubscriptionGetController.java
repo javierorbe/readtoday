@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collection;
 
+
 @Path("subscriptions")
 public final class SubscriptionGetController extends BaseController {
 
@@ -30,15 +31,12 @@ public final class SubscriptionGetController extends BaseController {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response getSubscription(GetUserSubscriptions request) {
-
-
+  public Response getSubscription() {
 
     try{
         Collection<Subscription> subscriptions = getUserSubscriptions.search(getRequestUserId());
         LOGGER.trace("Successful getting subscriptions request.");
         return Response.ok(subscriptions).build();
-
     }catch(SubscriptionNotFound e){
           LOGGER.debug("Error getting subscriptions.", e);
           return response(Response.Status.BAD_REQUEST);
