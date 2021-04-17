@@ -38,14 +38,10 @@ public final class RomeRssFetcher implements RssFetcher {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(RomeRssFetcher.class);
 
-  private final SyndFeedInput syndFeedInput;
   private final CreateCategory createCategory;
   private final SearchCategoryByName searchCategoryByName;
 
-  public RomeRssFetcher(SyndFeedInput syndFeedInput,
-                        CreateCategory createCategory,
-                        SearchCategoryByName searchCategoryByName) {
-    this.syndFeedInput = syndFeedInput;
+  public RomeRssFetcher(CreateCategory createCategory, SearchCategoryByName searchCategoryByName) {
     this.createCategory = createCategory;
     this.searchCategoryByName = searchCategoryByName;
   }
@@ -57,10 +53,10 @@ public final class RomeRssFetcher implements RssFetcher {
     return buildPublicationList(entries);
   }
 
-  private SyndFeed fetchRssFeed(RssUrl rssUrl) throws RssFeedException {
+  private static SyndFeed fetchRssFeed(RssUrl rssUrl) throws RssFeedException {
     try {
       XmlReader reader = new XmlReader(rssUrl.toUrl());
-      return syndFeedInput.build(reader);
+      return new SyndFeedInput().build(reader);
     } catch (FeedException | IOException e) {
       throw new RssFeedException("Could not read feed", e);
     } catch (IllegalArgumentException e) {
