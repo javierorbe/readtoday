@@ -42,4 +42,15 @@ public enum ChannelMother {
         Set.of()
     );
   }
+
+  public static Channel withIdTitleAndRssUrl(ChannelId id, ChannelTitle title, RssUrl rssUrl) {
+    return new Channel(
+        id,
+        title,
+        rssUrl,
+        new ChannelDescription(FAKER.bothify("??#? ?##? ##??")),
+        ImageUrlMother.random(),
+        Set.of()
+    );
+  }
 }

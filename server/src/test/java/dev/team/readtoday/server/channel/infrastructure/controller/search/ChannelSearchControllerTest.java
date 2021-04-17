@@ -95,7 +95,6 @@ public final class ChannelSearchControllerTest extends BaseAcceptanceTest {
   @And("there are these channels:")
   public void thereAreTheseChannels(List<? extends Map<String, String>> data) {
     for (Map<String, String> channelData : data) {
-      System.out.println("CHANNEL DATA: " + channelData.size());
       ChannelId id = ChannelId.fromString(channelData.get("channelId"));
       ChannelTitle title = new ChannelTitle(channelData.get("title"));
       Channel channel = ChannelMother.withIdAndTitle(id, title);
@@ -153,7 +152,7 @@ public final class ChannelSearchControllerTest extends BaseAcceptanceTest {
   }
 
   @And("the response content should have:")
-  public void theResponseContentShouldBe(List<Map<String, String>> expectedChannels) {
+  public void theResponseContentShouldHave(List<Map<String, String>> expectedChannels) {
     String jsonBody = response.readEntity(String.class);
     JsonObject responseContent = new Gson().fromJson(jsonBody, JsonObject.class);
 
