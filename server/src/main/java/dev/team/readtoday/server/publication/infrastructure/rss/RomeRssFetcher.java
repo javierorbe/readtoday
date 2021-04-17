@@ -12,7 +12,6 @@ import dev.team.readtoday.server.category.application.CreateCategory;
 import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
-import dev.team.readtoday.server.channel.domain.InvalidRssUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.publication.application.RssFetcher;
 import dev.team.readtoday.server.publication.domain.Publication;
@@ -25,17 +24,19 @@ import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.Service;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public final class RomeRssFetcher implements RssFetcher {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(RomeRssFetcher.class);
 
   private final SyndFeedInput syndFeedInput;
   private final CreateCategory createCategory;
@@ -58,13 +59,13 @@ public final class RomeRssFetcher implements RssFetcher {
 
   private SyndFeed fetchRssFeed(RssUrl rssUrl) throws RssFeedException {
     try {
-      URL url = new URL(rssUrl.toString());
-      XmlReader reader = new XmlReader(url);
+      XmlReader reader = new XmlReader(rssUrl.toUrl());
       return syndFeedInput.build(reader);
-    } catch (MalformedURLException e) {
-      throw new InvalidRssUrl("Error creating RSS feed URL.", e);
     } catch (FeedException | IOException e) {
       throw new RssFeedException("Could not read feed", e);
+    } catch (IllegalArgumentException e) {
+      LOGGER.error("Unknown feed type.", e);
+      throw e;
     }
   }
 
@@ -89,7 +90,7 @@ public final class RomeRssFetcher implements RssFetcher {
     PublicationDate date =
         (entry.getPublishedDate() == null)
             ? null
-            : new PublicationDate(convertToLocalDateTime(entry.getPublishedDate()));
+            : new PublicationDate(convertToDateTime(entry.getPublishedDate()));
 
     PublicationLink link =
         (entry.getLink() == null) ? null : new PublicationLink(entry.getLink());
@@ -121,9 +122,7 @@ public final class RomeRssFetcher implements RssFetcher {
     return categoryId;
   }
 
-  private static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
-    return dateToConvert.toInstant()
-        .atZone(ZoneId.systemDefault())
-        .toLocalDateTime();
+  private static OffsetDateTime convertToDateTime(Date dateToConvert) {
+    return dateToConvert.toInstant().atOffset(ZoneOffset.UTC);
   }
 }

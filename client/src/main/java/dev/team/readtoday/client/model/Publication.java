@@ -1,6 +1,6 @@
 package dev.team.readtoday.client.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Set;
 
@@ -9,14 +9,14 @@ public final class Publication {
   private final String id;
   private final String title;
   private final String description;
-  private final LocalDateTime date;
+  private final OffsetDateTime date;
   private final String link;
   private final Set<Category> categories;
 
   public Publication(String id,
                      String title,
                      String description,
-                     LocalDateTime date,
+                     OffsetDateTime date,
                      String link,
                      Set<Category> categories) {
     this.id = id;
@@ -39,7 +39,7 @@ public final class Publication {
     return description;
   }
 
-  public LocalDateTime getDate() {
+  public OffsetDateTime getDate() {
     return date;
   }
 
