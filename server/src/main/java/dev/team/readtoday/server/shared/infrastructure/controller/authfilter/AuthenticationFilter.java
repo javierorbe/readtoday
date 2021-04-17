@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure.controller;
+package dev.team.readtoday.server.shared.infrastructure.controller.authfilter;
 
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
-import java.security.Principal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,30 +68,5 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
             .header(HttpHeaders.WWW_AUTHENTICATE,
                 AUTHENTICATION_SCHEME + " realm=\"" + REALM + '"')
             .build());
-  }
-
-  private record CustomSecurityContext(String userId,
-                                       SecurityContext securityContext)
-      implements SecurityContext {
-
-    @Override
-    public Principal getUserPrincipal() {
-      return () -> userId;
-    }
-
-    @Override
-    public boolean isUserInRole(String role) {
-      return true;
-    }
-
-    @Override
-    public boolean isSecure() {
-      return securityContext.isSecure();
-    }
-
-    @Override
-    public String getAuthenticationScheme() {
-      return AUTHENTICATION_SCHEME;
-    }
   }
 }

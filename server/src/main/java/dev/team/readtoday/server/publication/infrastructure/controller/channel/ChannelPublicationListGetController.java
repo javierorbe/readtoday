@@ -9,7 +9,7 @@ import dev.team.readtoday.server.publication.domain.RssFeedException;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.RequiresAuth;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;

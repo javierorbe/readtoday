@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure.controller;
+package dev.team.readtoday.server.shared.infrastructure.controller.authfilter;
 
 import java.io.Serial;
 

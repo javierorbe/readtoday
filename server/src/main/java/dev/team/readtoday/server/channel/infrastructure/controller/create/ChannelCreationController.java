@@ -8,7 +8,7 @@ import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.RequiresAuth;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.User;
 import jakarta.ws.rs.Consumes;
