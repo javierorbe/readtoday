@@ -86,8 +86,8 @@ public final class HomeView implements ViewController, Initializable {
       }
     });
 
-    channelListView.setCellFactory(listView -> new ChannelCell());
-    newChannelListView.setCellFactory(listView -> new ChannelCell());
+    channelListView.setCellFactory(listView -> new ChannelCell(eventBus));
+    newChannelListView.setCellFactory(listView -> new ChannelCell(eventBus));
   }
 
   private static Map<Category, List<Channel>> createCategoryToChannelMap(
@@ -130,15 +130,15 @@ public final class HomeView implements ViewController, Initializable {
 
   @FXML
   public void unsubscribe() {
-      if(channelListView.getSelectionModel().getSelectedItem() != null){
-          String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
-          eventBus.post(new DeleteSubscriptionEvent(channelId));
-      }
+    if (channelListView.getSelectionModel().getSelectedItem() != null) {
+      String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
+      eventBus.post(new DeleteSubscriptionEvent(channelId));
+    }
   }
 
   @FXML
   public void subscribe() {
-    if(newChannelListView.getSelectionModel().getSelectedItem() != null){
+    if (newChannelListView.getSelectionModel().getSelectedItem() != null) {
       String channelId = newChannelListView.getSelectionModel().getSelectedItem().getId();
       eventBus.post(new SubscriptionRequestedEvent(channelId));
     }
