@@ -1,7 +1,7 @@
 package dev.team.readtoday.server.shared.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.UUID;
 import org.junit.jupiter.api.MethodOrderer;
@@ -20,6 +20,6 @@ final class IdentifierTest {
   @Test
   void shouldNotBeEqualToNull() {
     Identifier identifier = new Identifier(UUID.randomUUID());
-    assertNotEquals(null, identifier);
+    assertFalse(identifier.equals(null));
   }
 }

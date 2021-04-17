@@ -1,6 +1,8 @@
 package dev.team.readtoday.server.publication.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import dev.team.readtoday.server.shared.domain.PublicationId;
@@ -27,5 +29,24 @@ final class PublicationTest {
     PublicationDescription description = PublicationDescriptionMother.random();
     assertDoesNotThrow(() -> new Publication(id, title, null, null, null, Set.of()));
     assertDoesNotThrow(() -> new Publication(id, null, description, null, null, Set.of()));
+  }
+
+  @Test
+  void shouldEqualIfSameInstance() {
+    Publication publication = PublicationMother.random();
+    assertEquals(publication, publication);
+  }
+
+  @Test
+  void shouldNotEqualToNull() {
+    Publication publication = PublicationMother.random();
+    assertFalse(publication.equals(null));
+  }
+
+  @Test
+  void shouldEqualIfSameId() {
+    Publication expectedPublication = PublicationMother.random();
+    Publication actualPublication = PublicationMother.withId(expectedPublication.getId());
+    assertEquals(expectedPublication, actualPublication);
   }
 }
