@@ -38,3 +38,4 @@ public class ReadLaterList {
         return userId.hashCode();
     }
 }
+
