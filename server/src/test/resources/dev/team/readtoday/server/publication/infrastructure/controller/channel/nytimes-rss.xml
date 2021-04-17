@@ -1,0 +1,31 @@
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:media="http://search.yahoo.com/mrss/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:nyt="http://www.nytimes.com/namespaces/rss/2.0" version="2.0">
+  <channel>
+    <title>NYT > World News</title>
+    <link>https://www.nytimes.com/section/world</link>
+    <atom:link href="https://rss.nytimes.com/services/xml/rss/nyt/World.xml" rel="self" type="application/rss+xml"/>
+    <description/>
+    <language>en-us</language>
+    <copyright>Copyright 2021 The New York Times Company</copyright>
+    <lastBuildDate>Sat, 17 Apr 2021 13:12:06 +0000</lastBuildDate>
+    <pubDate>Sat, 17 Apr 2021 13:12:06 +0000</pubDate>
+    <image>
+      <title>NYT > World News</title>
+      <url>https://static01.nyt.com/images/misc/NYT_logo_rss_250x40.png</url>
+      <link>https://www.nytimes.com/section/world</link>
+    </image>
+    <item>
+      <title>In Russia, a Military Buildup That Can’t Be Missed</title>
+      <link>https://www.nytimes.com/2021/04/16/world/europe/russia-ukraine-troops.html</link>
+      <guid isPermaLink="true">https://www.nytimes.com/2021/04/16/world/europe/russia-ukraine-troops.html</guid>
+      <description>Russia’s massing of tanks and infantry along its southwestern border with Ukraine was meant to send a message, analysts say.</description>
+      <pubDate>Sat, 17 Apr 2021 09:30:59 +0000</pubDate>
+    </item>
+    <item>
+      <title>Prince Philip’s Funeral: Latest Updates</title>
+      <link>https://www.nytimes.com/live/2021/04/17/world/prince-philip-funeral/</link>
+      <guid isPermaLink="true">https://www.nytimes.com/live/2021/04/17/world/prince-philip-funeral/</guid>
+      <description>The Duke of Edinburgh, the husband of Queen Elizabeth II and patriarch of the House of Windsor, died last week at age 99.</description>
+      <pubDate>Sat, 17 Apr 2021 12:58:06 +0000</pubDate>
+    </item>
+  </channel>
+</rss>
