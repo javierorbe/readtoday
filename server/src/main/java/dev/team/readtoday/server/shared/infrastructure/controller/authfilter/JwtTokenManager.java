@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.shared.infrastructure.controller;
+package dev.team.readtoday.server.shared.infrastructure.controller.authfilter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;

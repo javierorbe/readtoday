@@ -4,7 +4,7 @@ package dev.team.readtoday.server.category.infrastructure.controller.search;
 import dev.team.readtoday.server.category.application.SearchAllCategories;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.RequiresAuth;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;

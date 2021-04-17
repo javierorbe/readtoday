@@ -3,7 +3,7 @@ package dev.team.readtoday.server;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.rometools.rome.io.SyndFeedInput;
 import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
