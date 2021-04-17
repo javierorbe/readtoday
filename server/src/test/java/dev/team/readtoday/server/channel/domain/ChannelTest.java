@@ -1,7 +1,7 @@
 package dev.team.readtoday.server.channel.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ final class ChannelTest {
   @Test
   void shouldNotBeEqualToNull() {
     Channel channel = ChannelMother.random();
-    assertNotEquals(null, channel);
+    assertFalse(channel.equals(null));
   }
 
   @Test

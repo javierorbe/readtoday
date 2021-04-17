@@ -18,6 +18,6 @@ final class CategoryTest {
   @Test
   void shouldNotBeEqualToNull() {
     Category category = CategoryMother.random();
-    assertNotEquals(null, category);
+    assertFalse(category.equals(null));
   }
 }

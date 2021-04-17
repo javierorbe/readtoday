@@ -20,4 +20,13 @@ public enum PublicationMother {
         new PublicationDate(OffsetDateTime.now()), new PublicationLink(FAKER.bothify("???#")),
         categories);
   }
+
+  public static Publication withId(PublicationId id) {
+    Collection<CategoryId> categories = new ArrayList<CategoryId>();
+    categories.add(CategoryId.random());
+    return new Publication(id,
+        PublicationTitleMother.random(), PublicationDescriptionMother.random(),
+        new PublicationDate(OffsetDateTime.now()), new PublicationLink(FAKER.bothify("???#")),
+        categories);
+  }
 }
