@@ -6,12 +6,8 @@ public class Identifier {
 
   private final UUID value;
 
-  protected Identifier(UUID value) {
+  Identifier(UUID value) {
     this.value = value;
-  }
-
-  public final UUID getValue() {
-    return value;
   }
 
   @Override
