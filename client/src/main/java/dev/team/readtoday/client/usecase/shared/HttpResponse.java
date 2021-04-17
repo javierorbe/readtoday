@@ -15,4 +15,6 @@ public interface HttpResponse {
 
   /** Return the content entity as a certain type. */
   <T> T getEntity(Class<T> clazz);
+
+  <T> T getEntity(GenericType<T> type);
 }
