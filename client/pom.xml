@@ -147,6 +147,12 @@
       <artifactId>guava</artifactId>
       <version>30.1-jre</version>
     </dependency>
+    <!-- Apache Commons Lang -->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.9</version>
+    </dependency>
     <!-- Spring Context (IoC / DI) -->
     <dependency>
       <groupId>org.springframework</groupId>
@@ -178,6 +184,11 @@
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>
+      <version>16</version>
+    </dependency>
+    <dependency>
+      <groupId>org.openjfx</groupId>
+      <artifactId>javafx-web</artifactId>
       <version>16</version>
     </dependency>
     <!-- TomlJ (TOML parser) -->
