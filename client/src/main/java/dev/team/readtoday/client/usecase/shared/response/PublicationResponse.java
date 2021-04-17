@@ -3,7 +3,7 @@ package dev.team.readtoday.client.usecase.shared.response;
 import com.google.common.collect.ImmutableList;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Publication;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,7 +13,7 @@ public final class PublicationResponse {
   private String id;
   private String title;
   private String description;
-  private LocalDateTime date;
+  private OffsetDateTime date;
   private String link;
   private Set<CategoryResponse> categories;
 
@@ -29,7 +29,7 @@ public final class PublicationResponse {
     this.description = description;
   }
 
-  public void setDate(LocalDateTime date) {
+  public void setDate(OffsetDateTime date) {
     this.date = date;
   }
 

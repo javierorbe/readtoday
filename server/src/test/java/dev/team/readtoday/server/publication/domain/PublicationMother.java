@@ -1,11 +1,11 @@
 package dev.team.readtoday.server.publication.domain;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
 import com.github.javafaker.Faker;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public enum PublicationMother {
   ;
@@ -17,7 +17,7 @@ public enum PublicationMother {
     categories.add(CategoryId.random());
     return new Publication(new PublicationId(FAKER.bothify("??##?")),
         PublicationTitleMother.random(), PublicationDescriptionMother.random(),
-        new PublicationDate(LocalDateTime.now()), new PublicationLink(FAKER.bothify("???#")),
+        new PublicationDate(OffsetDateTime.now()), new PublicationLink(FAKER.bothify("???#")),
         categories);
   }
 }

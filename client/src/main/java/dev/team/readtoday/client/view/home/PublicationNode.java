@@ -1,8 +1,7 @@
 package dev.team.readtoday.client.view.home;
 
 import dev.team.readtoday.client.model.Publication;
-import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import javafx.beans.value.ObservableValue;
@@ -54,7 +53,7 @@ final class PublicationNode extends VBox {
     ));
   }
 
-  private static String formatDate(ChronoLocalDateTime<LocalDate> dateTime) {
+  private static String formatDate(OffsetDateTime dateTime) {
     return dateTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
   }
 }

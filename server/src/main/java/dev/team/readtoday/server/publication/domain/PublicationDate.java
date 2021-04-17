@@ -1,20 +1,18 @@
 package dev.team.readtoday.server.publication.domain;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public final class PublicationDate {
 
-  private final LocalDateTime dateTime;
+  private final OffsetDateTime dateTime;
 
-  public PublicationDate(LocalDateTime dateTime) {
+  public PublicationDate(OffsetDateTime dateTime) {
     this.dateTime = dateTime;
   }
 
-
-  public LocalDateTime getDateTime() {
-    return this.dateTime;
+  public OffsetDateTime getDateTime() {
+    return dateTime;
   }
-
 
   @Override
   public boolean equals(Object o) {
@@ -31,5 +29,10 @@ public final class PublicationDate {
   @Override
   public int hashCode() {
     return dateTime.hashCode();
+  }
+
+  @Override
+  public String toString() {
+    return dateTime.toString();
   }
 }
