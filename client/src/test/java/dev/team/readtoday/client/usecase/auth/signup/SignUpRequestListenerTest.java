@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.auth.signin;
+package dev.team.readtoday.client.usecase.auth.signup;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,79 +16,81 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.ArgumentCaptor;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class SignInRequestListenerTest {
+final class SignUpRequestListenerTest {
 
   @Test
   void shouldRequestWithEventArguments() {
     // Given
     HttpRequestBuilderFactory factory = mock(HttpRequestBuilderFactory.class);
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
-    when(factory.build("/auth/signin")).thenReturn(requestBuilder);
+    when(factory.build("/auth/signup")).thenReturn(requestBuilder);
 
     HttpResponse response = mock(HttpResponse.class);
-    var signInRequestCaptor = ArgumentCaptor.forClass(SignInRequest.class);
-    when(requestBuilder.post(signInRequestCaptor.capture())).thenReturn(response);
-    when(response.isStatusOk()).thenReturn(false);
+    var signUpRequestCaptor = ArgumentCaptor.forClass(SignUpRequest.class);
+    when(requestBuilder.post(signUpRequestCaptor.capture())).thenReturn(response);
+    when(response.isStatusCreated()).thenReturn(false);
 
     EventBus eventBus = mock(EventBus.class);
-    var listener = new SignInRequestListener(eventBus, factory);
+    var listener = new SignUpRequestListener(eventBus, factory);
 
     // When
     String accessToken = "someAccessToken";
-    listener.onSignInRequestReady(new SignInRequestReadyEvent(accessToken));
+    String username = "someUsername";
+    listener.onSignUpRequestReady(new SignUpRequestReadyEvent(accessToken, username));
 
     // Then
-    var signInRequest = signInRequestCaptor.getValue();
-    assertEquals(accessToken, signInRequest.getAccessToken());
+    var signUpRequest = signUpRequestCaptor.getValue();
+    assertEquals(username, signUpRequest.getUsername());
+    assertEquals(accessToken, signUpRequest.getAccessToken());
   }
 
   @Test
-  void shouldPostSuccessfulSignInEventIfSucceeded() {
+  void shouldPostSuccessfulSignUpEventIfSucceeded() {
     // Given
     HttpRequestBuilderFactory factory = mock(HttpRequestBuilderFactory.class);
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
-    when(factory.build("/auth/signin")).thenReturn(requestBuilder);
+    when(factory.build("/auth/signup")).thenReturn(requestBuilder);
 
     HttpResponse response = mock(HttpResponse.class);
     when(requestBuilder.post(any())).thenReturn(response);
-    when(response.isStatusOk()).thenReturn(true);
+    when(response.isStatusCreated()).thenReturn(true);
     String jwtToken = "someJwtToken";
     when(response.getEntity(String.class)).thenReturn(jwtToken);
 
     EventBus eventBus = mock(EventBus.class);
-    var listener = new SignInRequestListener(eventBus, factory);
+    var listener = new SignUpRequestListener(eventBus, factory);
 
     // When
-    listener.onSignInRequestReady(new SignInRequestReadyEvent("someAccessToken"));
+    listener.onSignUpRequestReady(new SignUpRequestReadyEvent("someAccessToken", "someUsername"));
 
     // Then
-    var eventCaptor = ArgumentCaptor.forClass(SuccessfulSignInEvent.class);
+    var eventCaptor = ArgumentCaptor.forClass(SuccessfulSignUpEvent.class);
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
     assertEquals(jwtToken, event.getJwtToken());
   }
 
   @Test
-  void shouldPostSignInFailedEventIfFailed() {
+  void shouldPostSignUpFailedEventIfFailed() {
     // Given
     HttpRequestBuilderFactory factory = mock(HttpRequestBuilderFactory.class);
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
-    when(factory.build("/auth/signin")).thenReturn(requestBuilder);
+    when(factory.build("/auth/signup")).thenReturn(requestBuilder);
 
     HttpResponse response = mock(HttpResponse.class);
     when(requestBuilder.post(any())).thenReturn(response);
-    when(response.isStatusOk()).thenReturn(false);
+    when(response.isStatusCreated()).thenReturn(false);
     String statusReason = "someStatusReason";
     when(response.getStatusReason()).thenReturn(statusReason);
 
     EventBus eventBus = mock(EventBus.class);
-    var listener = new SignInRequestListener(eventBus, factory);
+    var listener = new SignUpRequestListener(eventBus, factory);
 
     // When
-    listener.onSignInRequestReady(new SignInRequestReadyEvent("someAccessToken"));
+    listener.onSignUpRequestReady(new SignUpRequestReadyEvent("someAccessToken", "someUsername"));
 
     // Then
-    var eventCaptor = ArgumentCaptor.forClass(SignInFailedEvent.class);
+    var eventCaptor = ArgumentCaptor.forClass(SignUpFailedEvent.class);
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
     assertEquals(statusReason, event.getReason());
