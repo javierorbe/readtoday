@@ -3,7 +3,7 @@ package dev.team.readtoday.server.channel.application;
 import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
-import dev.team.readtoday.server.channel.domain.CategoryDoesNotExist;
+import dev.team.readtoday.server.category.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.shared.domain.Service;
