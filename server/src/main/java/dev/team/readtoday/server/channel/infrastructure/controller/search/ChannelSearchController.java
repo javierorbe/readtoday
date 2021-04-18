@@ -4,7 +4,7 @@ import dev.team.readtoday.server.category.application.SearchCategoriesById;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
-import dev.team.readtoday.server.channel.domain.CategoryDoesNotExist;
+import dev.team.readtoday.server.category.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;

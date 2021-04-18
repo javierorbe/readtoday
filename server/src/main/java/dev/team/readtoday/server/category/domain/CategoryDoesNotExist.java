@@ -1,6 +1,5 @@
-package dev.team.readtoday.server.channel.domain;
+package dev.team.readtoday.server.category.domain;
 
-import dev.team.readtoday.server.category.domain.CategoryName;
 import java.io.Serial;
 
 public final class CategoryDoesNotExist extends Exception {
