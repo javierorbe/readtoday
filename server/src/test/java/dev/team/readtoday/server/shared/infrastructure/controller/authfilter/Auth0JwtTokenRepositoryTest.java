@@ -18,7 +18,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 final class Auth0JwtTokenRepositoryTest {
 
   @Test
-  void shouldReturnValidTokenForUserId() throws InvalidJwtToken {
+  void shouldReturnValidTokenForUserId() {
     Algorithm algorithm = Algorithm.HMAC256("someSecret");
     JwtTokenRepository repository = new Auth0JwtTokenRepository(algorithm);
     UserId userId = UserId.random();

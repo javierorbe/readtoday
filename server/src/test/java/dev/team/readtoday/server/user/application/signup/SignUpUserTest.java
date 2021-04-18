@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.application;
+package dev.team.readtoday.server.user.application.signup;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,6 +9,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.user.application.profile.AccessToken;
+import dev.team.readtoday.server.user.application.profile.AccessTokenMother;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
 import dev.team.readtoday.server.user.domain.AlreadyExistingUser;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.EmailAddressMother;
@@ -24,7 +29,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 final class SignUpUserTest {
 
   @Test
-  void shouldThrowExceptionIfUserAlreadyExists() throws AuthProcessFailed {
+  void shouldThrowExceptionIfUserAlreadyExists() throws ProfileFetchingFailed {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
@@ -35,11 +40,12 @@ final class SignUpUserTest {
 
     SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
 
-    assertThrows(AlreadyExistingUser.class, () -> signUpUser.signUp(token, UsernameMother.random()));
+    assertThrows(AlreadyExistingUser.class,
+        () -> signUpUser.signUp(token, UserId.random(), UsernameMother.random()));
   }
 
   @Test
-  void shouldNotThrowExceptionIfUserDoesNotExist() throws AuthProcessFailed {
+  void shouldNotThrowExceptionIfUserDoesNotExist() throws ProfileFetchingFailed {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
@@ -49,7 +55,7 @@ final class SignUpUserTest {
 
     SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
 
-    assertDoesNotThrow(() -> signUpUser.signUp(token, UsernameMother.random()));
+    assertDoesNotThrow(() -> signUpUser.signUp(token, UserId.random(), UsernameMother.random()));
   }
 
   @Test
@@ -63,24 +69,25 @@ final class SignUpUserTest {
 
     SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
 
-    signUpUser.signUp(token, UsernameMother.random());
+    signUpUser.signUp(token, UserId.random(), UsernameMother.random());
 
     verify(userRepository, times(1)).save(any());
   }
 
   @Test
-  void shouldThrowExceptionIfFailsGettingTheAccessToken() throws AuthProcessFailed {
+  void shouldThrowExceptionIfFailsGettingTheAccessToken() throws ProfileFetchingFailed {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token)))
-        .thenThrow(new AuthProcessFailed("Some error.", new Exception("Error cause.")));
+        .thenThrow(new ProfileFetchingFailed("Some error.", new Exception("Error cause.")));
     UserRepository userRepository = mock(UserRepository.class);
     when(userRepository.getByEmailAddress(eq(email)))
         .thenReturn(Optional.of(UserMother.withEmail(email)));
 
     SignUpUser signUpUser = new SignUpUser(profileFetcher, userRepository);
 
-    assertThrows(AuthProcessFailed.class, () -> signUpUser.signUp(token, UsernameMother.random()));
+    assertThrows(ProfileFetchingFailed.class,
+        () -> signUpUser.signUp(token, UserId.random(), UsernameMother.random()));
   }
 }

@@ -1,6 +1,9 @@
-package dev.team.readtoday.server.user.application;
+package dev.team.readtoday.server.user.application.signup;
 
 import dev.team.readtoday.server.shared.domain.Service;
+import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.user.application.profile.AccessToken;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.AlreadyExistingUser;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
@@ -21,8 +24,7 @@ public final class SignUpUser {
     this.repository = repository;
   }
 
-  public User signUp(AccessToken token, Username username)
-      throws AuthProcessFailed, AlreadyExistingUser {
+  public void signUp(AccessToken token, UserId userId, Username username) {
     EmailAddress email = profileFetcher.fetchEmailAddress(token);
 
     Optional<User> optUser = repository.getByEmailAddress(email);
@@ -30,8 +32,7 @@ public final class SignUpUser {
       throw new AlreadyExistingUser("There is already a user with that email: " + email);
     }
 
-    User user = User.create(username, email, Role.USER);
+    User user = new User(userId, username, email, Role.USER);
     repository.save(user);
-    return user;
   }
 }
