@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.user.application;
+package dev.team.readtoday.server.user.application.profile;
 
 import dev.team.readtoday.server.shared.domain.StringValueObject;
 

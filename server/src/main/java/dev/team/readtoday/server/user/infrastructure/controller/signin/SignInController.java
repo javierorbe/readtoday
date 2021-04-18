@@ -3,8 +3,8 @@ package dev.team.readtoday.server.user.infrastructure.controller.signin;
 import dev.team.readtoday.server.jwt.application.get.GetJwtToken;
 import dev.team.readtoday.server.jwt.domain.JwtToken;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.user.application.AccessToken;
-import dev.team.readtoday.server.user.application.AuthProcessFailed;
+import dev.team.readtoday.server.user.application.profile.AccessToken;
+import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
 import dev.team.readtoday.server.user.application.SignInUser;
 import dev.team.readtoday.server.user.domain.NonExistingUser;
 import dev.team.readtoday.server.user.domain.User;
@@ -45,7 +45,7 @@ public final class SignInController extends BaseController {
 
       LOGGER.debug("Successful sign in.");
       return Response.ok(jwtToken.toString()).build();
-    } catch (AuthProcessFailed e) {
+    } catch (ProfileFetchingFailed e) {
       LOGGER.debug("Sign in failed.", e);
       return response(Status.UNAUTHORIZED);
     } catch (NonExistingUser e) {

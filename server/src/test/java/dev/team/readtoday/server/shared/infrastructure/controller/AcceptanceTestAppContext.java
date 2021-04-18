@@ -9,7 +9,7 @@ import dev.team.readtoday.server.jwt.application.get.GetJwtToken;
 import dev.team.readtoday.server.jwt.domain.JwtToken;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
-import dev.team.readtoday.server.user.application.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import java.security.SecureRandom;
 import org.jooq.DSLContext;
 import org.jooq.Table;

@@ -11,9 +11,9 @@ import static org.mockito.Mockito.when;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
-import dev.team.readtoday.server.user.application.AccessToken;
-import dev.team.readtoday.server.user.application.AuthProcessFailed;
-import dev.team.readtoday.server.user.application.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.AccessToken;
+import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.Role;
 import dev.team.readtoday.server.user.domain.User;
@@ -83,17 +83,17 @@ public final class SignInFeature extends BaseAcceptanceTest {
   }
 
   @And("I have a valid access token")
-  public void iHaveAValidAccessToken() throws AuthProcessFailed {
+  public void iHaveAValidAccessToken() throws ProfileFetchingFailed {
     when(profileFetcher.fetchEmailAddress(eq(accessToken)))
         .thenReturn(currentEmail);
     when(profileFetcher.fetchEmailAddress(not(eq(accessToken))))
-        .thenThrow(AuthProcessFailed.class);
+        .thenThrow(ProfileFetchingFailed.class);
   }
 
   @And("I have an invalid access token")
-  public void iHaveAnInvalidAccessToken() throws AuthProcessFailed {
+  public void iHaveAnInvalidAccessToken() throws ProfileFetchingFailed {
     when(profileFetcher.fetchEmailAddress(any()))
-        .thenThrow(AuthProcessFailed.class);
+        .thenThrow(ProfileFetchingFailed.class);
   }
 
   @When("I request to sign in")
