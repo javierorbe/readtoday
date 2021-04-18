@@ -1,6 +1,6 @@
 package dev.team.readtoday.client.usecase.category.create.messages;
 
-public final class CategoryCreationRequest {
+public class CategoryCreationRequest {
 
   private final String name;
 

@@ -31,8 +31,10 @@ public final class CategoryCreationListener {
     LOGGER.trace("Sending category creation request.");
     HttpResponse response = requestBuilder.post(event.getRequest());
     if (response.isStatusCreated()) {
+      LOGGER.trace("Category created successfully response received.");
       eventBus.post(new CategorySuccessfullyCreatedEvent());
     } else {
+      LOGGER.trace("Category failed on creation response received.");
       eventBus.post(new CategoryCreationFailedEvent(response.getStatusReason()));
     }
   }
