@@ -24,7 +24,7 @@ import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
-import dev.team.readtoday.server.shared.infrastructure.controller.JwtTokenManager;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
@@ -95,7 +95,6 @@ public final class ChannelSearchControllerTest extends BaseAcceptanceTest {
   @And("there are these channels:")
   public void thereAreTheseChannels(List<? extends Map<String, String>> data) {
     for (Map<String, String> channelData : data) {
-      System.out.println("CHANNEL DATA: " + channelData.size());
       ChannelId id = ChannelId.fromString(channelData.get("channelId"));
       ChannelTitle title = new ChannelTitle(channelData.get("title"));
       Channel channel = ChannelMother.withIdAndTitle(id, title);
@@ -153,7 +152,7 @@ public final class ChannelSearchControllerTest extends BaseAcceptanceTest {
   }
 
   @And("the response content should have:")
-  public void theResponseContentShouldBe(List<Map<String, String>> expectedChannels) {
+  public void theResponseContentShouldHave(List<Map<String, String>> expectedChannels) {
     String jsonBody = response.readEntity(String.class);
     JsonObject responseContent = new Gson().fromJson(jsonBody, JsonObject.class);
 

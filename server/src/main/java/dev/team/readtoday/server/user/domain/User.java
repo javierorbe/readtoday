@@ -64,11 +64,4 @@ public final class User {
   public int hashCode() {
     return id.hashCode();
   }
-
-  @Override
-  public String toString() {
-    return String.format(
-        "User (id=%s, username=%s, emailAddress=%s, role=%s)",
-        id, username, emailAddress, role);
-  }
 }

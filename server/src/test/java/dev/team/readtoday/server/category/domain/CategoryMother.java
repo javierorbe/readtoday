@@ -14,4 +14,11 @@ public enum CategoryMother {
         new CategoryName(faker.bothify("category ?????"))
     );
   }
+
+  public static Category withName(CategoryName categoryName) {
+    return new Category(
+        CategoryId.random(),
+        categoryName
+    );
+  }
 }

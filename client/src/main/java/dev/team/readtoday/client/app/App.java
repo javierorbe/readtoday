@@ -21,10 +21,16 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.NoSubscriberEvent;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.SubscriberExceptionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tomlj.TomlParseResult;
 
 public final class App extends Application implements AuthTokenSupplier {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
   private final TomlParseResult config = ConfigurationLoader.load();
 
@@ -71,6 +77,19 @@ public final class App extends Application implements AuthTokenSupplier {
     sceneContainer.setScene(SceneType.AUTH);
     primaryStage.setTitle("ReadToday");
     primaryStage.show();
+  }
+
+  @Subscribe
+  public void onNoSubscriber(NoSubscriberEvent event) {
+    LOGGER.warn("No subscriber for event: {}", event.originalEvent);
+  }
+
+  @Subscribe
+  public void onSubscriberException(SubscriberExceptionEvent event) {
+    LOGGER.error("Exception on subscriber {} on event {}: {}",
+        event.causingSubscriber,
+        event.causingEvent,
+        event.throwable);
   }
 
   @Subscribe

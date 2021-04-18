@@ -20,7 +20,7 @@ public final class SignInRequestListener {
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void signIn(SignInRequestReadyEvent event) {
+  public void onSignInRequestReady(SignInRequestReadyEvent event) {
     SignInRequest request = new SignInRequest(event.getAccessToken());
     HttpResponse response = requestBuilder.post(request);
 

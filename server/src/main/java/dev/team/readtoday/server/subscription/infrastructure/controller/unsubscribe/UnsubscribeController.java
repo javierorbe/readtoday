@@ -3,7 +3,7 @@ package dev.team.readtoday.server.subscription.infrastructure.controller.unsubsc
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.shared.infrastructure.controller.RequiresAuth;
+import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.RequiresAuth;
 import dev.team.readtoday.server.subscription.application.DeleteSubscription;
 import dev.team.readtoday.server.subscription.domain.SubscriptionNotFound;
 import jakarta.ws.rs.Consumes;

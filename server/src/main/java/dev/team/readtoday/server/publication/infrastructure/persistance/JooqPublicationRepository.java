@@ -12,7 +12,7 @@ import dev.team.readtoday.server.publication.domain.PublicationRepository;
 import dev.team.readtoday.server.publication.domain.PublicationTitle;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,7 +89,7 @@ public class JooqPublicationRepository implements PublicationRepository {
     PublicationTitle title = new PublicationTitle(result.getValue(PUBLICATION.TITLE));
     PublicationDescription desc = new PublicationDescription(result.getValue(PUBLICATION.DESCRIP));
     PublicationDate date =
-        new PublicationDate(LocalDateTime.parse(result.getValue(PUBLICATION.DATE)));
+        new PublicationDate(OffsetDateTime.parse(result.getValue(PUBLICATION.DATE)));
     PublicationLink link = new PublicationLink(result.getValue(PUBLICATION.LINK));
 
     Collection<CategoryId> categories = getCategoriesFromPublicaiton(id);

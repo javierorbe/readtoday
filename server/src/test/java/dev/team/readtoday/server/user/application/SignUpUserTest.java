@@ -74,7 +74,7 @@ final class SignUpUserTest {
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
     when(profileFetcher.fetchEmailAddress(eq(token)))
-        .thenThrow(AuthProcessFailed.class);
+        .thenThrow(new AuthProcessFailed("Some error.", new Exception("Error cause.")));
     UserRepository userRepository = mock(UserRepository.class);
     when(userRepository.getByEmailAddress(eq(email)))
         .thenReturn(Optional.of(UserMother.withEmail(email)));

@@ -20,7 +20,7 @@ public final class SignUpRequestListener {
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void signUp(SignUpRequestReadyEvent event) {
+  public void onSignUpRequestReady(SignUpRequestReadyEvent event) {
     SignUpRequest request = new SignUpRequest(event.getAccessToken(), event.getUsername());
     HttpResponse response = requestBuilder.post(request);
 

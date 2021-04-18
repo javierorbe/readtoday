@@ -43,8 +43,8 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
       ChannelId idChannel = ChannelId.fromString(results.getValue(SUBSCRIPTION.CHANNEL_ID));
       subscriptions.add(new Subscription(userId, idChannel));
     }
-      Collection<Subscription> collection = subscriptions;
-    return collection ;
+
+    return subscriptions ;
 
   }
 

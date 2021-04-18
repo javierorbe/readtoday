@@ -20,6 +20,14 @@ public final class RssUrl extends StringValueObject {
     }
   }
 
+  public URL toUrl() {
+    try {
+      return new URL(toString());
+    } catch (MalformedURLException e) {
+      throw new IllegalStateException("Invalid URL.", e);
+    }
+  }
+
   public static RssUrl create(String value) {
     try {
       URL url = new URL(value);

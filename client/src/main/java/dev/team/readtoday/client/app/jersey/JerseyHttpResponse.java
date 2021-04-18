@@ -1,5 +1,6 @@
 package dev.team.readtoday.client.app.jersey;
 
+import dev.team.readtoday.client.usecase.shared.GenericType;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -40,5 +41,10 @@ final class JerseyHttpResponse implements HttpResponse {
   @Override
   public <T> T getEntity(Class<T> clazz) {
     return response.readEntity(clazz);
+  }
+
+  @Override
+  public <T> T getEntity(GenericType<T> type) {
+    return response.readEntity(new jakarta.ws.rs.core.GenericType<>(type.getType()));
   }
 }
