@@ -7,7 +7,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.rometools.rome.io.SyndFeedInput;
 import dev.team.readtoday.server.category.application.CreateCategory;
 import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.CategoryMother;
@@ -35,9 +34,7 @@ final class RomeRssFetcherTest {
     CategoryRepository categoryRepository = mock(CategoryRepository.class);
     CreateCategory createCategory = new CreateCategory(categoryRepository);
     SearchCategoryByName searchCategory = new SearchCategoryByName(categoryRepository);
-    SyndFeedInput syndFeedInput = new SyndFeedInput();
-    RssFetcher rssFetcher =
-        new RomeRssFetcher(syndFeedInput, createCategory, searchCategory);
+    RssFetcher rssFetcher = new RomeRssFetcher(createCategory, searchCategory);
     CategoryName eventsName = new CategoryName("Events");
     when(categoryRepository.getByName(eq(eventsName)))
         .thenReturn(Optional.of(CategoryMother.withName(eventsName)));
@@ -69,9 +66,7 @@ final class RomeRssFetcherTest {
     CategoryRepository categoryRepository = mock(CategoryRepository.class);
     CreateCategory createCategory = new CreateCategory(categoryRepository);
     SearchCategoryByName searchCategory = new SearchCategoryByName(categoryRepository);
-    SyndFeedInput syndFeedInput = new SyndFeedInput();
-    RssFetcher rssFetcher =
-        new RomeRssFetcher(syndFeedInput, createCategory, searchCategory);
+    RssFetcher rssFetcher = new RomeRssFetcher(createCategory, searchCategory);
 
     // Then
     assertThrows(RssFeedException.class, () -> rssFetcher.getPublications(getInvalidTestRssUrl()));
@@ -83,9 +78,7 @@ final class RomeRssFetcherTest {
     CategoryRepository categoryRepository = mock(CategoryRepository.class);
     CreateCategory createCategory = new CreateCategory(categoryRepository);
     SearchCategoryByName searchCategory = new SearchCategoryByName(categoryRepository);
-    SyndFeedInput syndFeedInput = new SyndFeedInput();
-    RssFetcher rssFetcher =
-        new RomeRssFetcher(syndFeedInput, createCategory, searchCategory);
+    RssFetcher rssFetcher = new RomeRssFetcher(createCategory, searchCategory);
 
     // Then
     assertThrows(IllegalArgumentException.class, () -> rssFetcher.getPublications(getInvalidTestFeedUrl()));

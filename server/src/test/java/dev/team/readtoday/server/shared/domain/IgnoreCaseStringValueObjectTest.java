@@ -1,6 +1,7 @@
 package dev.team.readtoday.server.shared.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.MethodOrderer;
@@ -15,7 +16,7 @@ final class IgnoreCaseStringValueObjectTest {
   @Test
   void shouldNotBeEqualToNull() {
     StringValueObject strVal = new StringValueObject("someValue");
-    assertNotEquals(null, strVal);
+    assertFalse(strVal.equals(null));
   }
 
   @ParameterizedTest

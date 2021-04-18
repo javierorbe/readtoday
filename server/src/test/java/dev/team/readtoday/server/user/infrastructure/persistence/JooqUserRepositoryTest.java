@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.EmailAddressMother;
@@ -71,10 +72,19 @@ final class JooqUserRepositoryTest extends BaseJooqIntegrationTest {
   }
 
   @Test
-  void shouldNotReturnANonExistingUser() {
+  void shouldNotReturnANonExistingUserByEmail() {
     EmailAddress email = EmailAddressMother.random();
 
     Optional<User> optUser = repository.getByEmailAddress(email);
+
+    assertTrue(optUser.isEmpty());
+  }
+
+  @Test
+  void shouldNotReturnANonExistingUserById() {
+    UserId userId = UserId.random();
+
+    Optional<User> optUser = repository.getById(userId);
 
     assertTrue(optUser.isEmpty());
   }

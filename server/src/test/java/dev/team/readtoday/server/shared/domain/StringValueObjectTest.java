@@ -1,7 +1,7 @@
 package dev.team.readtoday.server.shared.domain;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.regex.Pattern;
@@ -19,7 +19,7 @@ final class StringValueObjectTest {
   @Test
   void shouldNotBeEqualToNull() {
     StringValueObject strVal = new StringValueObject("someValue");
-    assertNotEquals(null, strVal);
+    assertFalse(strVal.equals(null));
   }
 
   @ParameterizedTest
