@@ -33,7 +33,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.Map;
 
-public final class SignInControllerTest extends BaseAcceptanceTest {
+public final class SignInFeature extends BaseAcceptanceTest {
 
   private AcceptanceTestAppContext context;
 

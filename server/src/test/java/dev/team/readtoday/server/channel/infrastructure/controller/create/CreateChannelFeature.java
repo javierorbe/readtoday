@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class ChannelCreationControllerTest extends BaseAcceptanceTest {
+public final class CreateChannelFeature extends BaseAcceptanceTest {
 
   private AcceptanceTestAppContext context;
 
