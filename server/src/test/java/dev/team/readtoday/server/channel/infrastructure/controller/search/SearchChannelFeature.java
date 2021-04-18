@@ -48,7 +48,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public final class ChannelSearchControllerTest extends BaseAcceptanceTest {
+public final class SearchChannelFeature extends BaseAcceptanceTest {
 
   private AcceptanceTestAppContext context;
 

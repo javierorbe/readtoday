@@ -36,7 +36,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.Map;
 import java.util.Set;
 
-public final class SubscriptionPostControllerTest extends BaseAcceptanceTest {
+public final class SubscribeFeature extends BaseAcceptanceTest {
 
   private AcceptanceTestAppContext context;
 
