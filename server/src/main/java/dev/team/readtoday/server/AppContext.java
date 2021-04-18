@@ -2,7 +2,6 @@ package dev.team.readtoday.server;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.ProfileFetcher;
 import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
@@ -10,6 +9,7 @@ import java.net.URI;
 import java.security.SecureRandom;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.tomlj.TomlTable;
 
 final class AppContext extends AnnotationConfigApplicationContext {
@@ -24,10 +24,8 @@ final class AppContext extends AnnotationConfigApplicationContext {
     jooq = new JooqConnectionBuilder(hikariConfig);
 
     ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
-    JwtTokenManager jwtTokenManager = new JwtTokenManager(buildJwtSigningAlgorithm());
 
     registerBean(ProfileFetcher.class, () -> profileFetcher);
-    registerBean(JwtTokenManager.class, () -> jwtTokenManager);
     registerBean(DSLContext.class, jooq::getContext);
     scan(APP_PACKAGE);
     refresh();
@@ -37,6 +35,11 @@ final class AppContext extends AnnotationConfigApplicationContext {
   public void close() {
     jooq.close();
     super.close();
+  }
+
+  @Bean("jwtSigningAlg")
+  public Algorithm jwtSigningAlg() {
+    return buildJwtSigningAlgorithm();
   }
 
   private static ProfileFetcher buildGoogleProfileFetcher(TomlTable config) {
