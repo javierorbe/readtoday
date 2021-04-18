@@ -60,3 +60,10 @@ CREATE TABLE publication_categories (
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     PRIMARY KEY (publication_id, category_id)
 );
+CREATE TABLE readlater (
+   user_id CHAR(36) NOT NULL,
+   publication_id CHAR(36) NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+   FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
+   PRIMARY KEY(user_id,publication_id)
+);

@@ -1,5 +1,7 @@
 package dev.team.readtoday.server.shared.domain;
 
+import java.util.UUID;
+
 /**
  * String that uniquely identifies a publication.
  *
@@ -7,7 +9,8 @@ package dev.team.readtoday.server.shared.domain;
  */
 public final class PublicationId extends StringValueObject {
 
-  public PublicationId(String value) {
-    super(value);
+  public PublicationId(String value) { super(value); }
+  public static PublicationId fromString(String value) {
+    return new PublicationId(value);
   }
 }

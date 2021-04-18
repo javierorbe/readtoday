@@ -13,7 +13,7 @@ public interface SubscriptionRepository {
 
   void remove(Subscription subscription);
 
-    Collection<Subscription> getAllByUserId(UserId userId);
+  Collection<Subscription> getAllByUserId(UserId userId);
 
   Optional<Subscription> getFromId(UserId idU, ChannelId idC);
 }
