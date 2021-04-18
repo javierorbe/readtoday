@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.auth0.jwt.algorithms.Algorithm;
+import dev.team.readtoday.server.jwt.application.validate.GetUserForToken;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
@@ -21,8 +21,8 @@ final class AuthenticationFilterTest {
   @Test
   void shouldAbortIfAuthorizationHeaderIsNull() {
     // Given
-    JwtTokenManager jwtTokenManager = new JwtTokenManager(Algorithm.HMAC256("someSecret"));
-    AuthenticationFilter filter = new AuthenticationFilter(jwtTokenManager);
+    GetUserForToken getUserForToken = mock(GetUserForToken.class);
+    AuthenticationFilter filter = new AuthenticationFilter(getUserForToken);
 
     ContainerRequestContext requestContext = mock(ContainerRequestContext.class);
     when(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
@@ -41,8 +41,8 @@ final class AuthenticationFilterTest {
   @Test
   void shouldAbortIfIsNotTokenBasedAuthentication() {
     // Given
-    JwtTokenManager jwtTokenManager = new JwtTokenManager(Algorithm.HMAC256("someSecret"));
-    AuthenticationFilter filter = new AuthenticationFilter(jwtTokenManager);
+    GetUserForToken getUserForToken = mock(GetUserForToken.class);
+    AuthenticationFilter filter = new AuthenticationFilter(getUserForToken);
 
     ContainerRequestContext requestContext = mock(ContainerRequestContext.class);
     when(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))

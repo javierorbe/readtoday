@@ -1,7 +1,8 @@
 package dev.team.readtoday.server.user.infrastructure.controller.signin;
 
+import dev.team.readtoday.server.jwt.application.get.GetJwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtToken;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
-import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.user.application.AccessToken;
 import dev.team.readtoday.server.user.application.AuthProcessFailed;
 import dev.team.readtoday.server.user.application.SignInUser;
@@ -24,12 +25,12 @@ public final class SignInController extends BaseController {
   private static final Logger LOGGER = LoggerFactory.getLogger(SignInController.class);
 
   private final SignInUser signInUser;
-  private final JwtTokenManager jwtTokenManager;
+  private final GetJwtToken getJwtToken;
 
   @Autowired
-  public SignInController(SignInUser signInUser, JwtTokenManager jwtTokenManager) {
+  public SignInController(SignInUser signInUser, GetJwtToken getJwtToken) {
     this.signInUser = signInUser;
-    this.jwtTokenManager = jwtTokenManager;
+    this.getJwtToken = getJwtToken;
   }
 
   @POST
@@ -40,10 +41,10 @@ public final class SignInController extends BaseController {
 
     try {
       User user = signInUser.signIn(new AccessToken(request.getAccessToken()));
-      String jwtToken = jwtTokenManager.getForUserId(user.getId().toString());
+      JwtToken jwtToken = getJwtToken.apply(user.getId());
 
       LOGGER.debug("Successful sign in.");
-      return Response.ok(jwtToken).build();
+      return Response.ok(jwtToken.toString()).build();
     } catch (AuthProcessFailed e) {
       LOGGER.debug("Sign in failed.", e);
       return response(Status.UNAUTHORIZED);

@@ -7,7 +7,6 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.auth0.jwt.algorithms.Algorithm;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -19,12 +18,13 @@ import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
+import dev.team.readtoday.server.jwt.domain.JwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtTokenMother;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
-import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
@@ -40,12 +40,10 @@ import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public final class SearchChannelFeature extends BaseAcceptanceTest {
@@ -57,7 +55,7 @@ public final class SearchChannelFeature extends BaseAcceptanceTest {
   private CategoryRepository categoryRepository;
 
   private UserId userId;
-  private String userJwtToken;
+  private JwtToken userJwtToken;
   private Response response;
   private final Map<ChannelId, Channel> channelCache = new HashMap<>();
 
@@ -121,16 +119,12 @@ public final class SearchChannelFeature extends BaseAcceptanceTest {
 
   @Given("I have a valid authentication token")
   public void iHaveAValidAuthenticationToken() {
-    userJwtToken = context.getJwtTokenManager().getForUserId(userId.toString());
+    userJwtToken = context.getJwtTokenForUser(userId.toString());
   }
 
   @Given("I have an invalid authentication token")
   public void iHaveAnInvalidAuthenticationToken() {
-    Random random = new SecureRandom();
-    byte[] secret = new byte[64];
-    random.nextBytes(secret);
-    JwtTokenManager otherTokenManager = new JwtTokenManager(Algorithm.HMAC256(secret));
-    userJwtToken = otherTokenManager.getForUserId(userId.toString());
+    userJwtToken = JwtTokenMother.random();
   }
 
   @When("I request to search channels with the category {string}")
