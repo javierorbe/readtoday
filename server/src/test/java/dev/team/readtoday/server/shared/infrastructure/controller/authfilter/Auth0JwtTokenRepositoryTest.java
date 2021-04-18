@@ -15,25 +15,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class Auth0JwtTokenManagerTest {
+final class Auth0JwtTokenRepositoryTest {
 
   @Test
   void shouldReturnValidTokenForUserId() throws InvalidJwtToken {
     Algorithm algorithm = Algorithm.HMAC256("someSecret");
-    JwtTokenRepository manager = new Auth0JwtTokenRepository(algorithm);
+    JwtTokenRepository repository = new Auth0JwtTokenRepository(algorithm);
     UserId userId = UserId.random();
 
-    JwtToken token = manager.getForUserId(userId);
+    JwtToken token = repository.getForUserId(userId);
 
-    assertEquals(userId, manager.validateAndGetUserId(token));
+    assertEquals(userId, repository.validateAndGetUserId(token));
   }
 
   @Test
   void shouldThrowExceptionIfInvalidToken() {
     Algorithm algorithm = Algorithm.HMAC256("someSecret");
-    JwtTokenRepository manager = new Auth0JwtTokenRepository(algorithm);
-    JwtToken invalidToken = JwtTokenMother.invalid();
+    JwtTokenRepository repository = new Auth0JwtTokenRepository(algorithm);
+    JwtToken invalidToken = JwtTokenMother.random();
 
-    assertThrows(InvalidJwtToken.class, () -> manager.validateAndGetUserId(invalidToken));
+    assertThrows(InvalidJwtToken.class, () -> repository.validateAndGetUserId(invalidToken));
   }
 }
