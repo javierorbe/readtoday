@@ -264,6 +264,11 @@
       <artifactId>spring-context</artifactId>
       <version>5.3.5</version>
     </dependency>
+    <dependency>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>0.9.12</version>
+    </dependency>
     <!-- Apache Apache Validator (data validation) -->
     <dependency>
       <groupId>commons-validator</groupId>

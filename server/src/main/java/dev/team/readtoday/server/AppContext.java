@@ -9,7 +9,6 @@ import java.net.URI;
 import java.security.SecureRandom;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.tomlj.TomlTable;
 
 final class AppContext extends AnnotationConfigApplicationContext {
@@ -25,6 +24,9 @@ final class AppContext extends AnnotationConfigApplicationContext {
 
     ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
 
+    registerBean("jwtSigningAlg",
+        Algorithm.class,
+        AppContext::buildJwtSigningAlgorithm);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(DSLContext.class, jooq::getContext);
     scan(APP_PACKAGE);
@@ -35,11 +37,6 @@ final class AppContext extends AnnotationConfigApplicationContext {
   public void close() {
     jooq.close();
     super.close();
-  }
-
-  @Bean("jwtSigningAlg")
-  public Algorithm jwtSigningAlg() {
-    return buildJwtSigningAlgorithm();
   }
 
   private static ProfileFetcher buildGoogleProfileFetcher(TomlTable config) {
