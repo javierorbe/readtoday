@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.search;
 
-import dev.team.readtoday.server.category.application.SearchCategoriesById;
+import dev.team.readtoday.server.category.application.search.SearchCategory;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
@@ -29,11 +29,11 @@ public final class ChannelSearchController extends BaseController {
   private static final Logger LOGGER = LoggerFactory.getLogger(ChannelSearchController.class);
 
   private final SearchChannelsByCategory searchChannels;
-  private final SearchCategoriesById searchCategoriesById;
+  private final SearchCategory searchCategoriesById;
 
   @Autowired
   public ChannelSearchController(SearchChannelsByCategory searchChannels,
-                                 SearchCategoriesById searchCategoriesById) {
+                                 SearchCategory searchCategoriesById) {
     this.searchChannels = searchChannels;
     this.searchCategoriesById = searchCategoriesById;
   }
@@ -46,7 +46,7 @@ public final class ChannelSearchController extends BaseController {
     try {
       Collection<Channel> channels = searchChannels.search(categoryName);
       Collection<CategoryId> categoryIds = flatChannelCategories(channels);
-      Collection<Category> categories = searchCategoriesById.search(categoryIds);
+      Collection<Category> categories = searchCategoriesById.apply(categoryIds);
       ChannelsByCategoryResponse response = new ChannelsByCategoryResponse(channels, categories);
 
       LOGGER.debug("Successful channels by category name request");

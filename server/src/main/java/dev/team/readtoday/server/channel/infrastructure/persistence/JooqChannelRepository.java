@@ -56,6 +56,17 @@ public final class JooqChannelRepository implements ChannelRepository {
   }
 
   @Override
+  public Collection<Channel> get(Collection<ChannelId> channelIds) {
+    var result =
+        dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)
+            .from(CHANNEL)
+            .where(CHANNEL.ID.in(channelIds))
+            .fetch();
+
+    return result.map(this::createChannelFromResult);
+  }
+
+  @Override
   public Collection<Channel> getByCategory(CategoryId categoryId) {
     var result =
         dsl.select(CHANNEL.ID, CHANNEL.TITLE, CHANNEL.RSS_URL, CHANNEL.DESCRIPTION, CHANNEL.IMG_URL)

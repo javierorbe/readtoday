@@ -17,5 +17,7 @@ public interface ChannelRepository {
   /** Returns a Channel given a channel id. */
   Optional<Channel> getFromId(ChannelId channelId);
 
+  Collection<Channel> get(Collection<ChannelId> channelIds);
+
   Collection<Channel> getByCategory(CategoryId categoryId);
 }
