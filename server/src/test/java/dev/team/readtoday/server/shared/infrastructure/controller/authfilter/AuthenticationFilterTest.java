@@ -5,7 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dev.team.readtoday.server.jwt.application.validate.GetUserForToken;
+import dev.team.readtoday.server.shared.domain.bus.query.QueryBus;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
@@ -21,8 +21,7 @@ final class AuthenticationFilterTest {
   @Test
   void shouldAbortIfAuthorizationHeaderIsNull() {
     // Given
-    GetUserForToken getUserForToken = mock(GetUserForToken.class);
-    AuthenticationFilter filter = new AuthenticationFilter(getUserForToken);
+    AuthenticationFilter filter = new AuthenticationFilter(mock(QueryBus.class));
 
     ContainerRequestContext requestContext = mock(ContainerRequestContext.class);
     when(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
@@ -41,8 +40,7 @@ final class AuthenticationFilterTest {
   @Test
   void shouldAbortIfIsNotTokenBasedAuthentication() {
     // Given
-    GetUserForToken getUserForToken = mock(GetUserForToken.class);
-    AuthenticationFilter filter = new AuthenticationFilter(getUserForToken);
+    AuthenticationFilter filter = new AuthenticationFilter(mock(QueryBus.class));
 
     ContainerRequestContext requestContext = mock(ContainerRequestContext.class);
     when(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
