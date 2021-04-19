@@ -30,15 +30,17 @@ public final class CategorySearchAllListener {
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void onCategoryCreationRequestReceived(SearchAllCategoriesEvent event) {
+  public void onSearchAllCategoriesRequestReceived(SearchAllCategoriesEvent event) {
     LOGGER.trace("Sending search all categories request.");
     HttpResponse response = requestBuilder.get();
 
     if (response.isStatusOk()) {
+      LOGGER.trace("Successfully search all categories response received.");
       AllCategoryResponse entity = response.getEntity(AllCategoryResponse.class);
       ImmutableCollection<Category> categories = entity.toCategoriesCollection();
       eventBus.post(new SearchAllCategoriesSuccessfullyEvent(categories));
     } else {
+      LOGGER.trace("Search all categories failed response received.");
       eventBus.post(new SearchAllCategoriesFailedEvent(response.getStatusReason()));
     }
   }
