@@ -11,6 +11,8 @@ import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
 import dev.team.readtoday.server.channel.domain.ImageUrl;
 import dev.team.readtoday.server.channel.domain.RssUrl;
+import dev.team.readtoday.server.jwt.domain.JwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtTokenMother;
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
@@ -43,7 +45,7 @@ public final class SubscribeFeature extends BaseAcceptanceTest {
   private UserRepository userRepository;
   private ChannelRepository channelRepository;
 
-  private String userJwtToken;
+  private JwtToken userJwtToken;
   private Response response;
 
   @Before
@@ -80,13 +82,12 @@ public final class SubscribeFeature extends BaseAcceptanceTest {
 
   @Given("I have a valid authentication token for the user with ID {string}")
   public void iHaveAValidAuthenticationTokenForTheUserWithId(String userIdStr) {
-    userJwtToken = context.getJwtTokenManager().getForUserId(userIdStr);
+    userJwtToken = context.getJwtTokenForUser(userIdStr);
   }
 
   @Given("I have an invalid authentication token")
   public void iHaveAnInvalidAuthenticationToken() {
-    userJwtToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    userJwtToken = JwtTokenMother.random();
   }
 
   @And("there is a channel:")

@@ -10,9 +10,9 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.team.readtoday.server.user.application.AccessToken;
-import dev.team.readtoday.server.user.application.AuthProcessFailed;
-import dev.team.readtoday.server.user.application.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.AccessToken;
+import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import java.io.IOException;
 import java.net.URI;
@@ -44,7 +44,7 @@ public final class GoogleProfileFetcher implements ProfileFetcher {
   }
 
   @Override
-  public EmailAddress fetchEmailAddress(AccessToken token) throws AuthProcessFailed {
+  public EmailAddress fetchEmailAddress(AccessToken token) throws ProfileFetchingFailed {
     try {
       OAuth2AccessToken accessToken = service.getAccessToken(token.toString());
 
@@ -59,7 +59,7 @@ public final class GoogleProfileFetcher implements ProfileFetcher {
 
       return new EmailAddress(email);
     } catch (IOException | InterruptedException | ExecutionException e) {
-      throw new AuthProcessFailed("Email fetching failed.", e);
+      throw new ProfileFetchingFailed("Email fetching failed.", e);
     }
   }
 }

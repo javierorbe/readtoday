@@ -5,9 +5,11 @@ import static org.mockito.Mockito.mock;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.rometools.rome.io.SyndFeedInput;
 import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
+import dev.team.readtoday.server.jwt.application.get.GetJwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtToken;
+import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
-import dev.team.readtoday.server.user.application.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import java.security.SecureRandom;
 import org.jooq.DSLContext;
 import org.jooq.Table;
@@ -20,17 +22,17 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
   private static final int SIGNING_SECRET_KEY_SIZE = 64;
 
   private final JooqConnectionBuilder jooq;
-  private final JwtTokenManager jwtTokenManager;
 
   public AcceptanceTestAppContext(ProfileFetcher profileFetcher) {
-    jwtTokenManager = new JwtTokenManager(buildJwtSigningAlgorithm());
 
     HikariConfig hikariConfig = new HikariConfig("/datasource-test.properties");
     jooq = new JooqConnectionBuilder(hikariConfig);
 
+    registerBean("jwtSigningAlg",
+        Algorithm.class,
+        AcceptanceTestAppContext::buildJwtSigningAlgorithm);
     registerBean(SyndFeedInput.class, SyndFeedInput::new);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
-    registerBean(JwtTokenManager.class, () -> jwtTokenManager);
     registerBean(DSLContext.class, jooq::getContext);
     scan(SERVER_PACKAGE);
     refresh();
@@ -38,10 +40,6 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
 
   public AcceptanceTestAppContext() {
     this(mock(ProfileFetcher.class));
-  }
-
-  public JwtTokenManager getJwtTokenManager() {
-    return jwtTokenManager;
   }
 
   public void clearTables(Table<?>... tables) {
@@ -61,5 +59,10 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
     byte[] secret = new byte[SIGNING_SECRET_KEY_SIZE];
     random.nextBytes(secret);
     return Algorithm.HMAC256(secret);
+  }
+
+  public JwtToken getJwtTokenForUser(String userId) {
+    GetJwtToken getJwtToken = getBean(GetJwtToken.class);
+    return getJwtToken.apply(UserId.fromString(userId));
   }
 }

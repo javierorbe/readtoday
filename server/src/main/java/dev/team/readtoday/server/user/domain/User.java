@@ -20,10 +20,6 @@ public final class User {
     this.role = Objects.requireNonNull(role);
   }
 
-  public static User create(Username username, EmailAddress email, Role role) {
-    return new User(UserId.random(), username, email, role);
-  }
-
   public UserId getId() {
     return id;
   }

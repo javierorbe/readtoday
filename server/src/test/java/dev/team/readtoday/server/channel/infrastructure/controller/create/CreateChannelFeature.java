@@ -6,6 +6,8 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNE
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import dev.team.readtoday.server.jwt.domain.JwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtTokenMother;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
@@ -36,7 +38,7 @@ public final class CreateChannelFeature extends BaseAcceptanceTest {
 
   private UserRepository userRepository;
 
-  private String userJwtToken;
+  private JwtToken userJwtToken;
   private Response response;
 
   @Before
@@ -76,13 +78,12 @@ public final class CreateChannelFeature extends BaseAcceptanceTest {
 
   @Given("I have a valid authentication token for the user with ID {string}")
   public void iHaveAValidAuthenticationTokenForTheUserWithId(String userIdStr) {
-    userJwtToken = context.getJwtTokenManager().getForUserId(userIdStr);
+    userJwtToken = context.getJwtTokenForUser(userIdStr);
   }
 
   @Given("I have an invalid authentication token")
   public void iHaveAnInvalidAuthenticationToken() {
-    userJwtToken =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+    userJwtToken = JwtTokenMother.random();
   }
 
   @When("I request to create a channel with the following characteristics:")

@@ -1,11 +1,16 @@
 package dev.team.readtoday.server.shared.infrastructure.controller.authfilter;
 
+import dev.team.readtoday.server.jwt.application.validate.GetUserForToken;
+import dev.team.readtoday.server.jwt.domain.InvalidJwtToken;
+import dev.team.readtoday.server.jwt.domain.JwtToken;
+import dev.team.readtoday.server.shared.domain.UserId;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
 import org.slf4j.Logger;
@@ -22,11 +27,11 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
   private static final String REALM = "auth";
   private static final String AUTHENTICATION_SCHEME = "Bearer";
 
-  private final JwtTokenManager jwtTokenManager;
+  private final GetUserForToken userForToken;
 
   @Autowired
-  public AuthenticationFilter(JwtTokenManager jwtTokenManager) {
-    this.jwtTokenManager = jwtTokenManager;
+  public AuthenticationFilter(GetUserForToken userForToken) {
+    this.userForToken = userForToken;
   }
 
   @Override
@@ -45,10 +50,11 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
       String token = authorizationHeader
           .substring(AUTHENTICATION_SCHEME.length()).trim();
 
-      String userId = jwtTokenManager.validateAndGetUserId(token);
+      UserId userId = userForToken.apply(JwtToken.fromString(token));
 
       SecurityContext securityContext = requestContext.getSecurityContext();
-      requestContext.setSecurityContext(new CustomSecurityContext(userId, securityContext));
+      requestContext.setSecurityContext(
+          new CustomSecurityContext(userId.toString(), securityContext));
 
       LOGGER.trace("Successfully passed authorization filter.");
     } catch (InvalidJwtToken e) {
@@ -64,7 +70,7 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
 
   private static void abortWithUnauthorized(ContainerRequestContext requestContext) {
     requestContext.abortWith(
-        Response.status(Response.Status.UNAUTHORIZED)
+        Response.status(Status.UNAUTHORIZED)
             .header(HttpHeaders.WWW_AUTHENTICATE,
                 AUTHENTICATION_SCHEME + " realm=\"" + REALM + '"')
             .build());

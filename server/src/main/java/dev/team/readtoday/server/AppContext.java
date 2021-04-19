@@ -2,9 +2,8 @@ package dev.team.readtoday.server;
 
 import com.auth0.jwt.algorithms.Algorithm;
 import com.zaxxer.hikari.HikariConfig;
-import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.JwtTokenManager;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
-import dev.team.readtoday.server.user.application.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
 import java.net.URI;
 import java.security.SecureRandom;
@@ -24,10 +23,11 @@ final class AppContext extends AnnotationConfigApplicationContext {
     jooq = new JooqConnectionBuilder(hikariConfig);
 
     ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
-    JwtTokenManager jwtTokenManager = new JwtTokenManager(buildJwtSigningAlgorithm());
 
+    registerBean("jwtSigningAlg",
+        Algorithm.class,
+        AppContext::buildJwtSigningAlgorithm);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
-    registerBean(JwtTokenManager.class, () -> jwtTokenManager);
     registerBean(DSLContext.class, jooq::getContext);
     scan(APP_PACKAGE);
     refresh();

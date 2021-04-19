@@ -1,13 +1,13 @@
-package dev.team.readtoday.server.user.application;
+package dev.team.readtoday.server.user.application.profile;
 
 import com.github.javafaker.Faker;
 
-enum AccessTokenMother {
+public enum AccessTokenMother {
   ;
 
   private static final Faker FAKER = Faker.instance();
 
-  static AccessToken random() {
+  public static AccessToken random() {
     return new AccessToken(FAKER.random().hex());
   }
 }
