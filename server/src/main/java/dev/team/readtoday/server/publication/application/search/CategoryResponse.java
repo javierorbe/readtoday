@@ -1,6 +1,5 @@
-package dev.team.readtoday.server.publication.infrastructure.controller.channel;
+package dev.team.readtoday.server.publication.application.search;
 
-import dev.team.readtoday.server.category.domain.Category;
 import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,7 +9,7 @@ public final class CategoryResponse {
   private final String id;
   private final String name;
 
-  private CategoryResponse(Category category) {
+  private CategoryResponse(dev.team.readtoday.server.category.application.search.CategoryResponse category) {
     this.id = category.getId().toString();
     this.name = category.getName().toString();
   }
@@ -23,7 +22,7 @@ public final class CategoryResponse {
     return name;
   }
 
-  static Set<CategoryResponse> setOf(Collection<Category> categories) {
+  static Set<CategoryResponse> fromDomain(Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     return categories.stream()
         .map(CategoryResponse::new)
         .collect(Collectors.toUnmodifiableSet());
