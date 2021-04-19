@@ -1,7 +1,5 @@
 package dev.team.readtoday.server.shared.domain;
 
-import java.util.UUID;
-
 /**
  * String that uniquely identifies a publication.
  *

@@ -11,6 +11,7 @@ import org.jooq.Result;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.READLATER;
 
@@ -25,7 +26,7 @@ public class JooqReadLaterRepository implements ReadLaterListRespository {
     }
 
     @Override
-    public ReadLaterList getByUserId(UserId userId) {
+    public Optional<ReadLaterList> getByUserId(UserId userId) {
         Result<Record2<String, String>> result =
                 dsl.select(READLATER.USER_ID, READLATER.PUBLICATION_ID).from(READLATER)
                         .where(READLATER.USER_ID.eq(userId.toString())).fetch();
@@ -36,8 +37,8 @@ public class JooqReadLaterRepository implements ReadLaterListRespository {
             PublicationId publicationId = PublicationId.fromString(results.getValue(READLATER.PUBLICATION_ID));
             publicationIds.add(publicationId);
         }
-
-        return new ReadLaterList(userId, publicationIds);
+        ReadLaterList readLaterList = new ReadLaterList(userId, publicationIds);
+        return Optional.of(readLaterList);
     }
 
     @Override
