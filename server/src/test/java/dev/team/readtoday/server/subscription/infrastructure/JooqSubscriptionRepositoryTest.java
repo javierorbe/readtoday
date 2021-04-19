@@ -4,9 +4,7 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNE
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL_CATEGORIES;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SUBSCRIPTION;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
@@ -69,7 +67,7 @@ final class JooqSubscriptionRepositoryTest extends BaseJooqIntegrationTest {
 
         Optional<Subscription> optSubscription =
                 subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-        if(!optSubscription.isPresent()) {
+        if(optSubscription.isEmpty()) {
             subRepository.save(originalSubscription);
             optSubscription =
                     subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
@@ -94,7 +92,9 @@ final class JooqSubscriptionRepositoryTest extends BaseJooqIntegrationTest {
 
         if(optSubscription.isPresent()){
             subRepository.remove(originalSubscription);
-            assertTrue(!optSubscription.isPresent());
+            optSubscription =
+                    subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+            assertFalse(optSubscription.isPresent());
 
         }
     }
