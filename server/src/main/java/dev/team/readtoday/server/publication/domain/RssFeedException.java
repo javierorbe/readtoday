@@ -2,7 +2,7 @@ package dev.team.readtoday.server.publication.domain;
 
 import java.io.Serial;
 
-public final class RssFeedException extends Exception {
+public final class RssFeedException extends RuntimeException {
 
   @Serial
   private static final long serialVersionUID = 6602128598660809122L;

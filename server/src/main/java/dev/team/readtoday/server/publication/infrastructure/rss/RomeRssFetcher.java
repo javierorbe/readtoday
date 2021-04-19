@@ -47,13 +47,13 @@ public final class RomeRssFetcher implements RssFetcher {
   }
 
   @Override
-  public List<Publication> getPublications(RssUrl rssUrl) throws RssFeedException {
+  public List<Publication> getPublications(RssUrl rssUrl) {
     SyndFeed feed = fetchRssFeed(rssUrl);
     List<SyndEntry> entries = feed.getEntries();
     return buildPublicationList(entries);
   }
 
-  private static SyndFeed fetchRssFeed(RssUrl rssUrl) throws RssFeedException {
+  private static SyndFeed fetchRssFeed(RssUrl rssUrl) {
     try {
       XmlReader reader = new XmlReader(rssUrl.toUrl());
       return new SyndFeedInput().build(reader);

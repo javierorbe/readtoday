@@ -1,6 +1,5 @@
-package dev.team.readtoday.server.publication.infrastructure.controller.channel;
+package dev.team.readtoday.server.publication.application.search;
 
-import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationDate;
 import dev.team.readtoday.server.shared.domain.StringValueObject;
@@ -18,13 +17,14 @@ public final class PublicationResponse {
   private final String link;
   private final Set<CategoryResponse> categories;
 
-  PublicationResponse(Publication publication, Collection<Category> categories) {
+  PublicationResponse(Publication publication,
+                      Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     id = publication.getId().toString();
     title = publication.getTitle().map(StringValueObject::toString).orElse(null);
     date = publication.getDate().map(PublicationDate::getDateTime).orElse(null);
     description = publication.getDescription().map(StringValueObject::toString).orElse(null);
     link = publication.getLink().map(StringValueObject::toString).orElse(null);
-    this.categories = CategoryResponse.setOf(categories);
+    this.categories = CategoryResponse.fromDomain(categories);
   }
 
   public String getId() {
@@ -51,8 +51,8 @@ public final class PublicationResponse {
     return categories;
   }
 
-  static List<PublicationResponse> listOf(List<Publication> publications,
-                                          Collection<Category> categories) {
+  static List<PublicationResponse> fromDomain(List<Publication> publications,
+                                              Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     return publications.stream().map(pub -> new PublicationResponse(pub, categories)).toList();
   }
 }
