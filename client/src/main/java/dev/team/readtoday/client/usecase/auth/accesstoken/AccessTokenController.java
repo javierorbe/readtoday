@@ -33,11 +33,7 @@ public final class AccessTokenController {
   @GET
   @Produces(MediaType.TEXT_PLAIN)
   public String receiveAccessToken(@QueryParam("code") String accessToken) {
-    try {
-      postReadyEvent(accessToken);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    postReadyEvent(accessToken);
     return "OK! Check the app.";
   }
 

@@ -1,9 +1,8 @@
 package dev.team.readtoday.server.shared.infrastructure.controller.authfilter;
 
-import dev.team.readtoday.server.jwt.application.validate.GetUserForToken;
+import dev.team.readtoday.server.jwt.application.validate.GetUserForTokenQuery;
 import dev.team.readtoday.server.jwt.domain.InvalidJwtToken;
-import dev.team.readtoday.server.jwt.domain.JwtToken;
-import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.shared.domain.bus.query.QueryBus;
 import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -27,11 +26,11 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
   private static final String REALM = "auth";
   private static final String AUTHENTICATION_SCHEME = "Bearer";
 
-  private final GetUserForToken userForToken;
+  private final QueryBus queryBus;
 
   @Autowired
-  public AuthenticationFilter(GetUserForToken userForToken) {
-    this.userForToken = userForToken;
+  public AuthenticationFilter(QueryBus queryBus) {
+    this.queryBus = queryBus;
   }
 
   @Override
@@ -50,11 +49,12 @@ public final class AuthenticationFilter implements ContainerRequestFilter {
       String token = authorizationHeader
           .substring(AUTHENTICATION_SCHEME.length()).trim();
 
-      UserId userId = userForToken.apply(JwtToken.fromString(token));
+      var response = queryBus.ask(new GetUserForTokenQuery(token));
+      String userId = response.getUserId();
 
       SecurityContext securityContext = requestContext.getSecurityContext();
       requestContext.setSecurityContext(
-          new CustomSecurityContext(userId.toString(), securityContext));
+          new CustomSecurityContext(userId, securityContext));
 
       LOGGER.trace("Successfully passed authorization filter.");
     } catch (InvalidJwtToken e) {
