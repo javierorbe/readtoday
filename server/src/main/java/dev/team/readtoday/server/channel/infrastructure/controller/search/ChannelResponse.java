@@ -50,7 +50,7 @@ public final class ChannelResponse {
     return categoryIds;
   }
 
-  static List<ChannelResponse> fromChannels(Collection<Channel> channels) {
+  public static List<ChannelResponse> fromChannels(Collection<Channel> channels) {
     return channels.stream()
         .map(ChannelResponse::new)
         .collect(Collectors.toList());

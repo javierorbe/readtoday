@@ -3,6 +3,7 @@ package dev.team.readtoday.server.channel.application;
 import dev.team.readtoday.server.channel.application.search.SearchChannel;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.ChannelId;
+import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.subscription.application.GetUserSubscriptions;
 import dev.team.readtoday.server.subscription.domain.Subscription;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
+@Service
 public class SearchChannelsFromSubscriptions {
 
     private final GetUserSubscriptions getUserSubscriptions;
