@@ -4,18 +4,25 @@ import dev.team.readtoday.server.shared.domain.bus.query.QueryResponse;
 
 public final class SettingsQueryResponse implements QueryResponse {
 
+  private final String userId;
+  private final String zoneId;
+  private final String notificationPref;
+
+  public SettingsQueryResponse(String userId, String zoneId, String notificationPref) {
+    this.userId = userId;
+    this.zoneId = zoneId;
+    this.notificationPref = notificationPref;
+  }
+
   public String getUserId() {
-    // TODO
-    throw new UnsupportedOperationException("Not implemented, yet.");
+    return userId;
   }
 
   public String getZoneId() {
-    // TODO
-    throw new UnsupportedOperationException("Not implemented, yet.");
+    return zoneId;
   }
 
   public String getNotificationPreference() {
-    // TODO
-    throw new UnsupportedOperationException("Not implemented, yet.");
+    return notificationPref;
   }
 }

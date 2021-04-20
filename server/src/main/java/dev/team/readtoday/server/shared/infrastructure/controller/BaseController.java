@@ -10,8 +10,12 @@ import java.security.Principal;
 
 public class BaseController {
 
-  @Context
   private SecurityContext securityContext;
+
+  @Context
+  final void setSecurityContext(SecurityContext securityContext) {
+    this.securityContext = securityContext;
+  }
 
   protected static Response response(Status status) {
     return Response.status(status).build();
