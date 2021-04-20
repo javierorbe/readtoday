@@ -6,6 +6,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationEvent;
+import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationFailedEvent;
+import dev.team.readtoday.client.usecase.channel.create.events.ChannelSuccessfullyCreatedEvent;
+import dev.team.readtoday.client.usecase.channel.create.messages.ChannelCreationRequest;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;

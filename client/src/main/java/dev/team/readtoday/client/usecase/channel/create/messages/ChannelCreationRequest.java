@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.channel.create;
+package dev.team.readtoday.client.usecase.channel.create.messages;
 
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;

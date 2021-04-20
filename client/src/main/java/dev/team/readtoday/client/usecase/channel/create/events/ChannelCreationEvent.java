@@ -1,4 +1,6 @@
-package dev.team.readtoday.client.usecase.channel.create;
+package dev.team.readtoday.client.usecase.channel.create.events;
+
+import dev.team.readtoday.client.usecase.channel.create.messages.ChannelCreationRequest;
 
 public final class ChannelCreationEvent {
 
@@ -8,7 +10,7 @@ public final class ChannelCreationEvent {
     this.request = request;
   }
 
-  ChannelCreationRequest getRequest() {
+  public ChannelCreationRequest getRequest() {
     return request;
   }
 }
