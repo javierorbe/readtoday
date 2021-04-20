@@ -26,7 +26,7 @@ public final class CategoryResponse {
     return name;
   }
 
-  static Map<String, Category> buildCategoryMap(Collection<CategoryResponse> categories) {
+  public static Map<String, Category> buildCategoryMap(Collection<CategoryResponse> categories) {
     return categories.stream()
         .collect(Collectors.toMap(cat -> cat.id, cat -> new Category(cat.id, cat.name)));
   }
