@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.greenrobot.eventbus.EventBus;
 
 final class PublicationListWindow implements ViewController {
 
@@ -20,32 +21,36 @@ final class PublicationListWindow implements ViewController {
 
   private final Stage stage = new Stage();
 
-  private PublicationListWindow(Channel channel, List<Publication> publications) {
+  private PublicationListWindow(EventBus eventBus, Channel channel,
+      List<Publication> publications) {
     VBox container = new VBox();
     ScrollPane root = new ScrollPane(container);
     container.setPadding(new Insets(CONTENT_SPACING));
     Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-    Node[] publicationNodes = buildPublicationNodeArray(scene, publications);
+    Node[] publicationNodes = buildPublicationNodeArray(eventBus, scene, publications);
     container.getChildren().addAll(publicationNodes);
 
     stage.setScene(scene);
     stage.setTitle(String.format("Publications of %s", channel.getName()));
   }
 
-  /** Open a publication list window of a channel with its publications. */
-  static void open(Channel channel, List<Publication> publications) {
+  /**
+   * Open a publication list window of a channel with its publications.
+   */
+  static void open(EventBus eventBus, Channel channel, List<Publication> publications) {
     Platform.runLater(() -> {
-      PublicationListWindow window = new PublicationListWindow(channel, publications);
+      PublicationListWindow window = new PublicationListWindow(eventBus, channel, publications);
       window.stage.show();
     });
   }
 
-  private static Node[] buildPublicationNodeArray(Scene scene, List<Publication> publications) {
+  private static Node[] buildPublicationNodeArray(EventBus eventBus, Scene scene,
+      List<Publication> publications) {
     Node[] nodes = new Node[publications.size()];
 
     for (int i = 0; i < publications.size(); i++) {
       Publication publication = publications.get(i);
-      nodes[i] = new PublicationNode(publication, scene.widthProperty());
+      nodes[i] = new PublicationNode(eventBus, publication, scene.widthProperty());
     }
 
     return nodes;

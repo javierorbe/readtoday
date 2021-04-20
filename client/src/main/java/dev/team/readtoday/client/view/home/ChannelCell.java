@@ -60,7 +60,7 @@ public final class ChannelCell extends ListCell<Channel> {
     if (hasNonNullItemProperty()) {
       Channel channel = getItem();
       if (event.getChannelId().equals(channel.getId())) {
-        PublicationListWindow.open(channel, event.getPublications());
+        PublicationListWindow.open(eventBus, channel, event.getPublications());
       }
     }
   }
