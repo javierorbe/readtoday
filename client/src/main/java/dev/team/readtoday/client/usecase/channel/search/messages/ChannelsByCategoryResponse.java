@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.channel.search;
+package dev.team.readtoday.client.usecase.channel.search.messages;
 
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
@@ -7,7 +7,7 @@ import dev.team.readtoday.client.model.Channel;
 import java.util.List;
 import java.util.Map;
 
-public final class ChannelsByCategoryResponse {
+public class ChannelsByCategoryResponse {
 
   private List<ChannelResponse> channels;
   private List<CategoryResponse> categories;
@@ -20,7 +20,7 @@ public final class ChannelsByCategoryResponse {
     this.categories = categories;
   }
 
-  ImmutableCollection<Channel> toChannelCollection() {
+  public ImmutableCollection<Channel> toChannelCollection() {
     Map<String, Category> categoryMap = CategoryResponse.buildCategoryMap(categories);
     return channels.stream()
         .map(channel -> channel.toModel(categoryMap))

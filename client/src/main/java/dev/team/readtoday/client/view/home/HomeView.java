@@ -7,9 +7,9 @@ import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
-import dev.team.readtoday.client.usecase.channel.search.ChannelSearchRequestFailedEvent;
-import dev.team.readtoday.client.usecase.channel.search.SearchChannelsByCategoryEvent;
-import dev.team.readtoday.client.usecase.channel.search.SearchResultReceivedEvent;
+import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
+import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryFailedEvent;
+import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionRequestedEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
@@ -147,14 +147,14 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @Subscribe
-  public void onSearchResultReceived(SearchResultReceivedEvent event) {
+  public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
     ObservableList<Channel> list =
         FXCollections.observableList(new ArrayList<>(event.getChannels()));
     Platform.runLater(() -> newChannelListView.setItems(list));
   }
 
   @Subscribe
-  public void onChannelSearchRequestFailed(ChannelSearchRequestFailedEvent event) {
+  public void onChannelSearchRequestFailed(SearchChannelsByCategoryFailedEvent event) {
     AlertLauncher.error("Category not found");
   }
 }

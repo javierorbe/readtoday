@@ -3,7 +3,7 @@ package dev.team.readtoday.client.usecase.category.search.messages;
 import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.client.model.Category;
-import dev.team.readtoday.client.usecase.channel.search.CategoryResponse;
+import dev.team.readtoday.client.usecase.channel.search.messages.CategoryResponse;
 import java.util.List;
 
 public class AllCategoryResponse {
