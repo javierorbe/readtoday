@@ -25,7 +25,7 @@ public final class SubscriptionListener {
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
   public void onSubscriptionRequested(SubscriptionRequestedEvent event) {
-    String channelId = event.getChannelId();
+    String channelId = event.getChannel().getId();
 
     LOGGER.trace("Subscription requested for channel: {}", channelId);
 
@@ -33,7 +33,7 @@ public final class SubscriptionListener {
     HttpResponse response = requestBuilder.post(request);
 
     if (response.isStatusCreated()) {
-      eventBus.post(new SuccessfulSubscriptionEvent(channelId));
+      eventBus.post(new SuccessfulSubscriptionEvent(event.getChannel()));
     } else {
       eventBus.post(new SubscriptionFailedEvent(channelId, response.getStatusReason()));
     }

@@ -6,12 +6,19 @@ import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
+import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
+import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
+import dev.team.readtoday.client.usecase.subscription.search.events.MySubscriptionsListRequestedEvent;
+import dev.team.readtoday.client.usecase.subscription.search.events.SuccessfulMySubscriptionsListEvent;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionRequestedEvent;
+import dev.team.readtoday.client.usecase.subscription.subscribe.SuccessfulSubscriptionEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
+import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionListener;
+import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionSuccessfulEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
@@ -23,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -133,16 +141,16 @@ public final class HomeView implements ViewController, Initializable {
   @FXML
   public void unsubscribe() {
     if (channelListView.getSelectionModel().getSelectedItem() != null) {
-      String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
-      eventBus.post(new DeleteSubscriptionEvent(channelId));
+      Channel channel = channelListView.getSelectionModel().getSelectedItem();
+      eventBus.post(new DeleteSubscriptionEvent(channel));
     }
   }
 
   @FXML
   public void subscribe() {
     if (newChannelListView.getSelectionModel().getSelectedItem() != null) {
-      String channelId = newChannelListView.getSelectionModel().getSelectedItem().getId();
-      eventBus.post(new SubscriptionRequestedEvent(channelId));
+      Channel channel = newChannelListView.getSelectionModel().getSelectedItem();
+      eventBus.post(new SubscriptionRequestedEvent(channel));
     }
   }
 
@@ -157,4 +165,32 @@ public final class HomeView implements ViewController, Initializable {
   public void onChannelSearchRequestFailed(SearchChannelsByCategoryFailedEvent event) {
     AlertLauncher.error("Category not found");
   }
+
+  @Subscribe
+  public void onSuccessfulSignUpEvent(SuccessfulSignUpEvent event) {
+    eventBus.post(new MySubscriptionsListRequestedEvent());
+  }
+
+  @Subscribe
+  public void onSuccessfulSignInEvent(SuccessfulSignInEvent event) {
+    eventBus.post(new MySubscriptionsListRequestedEvent());
+  }
+
+  @Subscribe
+  public void onSearchResultReceived(SuccessfulMySubscriptionsListEvent event) {
+    ObservableList<Channel> list =
+            FXCollections.observableList(new ArrayList<>(event.getSubscriptions()));
+    Platform.runLater(() -> channelListView.setItems(list));
+  }
+
+  @Subscribe
+  public void onSuccessfulSubscription(SuccessfulSubscriptionEvent event) {
+    channelListView.getItems().add(event.getChannel());
+  }
+
+  @Subscribe
+  public void onSuccessfulDeleteSubscription(DeleteSubscriptionSuccessfulEvent event) {
+    channelListView.getItems().remove(event.getChannel());
+  }
+
 }
