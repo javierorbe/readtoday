@@ -1,13 +1,13 @@
-package dev.team.readtoday.client.usecase.channel.search;
+package dev.team.readtoday.client.usecase.channel.search.events;
 
 import com.google.common.collect.ImmutableCollection;
 import dev.team.readtoday.client.model.Channel;
 
-public final class SearchResultReceivedEvent {
+public final class SearchChannelsByCategorySuccessfullyEvent {
 
   private final ImmutableCollection<Channel> channels;
 
-  SearchResultReceivedEvent(ImmutableCollection<Channel> channels) {
+  public SearchChannelsByCategorySuccessfullyEvent(ImmutableCollection<Channel> channels) {
     this.channels = channels;
   }
 

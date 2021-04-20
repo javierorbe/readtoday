@@ -1,6 +1,6 @@
-package dev.team.readtoday.client.usecase.channel.search;
+package dev.team.readtoday.client.usecase.channel.search.events;
 
-public final class SearchChannelsByCategoryEvent {
+public class SearchChannelsByCategoryEvent {
 
   private final String categoryName;
 
@@ -8,7 +8,7 @@ public final class SearchChannelsByCategoryEvent {
     this.categoryName = categoryName;
   }
 
-  String getCategoryName() {
+  public String getCategoryName() {
     return categoryName;
   }
 }

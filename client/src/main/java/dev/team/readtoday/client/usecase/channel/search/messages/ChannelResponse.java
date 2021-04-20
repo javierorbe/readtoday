@@ -1,4 +1,4 @@
-package dev.team.readtoday.client.usecase.channel.search;
+package dev.team.readtoday.client.usecase.channel.search.messages;
 
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;

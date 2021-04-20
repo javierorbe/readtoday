@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
 
-public final class ChannelCreationRequest {
+public class ChannelCreationRequest {
 
   private final String title;
   private final String rssUrl;
@@ -13,8 +13,8 @@ public final class ChannelCreationRequest {
   private final ImmutableList<String> categoryIds;
 
   public ChannelCreationRequest(String title,
-                                String rssUrl,
-                                String description,
+      String rssUrl,
+      String description,
                                 String imageUrl,
                                 Collection<String> categoryIds) {
     this.title = title;
