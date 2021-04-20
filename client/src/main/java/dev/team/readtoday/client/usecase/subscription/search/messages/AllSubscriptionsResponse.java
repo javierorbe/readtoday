@@ -4,8 +4,8 @@ import com.google.common.collect.ImmutableCollection;
 import com.google.common.collect.ImmutableSet;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
-import dev.team.readtoday.client.usecase.channel.search.CategoryResponse;
-import dev.team.readtoday.client.usecase.channel.search.ChannelResponse;
+import dev.team.readtoday.client.usecase.channel.search.messages.CategoryResponse;
+import dev.team.readtoday.client.usecase.channel.search.messages.ChannelResponse;
 
 import java.util.List;
 import java.util.Map;
