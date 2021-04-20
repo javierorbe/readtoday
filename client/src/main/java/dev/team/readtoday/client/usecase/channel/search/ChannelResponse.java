@@ -16,7 +16,31 @@ public final class ChannelResponse {
   private String imageUrl;
   private List<String> categoryIds;
 
-  public void setId(String id) {
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getRssUrl() {
+        return rssUrl;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public List<String> getCategoryIds() {
+        return categoryIds;
+    }
+    public void setId(String id) {
     this.id = id;
   }
 
@@ -40,7 +64,7 @@ public final class ChannelResponse {
     this.categoryIds = categoryIds;
   }
 
-  Channel toModel(Map<String, Category> categoryMap) {
+  public Channel toModel(Map<String, Category> categoryMap) {
     Collection<Category> categories =
         categoryIds.stream()
             .map(categoryMap::get)
