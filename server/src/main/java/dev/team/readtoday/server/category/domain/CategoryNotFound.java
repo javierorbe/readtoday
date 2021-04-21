@@ -2,7 +2,7 @@ package dev.team.readtoday.server.category.domain;
 
 import java.io.Serial;
 
-public final class CategoryNotFound extends Exception {
+public final class CategoryNotFound extends RuntimeException {
 
   @Serial
   private static final long serialVersionUID = -6384716463017408470L;
