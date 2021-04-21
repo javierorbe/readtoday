@@ -9,7 +9,7 @@ import dev.team.readtoday.server.subscription.domain.SubscriptionAlreadyExists;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
-@Path("subscriptions")
+@Path("subscribe")
 public final class SubscriptionController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
@@ -31,9 +31,8 @@ public final class SubscriptionController extends BaseController {
   }
 
   @POST
-  @Path("/{channelId}")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response subscribe(@PathParam("channelId") String channelIdStr) {
+  public Response subscribe(@QueryParam("channelId") String channelIdStr) {
     UserId userId = getRequestUserId();
     LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
         userId, channelIdStr);
