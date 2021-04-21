@@ -20,7 +20,7 @@ public final class SubscriptionListener {
 
   SubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
-    requestBuilder = factory.buildWithAuth("/subscriptions");
+    requestBuilder = factory.buildWithAuth("/subscribe");
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
@@ -29,8 +29,7 @@ public final class SubscriptionListener {
 
     LOGGER.trace("Subscription requested for channel: {}", channelId);
 
-    SubscriptionRequest request = new SubscriptionRequest(channelId);
-    HttpResponse response = requestBuilder.post(request);
+    HttpResponse response = requestBuilder.withParam("channelId", channelId).post(channelId);
 
     if (response.isStatusCreated()) {
       eventBus.post(new SuccessfulSubscriptionEvent(channelId));
