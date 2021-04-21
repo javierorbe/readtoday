@@ -10,7 +10,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,16 +33,9 @@ public class SearchAllCategoriesController extends BaseController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getAllCategories() {
     LOGGER.trace("Received get all categories request");
-
-    try {
-      Collection<Category> categories = searchCategories.getAll();
-      LOGGER.debug("Successful getting all categories request");
-      AllCategoriesResponse response = new AllCategoriesResponse(categories);
-
-      return Response.ok(response).build();
-    } catch (RuntimeException e) {
-      LOGGER.trace("Getting all categories request failed");
-      return response(Status.NOT_FOUND);
-    }
+    Collection<Category> categories = searchCategories.getAll();
+    AllCategoriesResponse response = new AllCategoriesResponse(categories);
+    LOGGER.debug("Successful getting all categories request");
+    return Response.ok(response).build();
   }
 }

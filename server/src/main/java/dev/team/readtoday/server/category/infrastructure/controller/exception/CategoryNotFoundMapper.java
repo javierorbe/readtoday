@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 @Provider
 public final class CategoryNotFoundMapper implements ExceptionMapper<CategoryNotFound> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(CategoryNotFound.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(CategoryNotFoundMapper.class);
 
   @Override
   public Response toResponse(CategoryNotFound e) {

@@ -56,15 +56,10 @@ public final class ChannelCreationController extends BaseController {
       return response(Status.FORBIDDEN);
     }
 
-    try {
-      Channel channel = createChannelFromRequest(request);
-      URI location = buildResourceLocation(channel);
-      LOGGER.debug("Successful channel creation request: {}", channel);
-      return Response.created(location).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error creating the channel.", e);
-      return response(Status.BAD_REQUEST);
-    }
+    Channel channel = createChannelFromRequest(request);
+    URI location = buildResourceLocation(channel);
+    LOGGER.debug("Successful channel creation request: {}", channel);
+    return Response.created(location).build();
   }
 
   private URI buildResourceLocation(Channel channel) {

@@ -3,7 +3,6 @@ package dev.team.readtoday.server.channel.infrastructure.controller.search;
 import dev.team.readtoday.server.category.application.search.SearchCategory;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
-import dev.team.readtoday.server.category.domain.CategoryNotFound;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.CategoryId;
@@ -15,7 +14,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 import java.util.Collection;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -43,18 +41,13 @@ public final class ChannelSearchController extends BaseController {
   public Response getAllByCategoryName(@QueryParam("categoryName") CategoryName categoryName) {
     LOGGER.trace("Received get channels by category name request: {}", categoryName);
 
-    try {
-      Collection<Channel> channels = searchChannels.search(categoryName);
-      Collection<CategoryId> categoryIds = flatChannelCategories(channels);
-      Collection<Category> categories = searchCategoriesById.apply(categoryIds);
-      ChannelsByCategoryResponse response = new ChannelsByCategoryResponse(channels, categories);
+    Collection<Channel> channels = searchChannels.search(categoryName);
+    Collection<CategoryId> categoryIds = flatChannelCategories(channels);
+    Collection<Category> categories = searchCategoriesById.apply(categoryIds);
+    ChannelsByCategoryResponse response = new ChannelsByCategoryResponse(channels, categories);
 
-      LOGGER.debug("Successful channels by category name request");
-      return Response.ok(response).build();
-    } catch (CategoryNotFound e) {
-      LOGGER.trace("Channel search by category request failed.", e);
-      return response(Status.NOT_FOUND);
-    }
+    LOGGER.debug("Successful channels by category name request");
+    return Response.ok(response).build();
   }
 
   private static Collection<CategoryId> flatChannelCategories(Collection<Channel> channels) {
