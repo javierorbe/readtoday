@@ -111,10 +111,10 @@ public final class SubscribeFeature extends BaseAcceptanceTest {
   public void iRequestToSubscribeToTheChannelWithId(String channelIdStr) {
     Client client = ClientBuilder.newClient();
     WebTarget baseTarget = client.target(getServerBaseUri());
-    WebTarget subscriptionTarget = baseTarget.path("subscriptions");
+    WebTarget subscriptionTarget = baseTarget.path("subscribe");
 
     response = subscriptionTarget
-        .path(channelIdStr)
+        .queryParam("channelId", channelIdStr)
         .request(MediaType.APPLICATION_JSON)
         .header(HttpHeaders.AUTHORIZATION, "Bearer " + userJwtToken)
         .post(Entity.json(null));
