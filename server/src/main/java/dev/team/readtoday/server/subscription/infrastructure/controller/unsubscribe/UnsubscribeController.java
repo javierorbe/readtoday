@@ -10,6 +10,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
-@Path("subscriptions")
+@Path("unsubscribe")
 public final class UnsubscribeController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeController.class);
@@ -31,9 +32,8 @@ public final class UnsubscribeController extends BaseController {
   }
 
   @DELETE
-  @Path("/{channelId}")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response unsubscribe(@PathParam("channelId") String channelIdStr) {
+  public Response unsubscribe(@QueryParam("channelId") String channelIdStr) {
     UserId userId = getRequestUserId();
     LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
         userId, channelIdStr);

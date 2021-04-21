@@ -20,21 +20,20 @@ public final class DeleteSubscriptionListener {
 
   DeleteSubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
-    requestBuilder = factory.buildWithAuth("/subscriptions");
+    requestBuilder = factory.buildWithAuth("/unsubscribe");
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
   public void onDeleteSubscription(DeleteSubscriptionEvent event) {
     String channelId = event.getChannelId();
     LOGGER.trace("Unsubscribe requested for channel: {}", channelId);
-    HttpResponse response = requestBuilder.delete(event.getChannelId());
+    HttpResponse response = requestBuilder.withParam("channelId", channelId).delete(channelId);
+    // HttpResponse response = requestBuilder.delete(event.getChannelId());
 
     if (response.isStatusNoContent()) {
       eventBus.post(new DeleteSubscriptionSuccessfulEvent(channelId));
     } else {
-      eventBus.post(
-          new DeleteSubscriptionFailedEvent(channelId, response.getStatusReason())
-      );
+      eventBus.post(new DeleteSubscriptionFailedEvent(channelId, response.getStatusReason()));
     }
   }
 }

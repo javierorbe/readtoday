@@ -2,8 +2,8 @@ package dev.team.readtoday.server.user.application;
 
 import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.user.application.profile.AccessToken;
-import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
 import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
+import dev.team.readtoday.server.user.application.profile.ProfileFetchingFailed;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.NonExistingUser;
 import dev.team.readtoday.server.user.domain.User;

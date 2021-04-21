@@ -18,30 +18,30 @@ import org.slf4j.LoggerFactory;
 
 @SubscribedComponent
 public final class MySubscriptionsListListener {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MySubscriptionsListListener.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(MySubscriptionsListListener.class);
 
-    private final EventBus eventBus;
-    private final HttpRequestBuilder requestBuilder;
+  private final EventBus eventBus;
+  private final HttpRequestBuilder requestBuilder;
 
-    public MySubscriptionsListListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
-        this.eventBus = eventBus;
-        requestBuilder = factory.buildWithAuth("/subscriptions");
+  public MySubscriptionsListListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+    this.eventBus = eventBus;
+    requestBuilder = factory.buildWithAuth("/subscriptions");
+  }
+
+  @Subscribe(threadMode = ThreadMode.ASYNC)
+  public void onSubscriptionListRequested(MySubscriptionsListRequestedEvent event) {
+
+    LOGGER.trace("Subscriptions list requested ");
+
+    HttpResponse response = requestBuilder.get();
+
+    if (response.isStatusOk()) {
+      AllSubscriptionsResponse entity = response.getEntity(AllSubscriptionsResponse.class);
+      ImmutableCollection<Channel> subscriptions = entity.toChannelsCollection();
+      eventBus.post(new SuccessfulMySubscriptionsListEvent(subscriptions));
+
+    } else {
+      eventBus.post(new MySubscriptionsListFailedEvent(response.getStatusReason()));
     }
-
-    @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onSubscriptionListRequested(MySubscriptionsListRequestedEvent event) {
-
-        LOGGER.trace("Subscriptions list requested ");
-
-        HttpResponse response = requestBuilder.get();
-
-        if (response.isStatusOk()) {
-            AllSubscriptionsResponse entity = response.getEntity(AllSubscriptionsResponse.class);
-            ImmutableCollection<Channel> subscriptions = entity.toChannelsCollection();
-            eventBus.post(new SuccessfulMySubscriptionsListEvent(subscriptions));
-
-        } else {
-            eventBus.post(new MySubscriptionsListFailedEvent(response.getStatusReason()));
-        }
-    }
+  }
 }

@@ -44,7 +44,7 @@ public class JooqSubscriptionRepository implements SubscriptionRepository {
       subscriptions.add(new Subscription(userId, idChannel));
     }
 
-    return subscriptions ;
+    return subscriptions;
 
   }
 

@@ -9,16 +9,17 @@ import dev.team.readtoday.server.user.domain.NonExistingUser;
 @Service
 public class SearchReadLaterList {
 
-    private final ReadLaterListRespository readLaterListRespository;
+  private final ReadLaterListRespository readLaterListRespository;
 
-    public SearchReadLaterList(ReadLaterListRespository readLaterListRespository){
-        this.readLaterListRespository = readLaterListRespository;
+  public SearchReadLaterList(ReadLaterListRespository readLaterListRespository) {
+    this.readLaterListRespository = readLaterListRespository;
+  }
+
+  public ReadLaterList search(UserId userId) throws NonExistingUser {
+    if (readLaterListRespository.getByUserId(userId).isPresent()) {
+      return readLaterListRespository.getByUserId(userId).get();
     }
-    public ReadLaterList search(UserId userId) throws NonExistingUser {
-        if(readLaterListRespository.getByUserId(userId).isPresent()) {
-            return readLaterListRespository.getByUserId(userId).get();
-        }
-        throw new NonExistingUser("User not found");
-    }
+    throw new NonExistingUser("User not found");
+  }
 }
 

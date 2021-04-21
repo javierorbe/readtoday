@@ -27,19 +27,14 @@ public final class JooqCategoryRepository implements CategoryRepository {
   @Override
   public void save(Category category) {
     dsl.insertInto(CATEGORY, CATEGORY.ID, CATEGORY.NAME)
-        .values(
-            category.getId().toString(),
-            category.getName().toString()
-        ).onDuplicateKeyIgnore()
+        .values(category.getId().toString(), category.getName().toString()).onDuplicateKeyIgnore()
         .execute();
   }
 
   @Override
   public Collection<Category> getById(Collection<CategoryId> ids) {
-    var result = dsl.select(CATEGORY.ID, CATEGORY.NAME)
-        .from(CATEGORY)
-        .where(CATEGORY.ID.in(ids))
-        .fetch();
+    var result =
+        dsl.select(CATEGORY.ID, CATEGORY.NAME).from(CATEGORY).where(CATEGORY.ID.in(ids)).fetch();
 
     return result.stream().map(record -> {
       CategoryId id = CategoryId.fromString(record.get(CATEGORY.ID));
@@ -50,21 +45,16 @@ public final class JooqCategoryRepository implements CategoryRepository {
 
   @Override
   public Set<Category> getAll() {
-    var result = dsl.select(CATEGORY.ID, CATEGORY.NAME)
-        .from(CATEGORY)
-        .fetch();
+    var result = dsl.select(CATEGORY.ID, CATEGORY.NAME).from(CATEGORY).fetch();
 
-    return result.stream()
-        .map(this::createCategoryFromResult)
+    return result.stream().map(this::createCategoryFromResult)
         .collect(Collectors.toUnmodifiableSet());
   }
 
   @Override
   public Optional<Category> getByName(CategoryName categoryName) {
-    Record1<String> record = dsl.select(CATEGORY.ID)
-        .from(CATEGORY)
-        .where(CATEGORY.NAME.equalIgnoreCase(categoryName.toString()))
-        .fetchOne();
+    Record1<String> record = dsl.select(CATEGORY.ID).from(CATEGORY)
+        .where(CATEGORY.NAME.equalIgnoreCase(categoryName.toString())).fetchOne();
 
     if (record == null) {
       return Optional.empty();
@@ -74,7 +64,7 @@ public final class JooqCategoryRepository implements CategoryRepository {
     return Optional.of(new Category(categoryId, categoryName));
   }
 
-  private Category createCategoryFromResult(Record2<String, String> result){
+  private Category createCategoryFromResult(Record2<String, String> result) {
     CategoryId id = CategoryId.fromString(result.getValue(CATEGORY.ID));
     CategoryName name = new CategoryName(result.getValue(CATEGORY.NAME));
     return new Category(id, name);

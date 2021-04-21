@@ -16,7 +16,7 @@ public class GenericType<T> {
   /**
    * Type represented by the generic type instance.
    */
-  private final Type type;
+  private final Type type; 
 
   /**
    * The actual raw parameter type.

@@ -35,8 +35,8 @@ public final class QueryHandlerInfo {
     return queryHandlerClass;
   }
 
-  private static Map<Class<? extends Query>, Class<? extends QueryHandler>>
-  buildHandlerMap(Iterable<Class<? extends QueryHandler>> classes) {
+  private static Map<Class<? extends Query>, Class<? extends QueryHandler>> buildHandlerMap(
+      Iterable<Class<? extends QueryHandler>> classes) {
     Map<Class<? extends Query>, Class<? extends QueryHandler>> handlers = new HashMap<>();
 
     for (Class<? extends QueryHandler> handlerClass : classes) {

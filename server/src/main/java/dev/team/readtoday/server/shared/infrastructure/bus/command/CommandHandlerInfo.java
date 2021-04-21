@@ -36,8 +36,8 @@ public final class CommandHandlerInfo {
   }
 
   @SuppressWarnings("unchecked")
-  private static Map<Class<? extends Command>, Class<? extends CommandHandler>>
-  buildHandlerMap(Iterable<Class<? extends CommandHandler>> cmdHandlerClasses) {
+  private static Map<Class<? extends Command>, Class<? extends CommandHandler>> buildHandlerMap(
+      Iterable<Class<? extends CommandHandler>> cmdHandlerClasses) {
     Map<Class<? extends Command>, Class<? extends CommandHandler>> handlers = new HashMap<>();
 
     for (Class<? extends CommandHandler> handlerClass : cmdHandlerClasses) {
