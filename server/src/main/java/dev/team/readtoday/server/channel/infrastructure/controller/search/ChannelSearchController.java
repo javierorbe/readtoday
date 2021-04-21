@@ -3,8 +3,8 @@ package dev.team.readtoday.server.channel.infrastructure.controller.search;
 import dev.team.readtoday.server.category.application.search.SearchCategory;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
+import dev.team.readtoday.server.category.domain.CategoryNotFound;
 import dev.team.readtoday.server.channel.application.SearchChannelsByCategory;
-import dev.team.readtoday.server.category.domain.CategoryDoesNotExist;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
@@ -51,7 +51,7 @@ public final class ChannelSearchController extends BaseController {
 
       LOGGER.debug("Successful channels by category name request");
       return Response.ok(response).build();
-    } catch (CategoryDoesNotExist e) {
+    } catch (CategoryNotFound e) {
       LOGGER.trace("Channel search by category request failed.", e);
       return response(Status.NOT_FOUND);
     }
