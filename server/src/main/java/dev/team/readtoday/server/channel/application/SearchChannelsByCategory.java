@@ -3,7 +3,7 @@ package dev.team.readtoday.server.channel.application;
 import dev.team.readtoday.server.category.application.SearchCategoryByName;
 import dev.team.readtoday.server.category.domain.Category;
 import dev.team.readtoday.server.category.domain.CategoryName;
-import dev.team.readtoday.server.category.domain.CategoryDoesNotExist;
+import dev.team.readtoday.server.category.domain.CategoryNotFound;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.shared.domain.Service;
@@ -22,9 +22,9 @@ public final class SearchChannelsByCategory {
     this.searchCategoryByName = searchCategoryByName;
   }
 
-  public Collection<Channel> search(CategoryName categoryName) throws CategoryDoesNotExist {
+  public Collection<Channel> search(CategoryName categoryName) throws CategoryNotFound {
     Optional<Category> optCategory = searchCategoryByName.search(categoryName);
-    Category category = optCategory.orElseThrow(() -> new CategoryDoesNotExist(categoryName));
+    Category category = optCategory.orElseThrow(() -> new CategoryNotFound(categoryName));
     return repository.getByCategory(category.getId());
   }
 }
