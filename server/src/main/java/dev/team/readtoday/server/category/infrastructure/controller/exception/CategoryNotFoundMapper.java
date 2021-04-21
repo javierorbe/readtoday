@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Provider
-public class CategoryNotFoundMapper implements ExceptionMapper<CategoryNotFound> {
+public final class CategoryNotFoundMapper implements ExceptionMapper<CategoryNotFound> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(CategoryNotFound.class);
 
