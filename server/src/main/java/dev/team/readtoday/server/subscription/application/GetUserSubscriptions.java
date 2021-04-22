@@ -12,11 +12,11 @@ public class GetUserSubscriptions {
 
     private final SubscriptionRepository repository;
 
-    public GetUserSubscriptions(SubscriptionRepository repository){
+    public GetUserSubscriptions(SubscriptionRepository repository) {
         this.repository = repository;
     }
 
-    public Collection<Subscription> search(UserId userId){
+    public Collection<Subscription> search(UserId userId) {
         return repository.getAllByUserId(userId);
     }
 }

@@ -9,14 +9,14 @@ import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 @Service
 public final class CreateSubscription {
 
-  private final SubscriptionRepository repository;
+    private final SubscriptionRepository repository;
 
-  public CreateSubscription(SubscriptionRepository repository) {
-    this.repository = repository;
-  }
+    public CreateSubscription(SubscriptionRepository repository) {
+        this.repository = repository;
+    }
 
-  public void create(UserId userId, ChannelId channelId) {
-    Subscription subscription = new Subscription(userId, channelId);
-    repository.save(subscription);
-  }
+    public void create(UserId userId, ChannelId channelId) {
+        Subscription subscription = new Subscription(userId, channelId);
+        repository.save(subscription);
+    }
 }

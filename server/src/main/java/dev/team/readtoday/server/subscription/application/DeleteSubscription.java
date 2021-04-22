@@ -9,14 +9,14 @@ import dev.team.readtoday.server.subscription.domain.SubscriptionRepository;
 @Service
 public final class DeleteSubscription {
 
-  private final SubscriptionRepository repository;
+    private final SubscriptionRepository repository;
 
-  public DeleteSubscription(SubscriptionRepository repository) {
-    this.repository = repository;
-  }
+    public DeleteSubscription(SubscriptionRepository repository) {
+        this.repository = repository;
+    }
 
-  public void delete(UserId userId, ChannelId channelId) {
-    Subscription subscription = new Subscription(userId, channelId);
-    repository.remove(subscription);
-  }
+    public void delete(UserId userId, ChannelId channelId) {
+        Subscription subscription = new Subscription(userId, channelId);
+        repository.remove(subscription);
+    }
 }

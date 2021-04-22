@@ -1,14 +1,16 @@
 package dev.team.readtoday.client.usecase.subscription.unsubscribe;
 
+import dev.team.readtoday.client.model.Channel;
+
 public final class DeleteSubscriptionEvent {
 
-  private final String channelId;
+    private final Channel channel;
 
-  public DeleteSubscriptionEvent(String channelId) {
-    this.channelId = channelId;
-  }
+    public DeleteSubscriptionEvent(Channel channel) {
+        this.channel = channel;
+    }
 
-  String getChannelId() {
-    return channelId;
-  }
+    Channel getChannel() {
+        return channel;
+    }
 }

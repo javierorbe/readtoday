@@ -13,28 +13,29 @@ import org.slf4j.LoggerFactory;
 @SubscribedComponent
 public final class SubscriptionListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionListener.class);
 
-  private final EventBus eventBus;
-  private final HttpRequestBuilder requestBuilder;
+    private final EventBus eventBus;
+    private final HttpRequestBuilder requestBuilder;
 
-  SubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
-    this.eventBus = eventBus;
-    requestBuilder = factory.buildWithAuth("/subscribe");
-  }
 
-  @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void onSubscriptionRequested(SubscriptionRequestedEvent event) {
-    String channelId = event.getChannelId();
-
-    LOGGER.trace("Subscription requested for channel: {}", channelId);
-
-    HttpResponse response = requestBuilder.withParam("channelId", channelId).post(channelId);
-
-    if (response.isStatusCreated()) {
-      eventBus.post(new SuccessfulSubscriptionEvent(channelId));
-    } else {
-      eventBus.post(new SubscriptionFailedEvent(channelId, response.getStatusReason()));
+    SubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+        this.eventBus = eventBus;
+        requestBuilder = factory.buildWithAuth("/subscribe");
     }
-  }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onSubscriptionRequested(SubscriptionRequestedEvent event) {
+        String channelId = event.getChannel().getId();
+
+        LOGGER.trace("Subscription requested for channel: {}", channelId);
+
+        HttpResponse response = requestBuilder.withParam("channelId", channelId).post(channelId);
+
+        if (response.isStatusCreated()) {
+            eventBus.post(new SuccessfulSubscriptionEvent(event.getChannel()));
+        } else {
+            eventBus.post(new SubscriptionFailedEvent(channelId, response.getStatusReason()));
+        }
+    }
 }

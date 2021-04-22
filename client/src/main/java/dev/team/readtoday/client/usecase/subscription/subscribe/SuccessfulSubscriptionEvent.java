@@ -1,14 +1,16 @@
 package dev.team.readtoday.client.usecase.subscription.subscribe;
 
+import dev.team.readtoday.client.model.Channel;
+
 public final class SuccessfulSubscriptionEvent {
 
-  private final String channelId;
+    private final Channel channel;
 
-  SuccessfulSubscriptionEvent(String channelId) {
-    this.channelId = channelId;
-  }
+    SuccessfulSubscriptionEvent(Channel channel) {
+        this.channel = channel;
+    }
 
-  public String getChannelId() {
-    return channelId;
-  }
+    public Channel getChannel() {
+        return channel;
+    }
 }
