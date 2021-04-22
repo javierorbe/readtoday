@@ -25,12 +25,12 @@ public final class DeleteSubscriptionListener {
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
   public void onDeleteSubscription(DeleteSubscriptionEvent event) {
-    String channelId = event.getChannelId();
+    String channelId = event.getChannel().getId();
     LOGGER.trace("Unsubscribe requested for channel: {}", channelId);
     HttpResponse response = requestBuilder.withParam("channelId", channelId).delete(channelId);
 
     if (response.isStatusNoContent()) {
-      eventBus.post(new DeleteSubscriptionSuccessfulEvent(channelId));
+      eventBus.post(new DeleteSubscriptionSuccessfulEvent(event.getChannel()));
     } else {
       eventBus.post(new DeleteSubscriptionFailedEvent(channelId, response.getStatusReason()));
     }
