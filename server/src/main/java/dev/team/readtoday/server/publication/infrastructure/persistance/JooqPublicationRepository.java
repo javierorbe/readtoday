@@ -11,6 +11,7 @@ import dev.team.readtoday.server.publication.domain.PublicationLink;
 import dev.team.readtoday.server.publication.domain.PublicationRepository;
 import dev.team.readtoday.server.publication.domain.PublicationTitle;
 import dev.team.readtoday.server.shared.domain.CategoryId;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import java.time.OffsetDateTime;
 import java.util.Collection;
@@ -54,6 +55,12 @@ public class JooqPublicationRepository implements PublicationRepository {
 
     Publication publication = createPublicationFromResult(result);
     return Optional.of(publication);
+  }
+
+  @Override
+  public Optional<Publication> getRelevant(ChannelId channelId) {
+    // TODO: Get relevant publication given an ChannelId
+    return Optional.empty();
   }
 
   private static void savePublication(Configuration configuration, Publication publication) {
