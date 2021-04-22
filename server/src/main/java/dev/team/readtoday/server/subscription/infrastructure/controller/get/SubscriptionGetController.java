@@ -37,9 +37,10 @@ public final class SubscriptionGetController extends BaseController {
 
 
   @Autowired
-  public SubscriptionGetController(SearchChannelsFromSubscriptions searchChannels, SearchCategory searchCategoriesById) {
-       this.searchChannels = searchChannels;
-       this.searchCategoriesById = searchCategoriesById;
+  public SubscriptionGetController(SearchChannelsFromSubscriptions searchChannels,
+      SearchCategory searchCategoriesById) {
+    this.searchChannels = searchChannels;
+    this.searchCategoriesById = searchCategoriesById;
 
   }
 
@@ -47,24 +48,23 @@ public final class SubscriptionGetController extends BaseController {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response getSubscription() {
 
-    try{
-        Collection<Channel> subscriptions = searchChannels.search(getRequestUserId());
-        Collection<CategoryId> categoryIds = flatChannelCategories(subscriptions);
-        Collection<Category> categories = searchCategoriesById.apply(categoryIds);
-        AllSubscriptionsResponse response = new AllSubscriptionsResponse(subscriptions, categories);
-        subscriptions.forEach(System.out::println);
-        return Response.ok(response).build();
-    } catch(SubscriptionNotFound e){
-          LOGGER.debug("Error getting subscriptions.", e);
-          return response(Response.Status.BAD_REQUEST);
+    try {
+      Collection<Channel> subscriptions = searchChannels.search(getRequestUserId());
+      Collection<CategoryId> categoryIds = flatChannelCategories(subscriptions);
+      Collection<Category> categories = searchCategoriesById.apply(categoryIds);
+      AllSubscriptionsResponse response = new AllSubscriptionsResponse(subscriptions, categories);
+      return Response.ok(response).build();
+    } catch (SubscriptionNotFound e) {
+      LOGGER.debug("Error getting subscriptions.", e);
+      return response(Response.Status.BAD_REQUEST);
     }
   }
 
-    private static Collection<CategoryId> flatChannelCategories(Collection<Channel> channels) {
-        return channels.stream()
-                .flatMap(channel -> channel.getCategories().stream())
-                .collect(Collectors.toSet());
-    }
+  private static Collection<CategoryId> flatChannelCategories(Collection<Channel> channels) {
+    return channels.stream()
+        .flatMap(channel -> channel.getCategories().stream())
+        .collect(Collectors.toSet());
+  }
 
 
 }
