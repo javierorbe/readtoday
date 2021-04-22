@@ -34,12 +34,32 @@ final class PublicationListWindow implements ViewController {
     stage.setTitle(String.format("Publications of %s", channel.getName()));
   }
 
+  private PublicationListWindow(EventBus eventBus, List<Channel> channels,
+      List<Publication> publications) {
+    VBox container = new VBox();
+    ScrollPane root = new ScrollPane(container);
+    container.setPadding(new Insets(CONTENT_SPACING));
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    Node[] publicationNodes = buildPublicationNodeArray(eventBus, scene, publications);
+    container.getChildren().addAll(publicationNodes);
+
+    stage.setScene(scene);
+    stage.setTitle("Subscriptions");
+  }
+
   /**
    * Open a publication list window of a channel with its publications.
    */
   static void open(EventBus eventBus, Channel channel, List<Publication> publications) {
     Platform.runLater(() -> {
       PublicationListWindow window = new PublicationListWindow(eventBus, channel, publications);
+      window.stage.show();
+    });
+  }
+
+  static void open(EventBus eventBus, List<Channel> channels, List<Publication> publications) {
+    Platform.runLater(() -> {
+      PublicationListWindow window = new PublicationListWindow(eventBus, channels, publications);
       window.stage.show();
     });
   }

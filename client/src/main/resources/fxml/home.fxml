@@ -19,6 +19,7 @@
         <ToolBar nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER">
           <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
           <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category" />
+               <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Sub" />
         </ToolBar>
       </top>
       <center>
