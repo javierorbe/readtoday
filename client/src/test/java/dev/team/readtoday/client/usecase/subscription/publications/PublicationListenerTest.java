@@ -37,7 +37,7 @@ public class PublicationListenerTest {
     PublicationRequestListener listener = new PublicationRequestListener(eventBus, factory);
 
     // When
-    listener.onPublicationRequest();
+    listener.onPublicationRequest(mock(PublicationRequestEvent.class));
 
     // Then
     var eventCaptor = ArgumentCaptor.forClass(PublicationRequestSuccesfulEvent.class);
@@ -65,7 +65,7 @@ public class PublicationListenerTest {
     PublicationRequestListener listener = new PublicationRequestListener(eventBus, factory);
 
     // When
-    listener.onPublicationRequest();
+    listener.onPublicationRequest(mock(PublicationRequestEvent.class));
 
     // Then
     var eventCaptor = ArgumentCaptor.forClass(PublicationRequestFailedEvent.class);

@@ -20,7 +20,7 @@ public final class PublicationRequestListener {
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void onPublicationRequest() {
+  public void onPublicationRequest(PublicationRequestEvent event) {
     HttpResponse response = requestBuilder.get();
 
     if (response.isStatusOk()) {
