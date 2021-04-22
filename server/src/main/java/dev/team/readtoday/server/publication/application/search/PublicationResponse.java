@@ -29,7 +29,7 @@ public final class PublicationResponse {
     link = publication.getLink().map(StringValueObject::toString).orElse(null);
     this.categories = CategoryResponse.fromDomain(categories);
   }
-  
+
   public String getId() {
     return id;
   }
