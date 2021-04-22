@@ -4,13 +4,13 @@ import dev.team.readtoday.client.model.Channel;
 
 public final class SuccessfulSubscriptionEvent {
 
-  private final Channel channel;
+    private final Channel channel;
 
-  SuccessfulSubscriptionEvent(Channel channel) {
-    this.channel = channel;
-  }
+    SuccessfulSubscriptionEvent(Channel channel) {
+        this.channel = channel;
+    }
 
-  public Channel getChannel() {
-    return channel;
-  }
+    public Channel getChannel() {
+        return channel;
+    }
 }

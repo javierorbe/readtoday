@@ -21,32 +21,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("unsubscribe")
 public final class UnsubscribeController extends BaseController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UnsubscribeController.class);
 
-  private final DeleteSubscription deleteSubscription;
+    private final DeleteSubscription deleteSubscription;
 
-  @Autowired
-  public UnsubscribeController(DeleteSubscription deleteSubscription) {
-    this.deleteSubscription = deleteSubscription;
-  }
-
-  @DELETE
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response unsubscribe(@QueryParam("channelId") String channelIdStr) {
-    UserId userId = getRequestUserId();
-    LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
-        userId, channelIdStr);
-
-    try {
-      ChannelId channelId = ChannelId.fromString(channelIdStr);
-      deleteSubscription.delete(userId, channelId);
-      LOGGER.trace("Successful unsubscription request.");
-      return response(Status.NO_CONTENT);
-    } catch (SubscriptionNotFound e) {
-      return response(Status.NO_CONTENT);
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error deleting subscription.", e);
-      return response(Status.BAD_REQUEST);
+    @Autowired
+    public UnsubscribeController(DeleteSubscription deleteSubscription) {
+        this.deleteSubscription = deleteSubscription;
     }
-  }
+
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response unsubscribe(@QueryParam("channelId") String channelIdStr) {
+        UserId userId = getRequestUserId();
+        LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
+                userId, channelIdStr);
+
+        try {
+            ChannelId channelId = ChannelId.fromString(channelIdStr);
+            deleteSubscription.delete(userId, channelId);
+            LOGGER.trace("Successful unsubscription request.");
+            return response(Status.NO_CONTENT);
+        } catch (SubscriptionNotFound e) {
+            return response(Status.NO_CONTENT);
+        } catch (RuntimeException e) {
+            LOGGER.debug("Error deleting subscription.", e);
+            return response(Status.BAD_REQUEST);
+        }
+    }
 }
