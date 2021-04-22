@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.channel.application;
+package dev.team.readtoday.server.channel.application.create;
 
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;

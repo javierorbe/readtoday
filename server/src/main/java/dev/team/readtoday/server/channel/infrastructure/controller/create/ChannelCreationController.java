@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.channel.infrastructure.controller.create;
 
-import dev.team.readtoday.server.channel.application.CreateChannel;
+import dev.team.readtoday.server.channel.application.create.CreateChannel;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelDescription;
 import dev.team.readtoday.server.channel.domain.ChannelTitle;
