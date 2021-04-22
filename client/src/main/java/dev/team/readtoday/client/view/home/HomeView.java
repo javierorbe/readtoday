@@ -6,12 +6,18 @@ import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
+import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
+import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
+import dev.team.readtoday.client.usecase.subscription.search.events.MySubscriptionsListRequestedEvent;
+import dev.team.readtoday.client.usecase.subscription.search.events.SuccessfulMySubscriptionsListEvent;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionRequestedEvent;
+import dev.team.readtoday.client.usecase.subscription.subscribe.SuccessfulSubscriptionEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
+import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionSuccessfulEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
 import java.net.URL;
@@ -133,16 +139,16 @@ public final class HomeView implements ViewController, Initializable {
   @FXML
   public void unsubscribe() {
     if (channelListView.getSelectionModel().getSelectedItem() != null) {
-      String channelId = channelListView.getSelectionModel().getSelectedItem().getId();
-      eventBus.post(new DeleteSubscriptionEvent(channelId));
+      Channel channel = channelListView.getSelectionModel().getSelectedItem();
+      eventBus.post(new DeleteSubscriptionEvent(channel));
     }
   }
 
   @FXML
   public void subscribe() {
     if (newChannelListView.getSelectionModel().getSelectedItem() != null) {
-      String channelId = newChannelListView.getSelectionModel().getSelectedItem().getId();
-      eventBus.post(new SubscriptionRequestedEvent(channelId));
+      Channel channel = newChannelListView.getSelectionModel().getSelectedItem();
+      eventBus.post(new SubscriptionRequestedEvent(channel));
     }
   }
 
@@ -156,5 +162,47 @@ public final class HomeView implements ViewController, Initializable {
   @Subscribe
   public void onChannelSearchRequestFailed(SearchChannelsByCategoryFailedEvent event) {
     AlertLauncher.error("Category not found");
+  }
+
+  @Subscribe
+  public void onSuccessfulSignUpEvent(SuccessfulSignUpEvent event) {
+    eventBus.post(new MySubscriptionsListRequestedEvent());
+  }
+
+  @Subscribe
+  public void onSuccessfulSignInEvent(SuccessfulSignInEvent event) {
+    eventBus.post(new MySubscriptionsListRequestedEvent());
+  }
+
+  @Subscribe
+  public void onSearchResultReceived(SuccessfulMySubscriptionsListEvent event) {
+    ObservableList<Channel> list =
+            FXCollections.observableList(new ArrayList<>(event.getSubscriptions()));
+    Platform.runLater(() -> channelListView.setItems(list));
+  }
+
+  @Subscribe
+  public void onSuccessfulSubscription(SuccessfulSubscriptionEvent event) {
+    boolean present = false;
+    ObservableList<Channel> list =
+            FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
+    for (Channel c : list) {
+      if(c.getId() == event.getChannel().getId()) {
+        present = true;
+      }
+    }
+    if(present == false) {
+      list.add(event.getChannel());
+      Platform.runLater(() -> channelListView.setItems(list));
+    }
+
+  }
+
+  @Subscribe
+  public void onSuccessfulDeleteSubscription(DeleteSubscriptionSuccessfulEvent event) {
+    ObservableList<Channel> list =
+            FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
+    list.remove(event.getChannel());
+    Platform.runLater(() -> channelListView.setItems(list));
   }
 }
