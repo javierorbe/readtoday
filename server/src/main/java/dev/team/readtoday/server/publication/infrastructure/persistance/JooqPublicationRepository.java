@@ -13,6 +13,7 @@ import dev.team.readtoday.server.publication.domain.PublicationTitle;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import org.jooq.DSLContext;
 import org.jooq.Record5;
 import org.jooq.impl.DSL;
 
+@Service
 public class JooqPublicationRepository implements PublicationRepository {
 
   private final DSLContext dsl;
