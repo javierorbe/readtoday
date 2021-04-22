@@ -2,13 +2,13 @@ package dev.team.readtoday.server.subscription.infrastructure.controller.subscri
 
 public class SubscriptionRequest {
 
-  private String channelId;
+    private String channelId;
 
-  public void setChannelId(String channelId) {
-    this.channelId = channelId;
-  }
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
+    }
 
-  String getChannelId() {
-    return channelId;
-  }
+    String getChannelId() {
+        return channelId;
+    }
 }

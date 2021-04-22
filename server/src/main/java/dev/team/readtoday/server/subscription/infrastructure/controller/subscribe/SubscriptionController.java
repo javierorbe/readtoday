@@ -21,32 +21,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Path("subscribe")
 public final class SubscriptionController extends BaseController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubscriptionController.class);
 
-  private final CreateSubscription createSubscription;
+    private final CreateSubscription createSubscription;
 
-  @Autowired
-  public SubscriptionController(CreateSubscription createSubscription) {
-    this.createSubscription = createSubscription;
-  }
-
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response subscribe(@QueryParam("channelId") String channelIdStr) {
-    UserId userId = getRequestUserId();
-    LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
-        userId, channelIdStr);
-
-    try {
-      ChannelId channelId = ChannelId.fromString(channelIdStr);
-      createSubscription.create(userId, channelId);
-      LOGGER.trace("Successful subscription request.");
-      return response(Status.CREATED);
-    } catch (SubscriptionAlreadyExists e) {
-      return response(Status.CONFLICT, "Already subscribed.");
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error creating subscription.", e);
-      return response(Status.BAD_REQUEST);
+    @Autowired
+    public SubscriptionController(CreateSubscription createSubscription) {
+        this.createSubscription = createSubscription;
     }
-  }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response subscribe(@QueryParam("channelId") String channelIdStr) {
+        UserId userId = getRequestUserId();
+        LOGGER.debug("Received unsubscription request (userId: {}, channelId: {}).",
+                userId, channelIdStr);
+
+        try {
+            ChannelId channelId = ChannelId.fromString(channelIdStr);
+            createSubscription.create(userId, channelId);
+            LOGGER.trace("Successful subscription request.");
+            return response(Status.CREATED);
+        } catch (SubscriptionAlreadyExists e) {
+            return response(Status.CONFLICT, "Already subscribed.");
+        } catch (RuntimeException e) {
+            LOGGER.debug("Error creating subscription.", e);
+            return response(Status.BAD_REQUEST);
+        }
+    }
 }

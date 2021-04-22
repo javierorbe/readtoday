@@ -20,6 +20,7 @@ import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscrip
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionSuccessfulEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
+
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,166 +45,166 @@ import org.greenrobot.eventbus.Subscribe;
 
 public final class HomeView implements ViewController, Initializable {
 
-  private final EventBus eventBus;
+    private final EventBus eventBus;
 
-  private final ImmutableList<Channel> allChannels;
-  private final Map<Category, List<Channel>> categoryToChannel;
+    private final ImmutableList<Channel> allChannels;
+    private final Map<Category, List<Channel>> categoryToChannel;
 
-  @FXML
-  private ListView<Channel> channelListView;
-  private final ObservableList<Channel> observableChannelList;
+    @FXML
+    private ListView<Channel> channelListView;
+    private final ObservableList<Channel> observableChannelList;
 
-  @FXML
-  private ListView<Channel> newChannelListView;
+    @FXML
+    private ListView<Channel> newChannelListView;
 
-  @FXML
-  private ComboBox<Category> channelCategorySelector;
+    @FXML
+    private ComboBox<Category> channelCategorySelector;
 
-  @FXML
-  private TextField channelsByCategory;
+    @FXML
+    private TextField channelsByCategory;
 
-  public HomeView(EventBus eventBus, Collection<Channel> subscribedChannels) {
-    this.eventBus = eventBus;
-    allChannels = ImmutableList.sortedCopyOf(subscribedChannels);
-    observableChannelList = FXCollections.observableArrayList(allChannels);
-    categoryToChannel = createCategoryToChannelMap(subscribedChannels);
+    public HomeView(EventBus eventBus, Collection<Channel> subscribedChannels) {
+        this.eventBus = eventBus;
+        allChannels = ImmutableList.sortedCopyOf(subscribedChannels);
+        observableChannelList = FXCollections.observableArrayList(allChannels);
+        categoryToChannel = createCategoryToChannelMap(subscribedChannels);
 
-    eventBus.register(this);
-  }
-
-  @Override
-  public void initialize(URL url, ResourceBundle resourceBundle) {
-    Objects.requireNonNull(channelListView);
-    Objects.requireNonNull(newChannelListView);
-    Objects.requireNonNull(channelCategorySelector);
-    Objects.requireNonNull(channelsByCategory);
-
-    // Set selector categories.
-    List<Category> categories = new ArrayList<>(categoryToChannel.keySet());
-    categories.sort(Comparator.naturalOrder());
-    channelCategorySelector.getItems().addAll(categoryToChannel.keySet());
-
-    // Initially, all channels are visible.
-    channelListView.setItems(observableChannelList);
-
-    channelCategorySelector.valueProperty().addListener((observable, oldValue, newValue) -> {
-      if (newValue == null) {
-        observableChannelList.setAll(allChannels);
-      } else {
-        observableChannelList.setAll(categoryToChannel.get(newValue));
-      }
-    });
-
-    channelListView.setCellFactory(listView -> new ChannelCell(eventBus));
-    newChannelListView.setCellFactory(listView -> new ChannelCell(eventBus));
-  }
-
-  private static Map<Category, List<Channel>> createCategoryToChannelMap(
-      Collection<Channel> channels) {
-    Map<Category, List<Channel>> map = new HashMap<>(channels.size()); // Size approximation.
-
-    for (Channel channel : channels) {
-      for (Category category : channel.getCategories()) {
-        List<Channel> categoryChannels =
-            map.computeIfAbsent(category, ignored -> new ArrayList<>(10));
-        categoryChannels.add(channel);
-      }
+        eventBus.register(this);
     }
 
-    map.forEach((category, channelList) -> channelList.sort(Comparator.naturalOrder()));
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        Objects.requireNonNull(channelListView);
+        Objects.requireNonNull(newChannelListView);
+        Objects.requireNonNull(channelCategorySelector);
+        Objects.requireNonNull(channelsByCategory);
 
-    return map;
-  }
+        // Set selector categories.
+        List<Category> categories = new ArrayList<>(categoryToChannel.keySet());
+        categories.sort(Comparator.naturalOrder());
+        channelCategorySelector.getItems().addAll(categoryToChannel.keySet());
 
-  @FXML
-  public void unselectCategory() {
-    channelCategorySelector.valueProperty().set(null);
-  }
+        // Initially, all channels are visible.
+        channelListView.setItems(observableChannelList);
 
-  @FXML
-  public void performSearch() {
-    String categoryName = channelsByCategory.getText();
-    eventBus.post(new SearchChannelsByCategoryEvent(categoryName));
-  }
+        channelCategorySelector.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                observableChannelList.setAll(allChannels);
+            } else {
+                observableChannelList.setAll(categoryToChannel.get(newValue));
+            }
+        });
 
-  @FXML
-  public void goToAdmin() {
-    eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
-    eventBus.post(new SearchAllCategoriesEvent());
-  }
-
-  @FXML
-  private void signOut(ActionEvent event) {
-    eventBus.post(new SignedOutEvent());
-  }
-
-  @FXML
-  public void unsubscribe() {
-    if (channelListView.getSelectionModel().getSelectedItem() != null) {
-      Channel channel = channelListView.getSelectionModel().getSelectedItem();
-      eventBus.post(new DeleteSubscriptionEvent(channel));
-    }
-  }
-
-  @FXML
-  public void subscribe() {
-    if (newChannelListView.getSelectionModel().getSelectedItem() != null) {
-      Channel channel = newChannelListView.getSelectionModel().getSelectedItem();
-      eventBus.post(new SubscriptionRequestedEvent(channel));
-    }
-  }
-
-  @Subscribe
-  public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
-    ObservableList<Channel> list =
-        FXCollections.observableList(new ArrayList<>(event.getChannels()));
-    Platform.runLater(() -> newChannelListView.setItems(list));
-  }
-
-  @Subscribe
-  public void onChannelSearchRequestFailed(SearchChannelsByCategoryFailedEvent event) {
-    AlertLauncher.error("Category not found");
-  }
-
-  @Subscribe
-  public void onSuccessfulSignUpEvent(SuccessfulSignUpEvent event) {
-    eventBus.post(new MySubscriptionsListRequestedEvent());
-  }
-
-  @Subscribe
-  public void onSuccessfulSignInEvent(SuccessfulSignInEvent event) {
-    eventBus.post(new MySubscriptionsListRequestedEvent());
-  }
-
-  @Subscribe
-  public void onSearchResultReceived(SuccessfulMySubscriptionsListEvent event) {
-    ObservableList<Channel> list =
-            FXCollections.observableList(new ArrayList<>(event.getSubscriptions()));
-    Platform.runLater(() -> channelListView.setItems(list));
-  }
-
-  @Subscribe
-  public void onSuccessfulSubscription(SuccessfulSubscriptionEvent event) {
-    boolean present = false;
-    ObservableList<Channel> list =
-            FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
-    for (Channel c : list) {
-      if(c.getId() == event.getChannel().getId()) {
-        present = true;
-      }
-    }
-    if(present == false) {
-      list.add(event.getChannel());
-      Platform.runLater(() -> channelListView.setItems(list));
+        channelListView.setCellFactory(listView -> new ChannelCell(eventBus));
+        newChannelListView.setCellFactory(listView -> new ChannelCell(eventBus));
     }
 
-  }
+    private static Map<Category, List<Channel>> createCategoryToChannelMap(
+            Collection<Channel> channels) {
+        Map<Category, List<Channel>> map = new HashMap<>(channels.size()); // Size approximation.
 
-  @Subscribe
-  public void onSuccessfulDeleteSubscription(DeleteSubscriptionSuccessfulEvent event) {
-    ObservableList<Channel> list =
-            FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
-    list.remove(event.getChannel());
-    Platform.runLater(() -> channelListView.setItems(list));
-  }
+        for (Channel channel : channels) {
+            for (Category category : channel.getCategories()) {
+                List<Channel> categoryChannels =
+                        map.computeIfAbsent(category, ignored -> new ArrayList<>(10));
+                categoryChannels.add(channel);
+            }
+        }
+
+        map.forEach((category, channelList) -> channelList.sort(Comparator.naturalOrder()));
+
+        return map;
+    }
+
+    @FXML
+    public void unselectCategory() {
+        channelCategorySelector.valueProperty().set(null);
+    }
+
+    @FXML
+    public void performSearch() {
+        String categoryName = channelsByCategory.getText();
+        eventBus.post(new SearchChannelsByCategoryEvent(categoryName));
+    }
+
+    @FXML
+    public void goToAdmin() {
+        eventBus.post(new ChangeSceneEvent(SceneType.ADMIN));
+        eventBus.post(new SearchAllCategoriesEvent());
+    }
+
+    @FXML
+    private void signOut(ActionEvent event) {
+        eventBus.post(new SignedOutEvent());
+    }
+
+    @FXML
+    public void unsubscribe() {
+        if (channelListView.getSelectionModel().getSelectedItem() != null) {
+            Channel channel = channelListView.getSelectionModel().getSelectedItem();
+            eventBus.post(new DeleteSubscriptionEvent(channel));
+        }
+    }
+
+    @FXML
+    public void subscribe() {
+        if (newChannelListView.getSelectionModel().getSelectedItem() != null) {
+            Channel channel = newChannelListView.getSelectionModel().getSelectedItem();
+            eventBus.post(new SubscriptionRequestedEvent(channel));
+        }
+    }
+
+    @Subscribe
+    public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
+        ObservableList<Channel> list =
+                FXCollections.observableList(new ArrayList<>(event.getChannels()));
+        Platform.runLater(() -> newChannelListView.setItems(list));
+    }
+
+    @Subscribe
+    public void onChannelSearchRequestFailed(SearchChannelsByCategoryFailedEvent event) {
+        AlertLauncher.error("Category not found");
+    }
+
+    @Subscribe
+    public void onSuccessfulSignUpEvent(SuccessfulSignUpEvent event) {
+        eventBus.post(new MySubscriptionsListRequestedEvent());
+    }
+
+    @Subscribe
+    public void onSuccessfulSignInEvent(SuccessfulSignInEvent event) {
+        eventBus.post(new MySubscriptionsListRequestedEvent());
+    }
+
+    @Subscribe
+    public void onSearchResultReceived(SuccessfulMySubscriptionsListEvent event) {
+        ObservableList<Channel> list =
+                FXCollections.observableList(new ArrayList<>(event.getSubscriptions()));
+        Platform.runLater(() -> channelListView.setItems(list));
+    }
+
+    @Subscribe
+    public void onSuccessfulSubscription(SuccessfulSubscriptionEvent event) {
+        boolean present = false;
+        ObservableList<Channel> list =
+                FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
+        for (Channel c : list) {
+            if (c.getId() == event.getChannel().getId()) {
+                present = true;
+            }
+        }
+        if (present == false) {
+            list.add(event.getChannel());
+            Platform.runLater(() -> channelListView.setItems(list));
+        }
+
+    }
+
+    @Subscribe
+    public void onSuccessfulDeleteSubscription(DeleteSubscriptionSuccessfulEvent event) {
+        ObservableList<Channel> list =
+                FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
+        list.remove(event.getChannel());
+        Platform.runLater(() -> channelListView.setItems(list));
+    }
 }

@@ -13,26 +13,26 @@ import org.slf4j.LoggerFactory;
 @SubscribedComponent
 public final class DeleteSubscriptionListener {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(DeleteSubscriptionListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeleteSubscriptionListener.class);
 
-  private final EventBus eventBus;
-  private final HttpRequestBuilder requestBuilder;
+    private final EventBus eventBus;
+    private final HttpRequestBuilder requestBuilder;
 
-  DeleteSubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
-    this.eventBus = eventBus;
-    requestBuilder = factory.buildWithAuth("/unsubscribe");
-  }
-
-  @Subscribe(threadMode = ThreadMode.ASYNC)
-  public void onDeleteSubscription(DeleteSubscriptionEvent event) {
-    String channelId = event.getChannel().getId();
-    LOGGER.trace("Unsubscribe requested for channel: {}", channelId);
-    HttpResponse response = requestBuilder.withParam("channelId", channelId).delete(channelId);
-
-    if (response.isStatusNoContent()) {
-      eventBus.post(new DeleteSubscriptionSuccessfulEvent(event.getChannel()));
-    } else {
-      eventBus.post(new DeleteSubscriptionFailedEvent(channelId, response.getStatusReason()));
+    DeleteSubscriptionListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
+        this.eventBus = eventBus;
+        requestBuilder = factory.buildWithAuth("/unsubscribe");
     }
-  }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onDeleteSubscription(DeleteSubscriptionEvent event) {
+        String channelId = event.getChannel().getId();
+        LOGGER.trace("Unsubscribe requested for channel: {}", channelId);
+        HttpResponse response = requestBuilder.withParam("channelId", channelId).delete(channelId);
+
+        if (response.isStatusNoContent()) {
+            eventBus.post(new DeleteSubscriptionSuccessfulEvent(event.getChannel()));
+        } else {
+            eventBus.post(new DeleteSubscriptionFailedEvent(channelId, response.getStatusReason()));
+        }
+    }
 }
