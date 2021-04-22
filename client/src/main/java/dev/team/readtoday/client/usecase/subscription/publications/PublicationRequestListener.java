@@ -1,8 +1,8 @@
 package dev.team.readtoday.client.usecase.subscription.publications;
 
+import dev.team.readtoday.client.usecase.shared.HttpResponse;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
-import dev.team.readtoday.client.usecase.shared.HttpResponse;
 import dev.team.readtoday.client.usecase.shared.response.PublicationResponse;
 import java.util.Collection;
 import org.greenrobot.eventbus.EventBus;
@@ -16,7 +16,7 @@ public final class PublicationRequestListener {
 
   PublicationRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
-    requestBuilder = factory.build("/subscriptions/publications");
+    requestBuilder = factory.buildWithAuth("/subscriptions/publications");
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)
