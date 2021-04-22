@@ -16,7 +16,7 @@ public final class PublicationRequestListener {
 
   PublicationRequestListener(EventBus eventBus, HttpRequestBuilderFactory factory) {
     this.eventBus = eventBus;
-    requestBuilder = factory.build("/subscriptions/publications");
+    requestBuilder = factory.buildWithAuth("/subscriptions/publications");
   }
 
   @Subscribe(threadMode = ThreadMode.ASYNC)

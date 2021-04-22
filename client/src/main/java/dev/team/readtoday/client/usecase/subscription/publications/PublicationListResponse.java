@@ -3,7 +3,7 @@ package dev.team.readtoday.client.usecase.subscription.publications;
 import dev.team.readtoday.client.usecase.shared.response.PublicationResponse;
 import java.util.Collection;
 
-public final class PublicationListResponse {
+public class PublicationListResponse {
 
   private Collection<PublicationResponse> publications;
 
