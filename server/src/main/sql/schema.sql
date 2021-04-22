@@ -47,8 +47,8 @@ CREATE TABLE subscription (
 );
 CREATE TABLE publication (
 	PRIMARY KEY(id),
-    id CHAR(36) NOT NULL,
-    title CHAR(36) NOT NULL,
+    id CHAR(255) NOT NULL,
+    title CHAR(36),
     descrip CHAR(255),
     date VARCHAR(255), 
 	link CHAR(36) NOT NULL
