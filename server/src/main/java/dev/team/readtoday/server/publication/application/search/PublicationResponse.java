@@ -1,5 +1,7 @@
 package dev.team.readtoday.server.publication.application.search;
 
+import dev.team.readtoday.server.channel.domain.Channel;
+import dev.team.readtoday.server.channel.infrastructure.controller.search.ChannelResponse;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationDate;
 import dev.team.readtoday.server.shared.domain.StringValueObject;
@@ -7,6 +9,7 @@ import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class PublicationResponse {
 
@@ -26,7 +29,7 @@ public final class PublicationResponse {
     link = publication.getLink().map(StringValueObject::toString).orElse(null);
     this.categories = CategoryResponse.fromDomain(categories);
   }
-
+  
   public String getId() {
     return id;
   }
@@ -51,7 +54,7 @@ public final class PublicationResponse {
     return categories;
   }
 
-  static List<PublicationResponse> fromDomain(List<Publication> publications,
+  public static List<PublicationResponse> fromDomain(List<Publication> publications,
                                               Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     return publications.stream().map(pub -> new PublicationResponse(pub, categories)).toList();
   }
