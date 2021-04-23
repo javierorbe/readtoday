@@ -225,7 +225,7 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @Subscribe
-  public void onSuccesfulPublicationRequest(PublicationRequestSuccesfulEvent event) {
+  public void onSuccessfulPublicationRequest(PublicationRequestSuccesfulEvent event) {
     List<Channel> channels = channelListView.getItems();
     List<Publication> publications = new ArrayList<>();
 
@@ -239,7 +239,7 @@ public final class HomeView implements ViewController, Initializable {
           p.getDescription(), p.getDate(), p.getLink(), categories));
     }
 
-    PublicationListWindow.open(eventBus, channels, sortList(publications));
+    PublicationListWindow.open(eventBus, sortList(publications));
   }
 
   public List<Publication> sortList(List<Publication> publications) {
@@ -265,4 +265,3 @@ public final class HomeView implements ViewController, Initializable {
     AlertLauncher.error("You are not subscribed to any channel");
   }
 }
-

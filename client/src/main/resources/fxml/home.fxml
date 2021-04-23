@@ -16,10 +16,13 @@
   <center>
     <BorderPane>
       <top>
-        <ToolBar nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER">
-          <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
+        <ToolBar nodeOrientation="INHERIT" BorderPane.alignment="CENTER">
+          <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Subscriptions" alignment="BASELINE_LEFT" />
+          <Pane HBox.hgrow="ALWAYS" />
           <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category" />
-               <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Sub" />
+          <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
+
+
         </ToolBar>
       </top>
       <center>

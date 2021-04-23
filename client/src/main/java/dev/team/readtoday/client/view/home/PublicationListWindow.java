@@ -3,6 +3,7 @@ package dev.team.readtoday.client.view.home;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.model.Publication;
 import dev.team.readtoday.client.view.ViewController;
+import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -34,8 +35,8 @@ final class PublicationListWindow implements ViewController {
     stage.setTitle(String.format("Publications of %s", channel.getName()));
   }
 
-  private PublicationListWindow(EventBus eventBus, List<Channel> channels,
-      List<Publication> publications) {
+  private PublicationListWindow(EventBus eventBus, List<Publication> publications) {
+    HashMap<Publication, Channel> map = new HashMap<>();
     VBox container = new VBox();
     ScrollPane root = new ScrollPane(container);
     container.setPadding(new Insets(CONTENT_SPACING));
@@ -57,9 +58,9 @@ final class PublicationListWindow implements ViewController {
     });
   }
 
-  static void open(EventBus eventBus, List<Channel> channels, List<Publication> publications) {
+  static void open(EventBus eventBus, List<Publication> publications) {
     Platform.runLater(() -> {
-      PublicationListWindow window = new PublicationListWindow(eventBus, channels, publications);
+      PublicationListWindow window = new PublicationListWindow(eventBus, publications);
       window.stage.show();
     });
   }
