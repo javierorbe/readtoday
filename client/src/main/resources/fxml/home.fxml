@@ -16,10 +16,10 @@
   <center>
     <BorderPane>
       <top>
-        <ToolBar nodeOrientation="INHERIT" BorderPane.alignment="CENTER">
-          <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Subscriptions" alignment="BASELINE_LEFT" />
+        <ToolBar BorderPane.alignment="CENTER">
+          <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Subscriptions" />
           <Pane HBox.hgrow="ALWAYS" />
-          <TextField fx:id="channelsByCategory" alignment="CENTER_RIGHT" promptText="Category" />
+          <TextField fx:id="channelsByCategory"  promptText="Category" />
           <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
 
 
