@@ -9,7 +9,7 @@ VALUES ('ae0a350b-d7f7-4c91-b33a-846672ade8e5',
         'https://pbs.twimg.com/profile_images/469397708986269696/iUrYEOpJ_400x400.png'),
        ('6bbfca60-6ee6-4b1f-90dc-106c65a56d4d',
         'Techcrunch', 'https://feeds.feedburner.com/TechCrunch/', 'Techcrunch RSS',
-        'https://s.yimg.com/oa/build/images/favicons/techcrunch.png');
+        'https://techcrunch.com/wp-content/uploads/2015/02/cropped-cropped-favicon-gradient.png?w=180');
 
 INSERT INTO channel_categories (channel_id, category_id)
 VALUES ('ae0a350b-d7f7-4c91-b33a-846672ade8e5', '2e0e7268-d947-4d04-8861-3c8da21c189f'),
