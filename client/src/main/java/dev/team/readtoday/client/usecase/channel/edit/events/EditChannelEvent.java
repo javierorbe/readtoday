@@ -2,7 +2,7 @@ package dev.team.readtoday.client.usecase.channel.edit.events;
 
 import dev.team.readtoday.client.usecase.channel.edit.messages.EditChannelRequest;
 
-public final class EditChannelEvent {
+public class EditChannelEvent {
 
   private final String channelId;
   private final EditChannelRequest request;
