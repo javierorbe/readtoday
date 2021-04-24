@@ -26,12 +26,6 @@ final class JerseyHttpRequestBuilder implements HttpRequestBuilder {
   }
 
   @Override
-  public HttpRequestBuilder path(String path) {
-    WebTarget newTarget = target.path(path);
-    return new JerseyHttpRequestBuilder(newTarget);
-  }
-
-  @Override
   public JerseyHttpResponse get() {
     Response response = target.request(MediaType.APPLICATION_JSON).get();
     return new JerseyHttpResponse(response);
@@ -45,10 +39,13 @@ final class JerseyHttpRequestBuilder implements HttpRequestBuilder {
   }
 
   @Override
+  public HttpResponse put(String document, Object entity) {
+    throw new UnsupportedOperationException("Not implemented.");
+  }
+
+  @Override
   public HttpResponse put(Object entity) {
-    Response response = target.request(MediaType.APPLICATION_JSON)
-        .put(Entity.entity(entity, MediaType.APPLICATION_JSON));
-    return new JerseyHttpResponse(response);
+    throw new UnsupportedOperationException("Not implemented.");
   }
 
   @Override

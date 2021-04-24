@@ -43,16 +43,14 @@ public final class ChannelEditListenerTest {
     editEvent = new EditChannelEvent(channelId, request);
 
     // Put http request
-    when(requestBuilder.path(channelId)).thenReturn(requestBuilder);
-    when(requestBuilder.put(request)).thenReturn(response);
+    when(requestBuilder.put(channelId, request)).thenReturn(response);
   }
 
   @Test
   @DisplayName("ChannelEditedSuccessfully event must be triggered")
   void shouldPostChannelEditedSuccessfully() {
     // Put request + response ok + call listener
-    when(requestBuilder.path(channelId)).thenReturn(requestBuilder);
-    when(requestBuilder.put(request)).thenReturn(response);
+    when(requestBuilder.put(channelId, request)).thenReturn(response);
 
     when(response.isStatusOk()).thenReturn(true);
     EventBus eventBus = mock(EventBus.class);
