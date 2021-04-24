@@ -35,6 +35,11 @@ final class AuthorizedJerseyHttpRequestBuilder implements HttpRequestBuilder {
     return new AuthorizedJerseyHttpRequestBuilder(authTokenSupplier, newTarget);
   }
 
+  public HttpRequestBuilder path(String path) {
+    WebTarget newTarget = target.path(path);
+    return new AuthorizedJerseyHttpRequestBuilder(authTokenSupplier, newTarget);
+  }
+
   @Override
   public JerseyHttpResponse get() {
     Response response = withAuthHeader().get();
@@ -44,6 +49,12 @@ final class AuthorizedJerseyHttpRequestBuilder implements HttpRequestBuilder {
   @Override
   public JerseyHttpResponse post(Object entity) {
     Response response = withAuthHeader().post(Entity.entity(entity, MediaType.APPLICATION_JSON));
+    return new JerseyHttpResponse(response);
+  }
+
+  @Override
+  public HttpResponse put(Object entity) {
+    Response response = withAuthHeader().put(Entity.entity(entity, MediaType.APPLICATION_JSON));
     return new JerseyHttpResponse(response);
   }
 
