@@ -62,8 +62,8 @@ final class JooqSettingsRepositoryTest extends BaseJooqIntegrationTest {
         TimeZone.fromString(ZoneId.systemDefault().toString()));
     repositorySettings.save(origSettings);
 
-    Settings newSettings = new Settings(origSettings.getUserId(), NotificationPreference.DAILY,
-        origSettings.getTimeZone());
+    Settings newSettings =
+        new Settings(user.getId(), NotificationPreference.DAILY, origSettings.getTimeZone());
     assertDoesNotThrow(() -> repositorySettings.save(newSettings));
   }
 
