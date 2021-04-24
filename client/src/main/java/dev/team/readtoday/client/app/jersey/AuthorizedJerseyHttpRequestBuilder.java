@@ -53,6 +53,14 @@ final class AuthorizedJerseyHttpRequestBuilder implements HttpRequestBuilder {
   }
 
   @Override
+  public HttpResponse put(String document, Object entity) {
+    var builder = new AuthorizedJerseyHttpRequestBuilder(authTokenSupplier, target.path(document));
+    Response response =
+        builder.withAuthHeader().put(Entity.entity(entity, MediaType.APPLICATION_JSON));
+    return new JerseyHttpResponse(response);
+  }
+
+  @Override
   public HttpResponse put(Object entity) {
     Response response = withAuthHeader().put(Entity.entity(entity, MediaType.APPLICATION_JSON));
     return new JerseyHttpResponse(response);
@@ -60,8 +68,8 @@ final class AuthorizedJerseyHttpRequestBuilder implements HttpRequestBuilder {
 
   @Override
   public HttpResponse delete(String document) {
-    target.path(document);
-    Response response = withAuthHeader().delete();
+    var builder = new AuthorizedJerseyHttpRequestBuilder(authTokenSupplier, target.path(document));
+    Response response = builder.withAuthHeader().delete();
     return new JerseyHttpResponse(response);
   }
 

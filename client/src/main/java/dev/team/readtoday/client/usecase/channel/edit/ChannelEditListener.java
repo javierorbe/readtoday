@@ -35,7 +35,7 @@ public final class ChannelEditListener {
     LOGGER.trace("Sending edit channel request to id {}.", channelId);
 
     // PUT Http request to '/channels/id'
-    HttpResponse response = requestBuilder.path(channelId).put(request);
+    HttpResponse response = requestBuilder.put(channelId, request);
 
     if (response.isStatusOk()) {
       LOGGER.trace("Channel was edited successfully");

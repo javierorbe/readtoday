@@ -8,11 +8,6 @@ public interface HttpRequestBuilder {
   HttpRequestBuilder withParam(String name, Object... values);
 
   /**
-   * Add a path to the request
-   */
-  HttpRequestBuilder path(String path);
-
-  /**
    * Get request.
    */
   HttpResponse get();
@@ -21,6 +16,11 @@ public interface HttpRequestBuilder {
    * Post request.
    */
   HttpResponse post(Object entity);
+
+  /**
+   * Put request
+   */
+  HttpResponse put(String document, Object entity);
 
   /**
    * Put request
