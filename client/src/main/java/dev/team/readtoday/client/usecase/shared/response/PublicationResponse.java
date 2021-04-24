@@ -17,6 +17,30 @@ public final class PublicationResponse {
   private String link;
   private Set<CategoryResponse> categories;
 
+  public String getId() {
+    return id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public OffsetDateTime getDate() {
+    return date;
+  }
+
+  public String getLink() {
+    return link;
+  }
+
+  public Set<CategoryResponse> getCategories() {
+    return categories;
+  }
+
   public void setId(String id) {
     this.id = id;
   }

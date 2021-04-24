@@ -3,6 +3,7 @@ package dev.team.readtoday.client.view.home;
 import dev.team.readtoday.client.model.Channel;
 import dev.team.readtoday.client.model.Publication;
 import dev.team.readtoday.client.view.ViewController;
+import java.util.HashMap;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -34,12 +35,32 @@ final class PublicationListWindow implements ViewController {
     stage.setTitle(String.format("Publications of %s", channel.getName()));
   }
 
+  private PublicationListWindow(EventBus eventBus, List<Publication> publications) {
+    HashMap<Publication, Channel> map = new HashMap<>();
+    VBox container = new VBox();
+    ScrollPane root = new ScrollPane(container);
+    container.setPadding(new Insets(CONTENT_SPACING));
+    Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+    Node[] publicationNodes = buildPublicationNodeArray(eventBus, scene, publications);
+    container.getChildren().addAll(publicationNodes);
+
+    stage.setScene(scene);
+    stage.setTitle("Subscriptions");
+  }
+
   /**
    * Open a publication list window of a channel with its publications.
    */
   static void open(EventBus eventBus, Channel channel, List<Publication> publications) {
     Platform.runLater(() -> {
       PublicationListWindow window = new PublicationListWindow(eventBus, channel, publications);
+      window.stage.show();
+    });
+  }
+
+  static void open(EventBus eventBus, List<Publication> publications) {
+    Platform.runLater(() -> {
+      PublicationListWindow window = new PublicationListWindow(eventBus, publications);
       window.stage.show();
     });
   }
