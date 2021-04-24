@@ -39,10 +39,8 @@ public final class ChannelEditListenerTest {
     response = mock(HttpResponse.class);
 
     // Create edit event
-    editEvent = mock(EditChannelEvent.class);
-    when(editEvent.getChannelId()).thenReturn(channelId);
     request = mock(EditChannelRequest.class);
-    when(editEvent.getRequest()).thenReturn(request);
+    editEvent = new EditChannelEvent(channelId, request);
 
     // Put http request
     when(requestBuilder.path(channelId)).thenReturn(requestBuilder);
@@ -58,6 +56,7 @@ public final class ChannelEditListenerTest {
 
     when(response.isStatusOk()).thenReturn(true);
     EventBus eventBus = mock(EventBus.class);
+
     ChannelEditListener listener = new ChannelEditListener(eventBus, factory);
 
     listener.onChannelEdit(editEvent);
