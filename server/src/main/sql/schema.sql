@@ -67,10 +67,3 @@ CREATE TABLE readlater (
    FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
    PRIMARY KEY(user_id,publication_id)
 );
-CREATE TABLE settings (
-	user_id CHAR(36) NOT NULL,
-    preference VARCHAR(7),
-    timezone VARCHAR(20),
-    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
-    PRIMARY KEY(user_id, preference)
-);
