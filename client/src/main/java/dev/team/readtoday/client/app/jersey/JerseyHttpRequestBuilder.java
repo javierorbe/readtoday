@@ -26,6 +26,12 @@ final class JerseyHttpRequestBuilder implements HttpRequestBuilder {
   }
 
   @Override
+  public HttpRequestBuilder path(String path) {
+    WebTarget newTarget = target.path(path);
+    return new JerseyHttpRequestBuilder(newTarget);
+  }
+
+  @Override
   public JerseyHttpResponse get() {
     Response response = target.request(MediaType.APPLICATION_JSON).get();
     return new JerseyHttpResponse(response);
@@ -35,6 +41,13 @@ final class JerseyHttpRequestBuilder implements HttpRequestBuilder {
   public JerseyHttpResponse post(Object entity) {
     Response response = target.request(MediaType.APPLICATION_JSON)
         .post(Entity.entity(entity, MediaType.APPLICATION_JSON));
+    return new JerseyHttpResponse(response);
+  }
+
+  @Override
+  public HttpResponse put(Object entity) {
+    Response response = target.request(MediaType.APPLICATION_JSON)
+        .put(Entity.entity(entity, MediaType.APPLICATION_JSON));
     return new JerseyHttpResponse(response);
   }
 

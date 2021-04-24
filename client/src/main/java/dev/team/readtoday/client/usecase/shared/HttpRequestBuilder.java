@@ -2,15 +2,33 @@ package dev.team.readtoday.client.usecase.shared;
 
 public interface HttpRequestBuilder {
 
-  /** Add a query param to the request. */
+  /**
+   * Add a query param to the request.
+   */
   HttpRequestBuilder withParam(String name, Object... values);
 
-  /** Get request. */
+  /**
+   * Add a path to the request
+   */
+  HttpRequestBuilder path(String path);
+
+  /**
+   * Get request.
+   */
   HttpResponse get();
 
-  /** Post request. */
+  /**
+   * Post request.
+   */
   HttpResponse post(Object entity);
 
-  /** Delete request. */
+  /**
+   * Put request
+   */
+  HttpResponse put(Object entity);
+
+  /**
+   * Delete request.
+   */
   HttpResponse delete(String document);
 }
