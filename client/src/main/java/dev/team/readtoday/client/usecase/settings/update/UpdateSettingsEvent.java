@@ -1,24 +1,24 @@
 package dev.team.readtoday.client.usecase.settings.update;
 
 import dev.team.readtoday.client.model.NotificationPreference;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 public final class UpdateSettingsEvent {
 
-  private final ZoneOffset zoneOffset;
-  private final NotificationPreference notificationPref;
+  private final ZoneId zoneId;
+  private final NotificationPreference notificationPreference;
 
-  public UpdateSettingsEvent(ZoneOffset zoneOffset,
-                             NotificationPreference notificationPref) {
-    this.notificationPref = notificationPref;
-    this.zoneOffset = zoneOffset;
+  public UpdateSettingsEvent(ZoneId zoneId,
+      NotificationPreference notificationPreference) {
+    this.zoneId = zoneId;
+    this.notificationPreference = notificationPreference;
   }
 
-  ZoneOffset getZoneOffset() {
-    return zoneOffset;
+  public ZoneId getZoneId() {
+    return zoneId;
   }
 
-  NotificationPreference getNotificationPref() {
-    return notificationPref;
+  public NotificationPreference getNotificationPreference() {
+    return notificationPreference;
   }
 }
