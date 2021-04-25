@@ -179,6 +179,9 @@ public final class HomeView implements ViewController, Initializable {
     eventBus.post(new PublicationRequestEvent());
   }
 
+  @FXML
+  public void openReadLaterList() { }
+
   @Subscribe
   public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
     ObservableList<Channel> list =
@@ -235,7 +238,6 @@ public final class HomeView implements ViewController, Initializable {
 
   @Subscribe
   public void onSuccessfulPublicationRequest(PublicationRequestSuccesfulEvent event) {
-    List<Channel> channels = channelListView.getItems();
     List<Publication> publications = new ArrayList<>();
 
     for (PublicationResponse p : event.getPublications()) {
@@ -250,6 +252,7 @@ public final class HomeView implements ViewController, Initializable {
 
     PublicationListWindow.open(eventBus, sortList(publications));
   }
+
 
   public List<Publication> sortList(List<Publication> publications) {
     List<Publication> sortedList = new ArrayList<>();
