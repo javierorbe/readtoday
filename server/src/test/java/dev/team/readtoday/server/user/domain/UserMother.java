@@ -31,4 +31,13 @@ public enum UserMother {
         Role.USER
     );
   }
+
+  public static User randomAdmin() {
+    return new User(
+        UserId.random(),
+        UsernameMother.random(),
+        EmailAddressMother.random(),
+        Role.ADMIN
+    );
+  }
 }

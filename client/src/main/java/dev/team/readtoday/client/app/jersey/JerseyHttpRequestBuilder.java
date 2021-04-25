@@ -39,6 +39,16 @@ final class JerseyHttpRequestBuilder implements HttpRequestBuilder {
   }
 
   @Override
+  public HttpResponse put(String document, Object entity) {
+    throw new UnsupportedOperationException("Not implemented.");
+  }
+
+  @Override
+  public HttpResponse put(Object entity) {
+    throw new UnsupportedOperationException("Not implemented.");
+  }
+
+  @Override
   public HttpResponse delete(String document) {
     throw new UnsupportedOperationException("Not implemented.");
   }
