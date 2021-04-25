@@ -4,16 +4,6 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SETTIN
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import dev.team.readtoday.server.settings.domain.NotificationPreference;
-import dev.team.readtoday.server.settings.domain.Settings;
-import dev.team.readtoday.server.settings.domain.SettingsRepository;
-import dev.team.readtoday.server.settings.domain.TimeZone;
-import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
-import dev.team.readtoday.server.user.domain.User;
-import dev.team.readtoday.server.user.domain.UserMother;
-import dev.team.readtoday.server.user.domain.UserRepository;
-import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +14,15 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import dev.team.readtoday.server.settings.domain.NotificationPreference;
+import dev.team.readtoday.server.settings.domain.Settings;
+import dev.team.readtoday.server.settings.domain.SettingsRepository;
+import dev.team.readtoday.server.settings.domain.TimeZone;
+import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
+import dev.team.readtoday.server.user.domain.User;
+import dev.team.readtoday.server.user.domain.UserMother;
+import dev.team.readtoday.server.user.domain.UserRepository;
+import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
@@ -63,7 +62,7 @@ final class JooqSettingsRepositoryTest extends BaseJooqIntegrationTest {
     repositorySettings.save(origSettings);
 
     Settings newSettings =
-        new Settings(user.getId(), NotificationPreference.DAILY, origSettings.getTimeZone());
+        new Settings(user.getId(), NotificationPreference.WEEKLY, origSettings.getTimeZone());
     assertDoesNotThrow(() -> repositorySettings.save(newSettings));
   }
 
