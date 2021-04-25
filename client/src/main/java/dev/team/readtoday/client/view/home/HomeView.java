@@ -2,10 +2,13 @@ package dev.team.readtoday.client.view.home;
 
 import com.google.common.collect.ImmutableList;
 import dev.team.readtoday.client.app.gui.ChangeSceneEvent;
+import dev.team.readtoday.client.app.gui.SceneCreator;
 import dev.team.readtoday.client.app.gui.SceneType;
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Channel;
+import dev.team.readtoday.client.model.NotificationPreference;
 import dev.team.readtoday.client.model.Publication;
+import dev.team.readtoday.client.model.Settings;
 import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
@@ -13,6 +16,7 @@ import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategor
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
+import dev.team.readtoday.client.usecase.settings.get.SettingsReceivedEvent;
 import dev.team.readtoday.client.usecase.shared.response.CategoryResponse;
 import dev.team.readtoday.client.usecase.shared.response.PublicationResponse;
 import dev.team.readtoday.client.usecase.subscription.publications.PublicationRequestEvent;
@@ -26,21 +30,20 @@ import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscrip
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionSuccessfulEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
-
+import dev.team.readtoday.client.view.settings.SettingsView;
 import java.net.URL;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
-
 import java.util.Set;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -48,11 +51,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class HomeView implements ViewController, Initializable {
 
@@ -73,6 +80,8 @@ public final class HomeView implements ViewController, Initializable {
 
   @FXML
   private TextField channelsByCategory;
+
+  Logger logger = LoggerFactory.getLogger(HomeView.class);
 
   public HomeView(EventBus eventBus, Collection<Channel> subscribedChannels) {
     this.eventBus = eventBus;
@@ -263,5 +272,34 @@ public final class HomeView implements ViewController, Initializable {
   @Subscribe
   public void onFailedPublicationRequest(PublicationRequestFailedEvent event) {
     AlertLauncher.error("You are not subscribed to any channel");
+  }
+
+  @FXML
+  private void getSettings() {
+    // TODO: Delete these two lines when server get user settings functionality is completed.
+    //       This is a simulation. Because server is not working now.
+    ZoneId zone = ZoneId.of("Europe/Madrid");
+    eventBus.post(new SettingsReceivedEvent(zone.getId(), NotificationPreference.NONE.toString()));
+
+    // Uncomment me to get user settings from server -> open window to edit user settings.
+    // eventBus.post(new GetSettingsEvent());
+  }
+
+  @Subscribe
+  public void createSettingsStage(SettingsReceivedEvent event) {
+    Stage settingsStage = new Stage();
+
+    Settings settings = new Settings(event.getZoneId(), event.getNotificationPreference());
+
+    Scene settingsScene = SceneCreator.createScene(
+        "settings.fxml",
+        new SettingsView(eventBus, settings)
+    );
+
+    settingsStage.setHeight(300);
+    settingsStage.setWidth(500);
+    settingsStage.setTitle("User Settings");
+    settingsStage.setScene(settingsScene);
+    settingsStage.show();
   }
 }
