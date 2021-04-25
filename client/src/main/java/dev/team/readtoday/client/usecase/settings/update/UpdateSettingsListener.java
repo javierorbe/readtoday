@@ -21,15 +21,15 @@ public final class UpdateSettingsListener {
   @Subscribe
   public void onUpdateSettingsRequest(UpdateSettingsEvent event) {
     var request = new UpdateSettingsRequest(
-        event.getZoneOffset().getId(),
-        event.getNotificationPref().toString()
+        event.getZoneId().getId(),
+        event.getNotificationPreference().toString()
     );
 
     HttpResponse response = requestBuilder.put(request);
 
     if (response.isStatusOk()) {
       eventBus.post(
-          new SettingsSuccessfullyUpdated(event.getZoneOffset(), event.getNotificationPref())
+          new SettingsSuccessfullyUpdated(event.getZoneId(), event.getNotificationPreference())
       );
     } else {
       String reason = response.getStatusReason();

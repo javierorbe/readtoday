@@ -54,8 +54,8 @@ final class UpdateSettingsListenerTest {
 
     // Then
     UpdateSettingsRequest request = requestCaptor.getValue();
-    assertEquals(event.getZoneOffset().getId(), request.getZoneId());
-    assertEquals(event.getNotificationPref().toString(), request.getNotificationPref());
+    assertEquals(event.getZoneId().getId(), request.getZoneId());
+    assertEquals(event.getNotificationPreference().toString(), request.getNotificationPref());
 
     var eventCaptor = ArgumentCaptor.forClass(SettingsSuccessfullyUpdated.class);
     verify(eventBus).post(eventCaptor.capture());

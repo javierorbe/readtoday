@@ -9,6 +9,7 @@ import dev.team.readtoday.client.model.NotificationPreference;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilder;
 import dev.team.readtoday.client.usecase.shared.HttpRequestBuilderFactory;
 import dev.team.readtoday.client.usecase.shared.HttpResponse;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import org.greenrobot.eventbus.EventBus;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +48,7 @@ final class GetSettingsListenerTest {
     when(response.isStatusOk()).thenReturn(true);
 
     GetSettingsResponse entity = new GetSettingsResponse();
-    ZoneOffset zoneOffset = ZoneOffset.UTC;
+    ZoneId zoneOffset = ZoneOffset.UTC;
     entity.setZoneId(zoneOffset.getId());
     var notificationPref = NotificationPreference.DAILY;
     entity.setNotificationPref(notificationPref.toString());
@@ -63,7 +64,7 @@ final class GetSettingsListenerTest {
     verify(eventBus).post(eventCaptor.capture());
     var capturedEvent = eventCaptor.getValue();
     assertEquals(notificationPref, capturedEvent.getNotificationPreference());
-    assertEquals(zoneOffset, capturedEvent.getZoneOffset());
+    assertEquals(zoneOffset, capturedEvent.getZoneId());
   }
 
   @Test
