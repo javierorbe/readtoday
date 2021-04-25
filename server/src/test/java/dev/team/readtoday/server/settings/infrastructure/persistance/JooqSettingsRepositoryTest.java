@@ -18,15 +18,15 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-@Ignore
+@Disabled
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
 final class JooqSettingsRepositoryTest extends BaseJooqIntegrationTest {
