@@ -18,21 +18,6 @@
     <exclude.acceptance.tests/>
   </properties>
 
-  <profiles>
-    <profile>
-      <id>exclude-integration-tests</id>
-      <properties>
-        <exclude.integration.tests>IntegrationTest</exclude.integration.tests>
-      </properties>
-    </profile>
-    <profile>
-      <id>exclude-acceptance-tests</id>
-      <properties>
-        <exclude.acceptance.tests>**/*Cucumber*.java</exclude.acceptance.tests>
-      </properties>
-    </profile>
-  </profiles>
-
   <build>
     <plugins>
       <plugin>
