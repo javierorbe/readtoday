@@ -12,6 +12,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cucumber.version>6.10.2</cucumber.version>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
+    <acceptance.test>dev.team.readtoday.server.shared.interfaces.AcceptanceTest</acceptance.test>
+    <integration.test>IntegrationTest</integration.test>
     <exclude.integration.tests/>
     <exclude.acceptance.tests/>
   </properties>
@@ -46,16 +48,40 @@
           </compilerArgs>
         </configuration>
       </plugin>
+      <!-- mvn test -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
+          <!-- Exclude acceptance test + integration test -->
           <excludes>
-            <exclude>${exclude.acceptance.tests}</exclude>
+            <exclude>**/*Cucumber*.java</exclude>
           </excludes>
-          <excludedGroups>${exclude.integration.tests}</excludedGroups>
+          <excludedGroups>${integration.test}</excludedGroups>
         </configuration>
+      </plugin>
+      <!-- mvn verify -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <!-- Include integration test + acceptance test -->
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <groups>${integration.test}</groups>
+          <!-- Uncomment me: <groups>${integration.test}, ${acceptance.test}</groups>-->
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.jooq</groupId>
