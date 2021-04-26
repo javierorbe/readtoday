@@ -1,9 +1,19 @@
 package dev.team.readtoday.client.view.home;
 
+import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Publication;
+import dev.team.readtoday.client.usecase.readlater.ReadLaterRequest;
+import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
+import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListRequestedEvent;
+import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
+import dev.team.readtoday.client.view.AlertLauncher;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
@@ -15,8 +25,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apache.commons.text.StringEscapeUtils;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 final class PublicationNode extends VBox {
+
+  private static final Logger LOGGER = LoggerFactory
+      .getLogger(PublicationNode.class);
 
   private static final double ELEMENT_SPACING = 2.0;
   private static final double VERTICAL_SPACING = 6.0;
@@ -71,8 +87,17 @@ final class PublicationNode extends VBox {
   }
 
   private void readLaterHandler(ActionEvent event) {
+    LOGGER.trace("Read later was clicked");
     String publicationId = publication.getId();
-    // eventBus.post();
+    String title = publication.getTitle();
+    String description = publication.getDescription();
+    OffsetDateTime date = publication.getDate();
+    String link = publication.getLink();
+    Collection<String> categories = publication.getCategories().stream().map(Category::getId).collect(
+        Collectors.toList());
+    ReadLaterRequest request = new ReadLaterRequest(publicationId, title, description, date, link, categories);
+    SaveReadLaterListRequestedEvent saveEvent = new SaveReadLaterListRequestedEvent(request);
+    eventBus.post(saveEvent);
     // TODO: Send an event to read later here
   }
 }
