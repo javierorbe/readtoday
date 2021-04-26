@@ -305,4 +305,17 @@ public final class HomeView implements ViewController, Initializable {
     settingsStage.setScene(settingsScene);
     settingsStage.show();
   }
+
+
+
+  @Subscribe
+  public void successfulReadLaterHandler(SuccessfulSaveReadLaterListEvent event){
+    AlertLauncher.info("Publication was added to the read later list");
+  }
+  @Subscribe
+  public void FailedReadLaterHandler(SaveReadLaterListFailedEvent event){
+    AlertLauncher.info("Publication was not added to the read later list");
+  }
 }
+
+
