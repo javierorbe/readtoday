@@ -16,6 +16,8 @@ import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategor
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryFailedEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
+import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
+import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
 import dev.team.readtoday.client.usecase.settings.get.SettingsReceivedEvent;
 import dev.team.readtoday.client.usecase.shared.response.CategoryResponse;
 import dev.team.readtoday.client.usecase.shared.response.PublicationResponse;
