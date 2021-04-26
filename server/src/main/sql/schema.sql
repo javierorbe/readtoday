@@ -76,10 +76,10 @@ VALUES ('none'),
        ('weekly');
        
 CREATE TABLE settings (
-	user_id CHAR(36) NOT NULL,
-    pref_type VARCHAR(7),
-    timezone VARCHAR(20),
+	user_id CHAR(36) NOT NULL UNIQUE,
+    pref_type VARCHAR(7) DEFAULT 'none',
+    timezone VARCHAR(20) DEFAULT 'Europe/Paris',
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE,
     FOREIGN KEY (pref_type) REFERENCES preference (pref_type),
-    PRIMARY KEY(user_id, pref_type)
+    PRIMARY KEY(user_id)
 );
