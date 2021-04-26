@@ -277,6 +277,7 @@ public final class HomeView implements ViewController, Initializable {
     AlertLauncher.error("You are not subscribed to any channel");
   }
 
+
   @FXML
   private void getSettings() {
     // TODO: Delete these two lines when server get user settings functionality is completed.
@@ -305,6 +306,7 @@ public final class HomeView implements ViewController, Initializable {
     settingsStage.setScene(settingsScene);
     settingsStage.show();
   }
+
 
 
 
