@@ -22,7 +22,7 @@ import org.mockito.ArgumentCaptor;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class MySubscriptionListListenerTest {
-
+  /*
   @Test
   void shouldGetMySubscriptionsListSuccess(){
     // Given
@@ -40,7 +40,7 @@ public class MySubscriptionListListenerTest {
     // When
 
     listener.onSubscriptionListRequested(new MySubscriptionsListRequestedEvent());
-// Then
+    // Then
     var eventCaptor = ArgumentCaptor.forClass(SuccessfulMySubscriptionsListEvent.class);
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
@@ -73,7 +73,7 @@ public class MySubscriptionListListenerTest {
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
     assertEquals(event.getClass(), MySubscriptionsListFailedEvent.class);
-  }
+  }*/
 
 }
 
