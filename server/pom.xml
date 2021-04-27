@@ -12,24 +12,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cucumber.version>6.10.2</cucumber.version>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
-    <exclude.integration.tests/>
-    <exclude.acceptance.tests/>
+    <acceptance.test>dev.team.readtoday.server.shared.infrastructure.AcceptanceTest</acceptance.test>
+    <integration.test>IntegrationTest</integration.test>
   </properties>
-
-  <profiles>
-    <profile>
-      <id>exclude-integration-tests</id>
-      <properties>
-        <exclude.integration.tests>IntegrationTest</exclude.integration.tests>
-      </properties>
-    </profile>
-    <profile>
-      <id>exclude-acceptance-tests</id>
-      <properties>
-        <exclude.acceptance.tests>**/*Cucumber*.java</exclude.acceptance.tests>
-      </properties>
-    </profile>
-  </profiles>
 
   <build>
     <plugins>
@@ -46,16 +31,41 @@
           </compilerArgs>
         </configuration>
       </plugin>
+      <!-- mvn test -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
+          <!-- Exclude acceptance test + integration test -->
           <excludes>
-            <exclude>${exclude.acceptance.tests}</exclude>
+            <exclude>**/*Cucumber*.java</exclude>
           </excludes>
-          <excludedGroups>${exclude.integration.tests}</excludedGroups>
+          <excludedGroups>${integration.test}</excludedGroups>
         </configuration>
+      </plugin>
+      <!-- mvn verify -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M5</version>
+        <configuration>
+          <!-- Add the target/classes folder to classpath again -->
+          <classesDirectory>${project.build.outputDirectory}</classesDirectory>
+          <!-- Include integration test + acceptance test -->
+          <includes>
+            <include>**/*</include>
+          </includes>
+          <groups>${integration.test}, ${acceptance.test}</groups>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.jooq</groupId>
@@ -129,16 +139,73 @@
         <version>0.8.6</version>
         <executions>
           <execution>
+            <id>pre-unit-test</id>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-ut.exec</destFile>
+            </configuration>
           </execution>
           <execution>
-            <id>report</id>
+            <id>post-unit-test</id>
             <phase>prepare-package</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-ut.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>pre-integration-test</id>
+            <goals>
+              <goal>prepare-agent-integration</goal>
+            </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-integration-test</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+            </configuration>
+          </execution>
+          <execution>
+            <id>merge-results</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>merge</goal>
+            </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>
+                    <include>*.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+              <destFile>${project.build.directory}/jacoco-all.exec</destFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>post-merge-report</id>
+            <phase>post-integration-test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+            <configuration>
+              <dataFile>${project.build.directory}/jacoco-all.exec</dataFile>
+              <outputDirectory>${project.reporting.outputDirectory}/jacoco-all</outputDirectory>
+            </configuration>
           </execution>
         </executions>
         <configuration>

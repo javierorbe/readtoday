@@ -1,7 +1,5 @@
 package dev.team.readtoday.server.publication.application.search;
 
-import dev.team.readtoday.server.channel.domain.Channel;
-import dev.team.readtoday.server.channel.infrastructure.controller.search.ChannelResponse;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationDate;
 import dev.team.readtoday.server.shared.domain.StringValueObject;
@@ -9,7 +7,6 @@ import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class PublicationResponse {
 
