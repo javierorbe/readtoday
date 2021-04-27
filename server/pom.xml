@@ -14,6 +14,7 @@
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
     <acceptance.test>dev.team.readtoday.server.shared.infrastructure.AcceptanceTest</acceptance.test>
     <integration.test>IntegrationTest</integration.test>
+    <performance.test>PerformanceTest</performance.test>
   </properties>
 
   <build>
@@ -52,11 +53,11 @@
         <configuration>
           <!-- Add the target/classes folder to classpath again -->
           <classesDirectory>${project.build.outputDirectory}</classesDirectory>
-          <!-- Include integration test + acceptance test -->
+          <!-- Include integration test + acceptance test + performance test-->
           <includes>
             <include>**/*</include>
           </includes>
-          <groups>${integration.test}, ${acceptance.test}</groups>
+          <groups>${integration.test}, ${acceptance.test}, ${performance.test}</groups>
         </configuration>
         <executions>
           <execution>
@@ -422,6 +423,7 @@
       <artifactId>rome</artifactId>
       <version>1.15.0</version>
     </dependency>
+    <!-- Performance testing -->
     <dependency>
       <groupId>org.databene</groupId>
       <artifactId>contiperf</artifactId>
