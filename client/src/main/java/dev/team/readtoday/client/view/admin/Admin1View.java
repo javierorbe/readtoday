@@ -10,10 +10,6 @@ import dev.team.readtoday.client.usecase.auth.SignedOutEvent;
 import dev.team.readtoday.client.usecase.category.create.events.CategorySuccessfullyCreatedEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesEvent;
 import dev.team.readtoday.client.usecase.category.search.events.SearchAllCategoriesSuccessfullyEvent;
-import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationEvent;
-import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationFailedEvent;
-import dev.team.readtoday.client.usecase.channel.create.events.ChannelSuccessfullyCreatedEvent;
-import dev.team.readtoday.client.usecase.channel.create.messages.ChannelCreationRequest;
 import dev.team.readtoday.client.usecase.channel.edit.events.ChannelEditedSuccessfully;
 import dev.team.readtoday.client.usecase.channel.edit.events.ChannelEditionFailed;
 import dev.team.readtoday.client.usecase.channel.edit.events.EditChannelEvent;
@@ -22,7 +18,6 @@ import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByC
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
-import dev.team.readtoday.client.view.home.ChannelCell;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
