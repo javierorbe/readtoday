@@ -52,12 +52,13 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>3.0.0-M5</version>
         <configuration>
+          <!-- Add the target/classes folder to classpath again -->
+          <classesDirectory>${project.build.outputDirectory}</classesDirectory>
           <!-- Include integration test + acceptance test -->
           <includes>
             <include>**/*</include>
           </includes>
-          <groups>${integration.test}</groups>
-          <!-- Uncomment me: <groups>${integration.test}, ${acceptance.test}</groups>-->
+          <groups>${integration.test}, ${acceptance.test}</groups>
         </configuration>
         <executions>
           <execution>
