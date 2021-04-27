@@ -13,6 +13,8 @@
     <cucumber.version>6.10.2</cucumber.version>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
     <acceptance.test>dev.team.readtoday.server.shared.infrastructure.AcceptanceTest</acceptance.test>
+    <j4performacetest.test>dev.team.readtoday.server.shared.infrastructure.PerformanceTest
+    </j4performacetest.test>
     <integration.test>IntegrationTest</integration.test>
     <performance.test>PerformanceTest</performance.test>
   </properties>
@@ -57,7 +59,9 @@
           <includes>
             <include>**/*</include>
           </includes>
-          <groups>${integration.test}, ${acceptance.test}, ${performance.test}</groups>
+          <groups>${integration.test}, ${acceptance.test}, ${performance.test},
+            ${j4performacetest.test}
+          </groups>
         </configuration>
         <executions>
           <execution>
