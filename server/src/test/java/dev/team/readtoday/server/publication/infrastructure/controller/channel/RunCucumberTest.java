@@ -1,6 +1,6 @@
 package dev.team.readtoday.server.publication.infrastructure.controller.channel;
 
-import dev.team.readtoday.server.shared.interfaces.AcceptanceTest;
+import dev.team.readtoday.server.shared.infrastructure.AcceptanceTest;
 import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 import org.junit.experimental.categories.Category;
