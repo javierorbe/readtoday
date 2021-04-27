@@ -4,7 +4,7 @@ public final class TestSignInRequest {
 
   private final String accessToken;
 
-  TestSignInRequest(String accessToken) {
+  public TestSignInRequest(String accessToken) {
     this.accessToken = accessToken;
   }
 
