@@ -12,11 +12,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <cucumber.version>6.10.2</cucumber.version>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
-    <acceptance.test>dev.team.readtoday.server.shared.interfaces.AcceptanceTest</acceptance.test>
+    <acceptance.test>dev.team.readtoday.server.shared.infrastructure.AcceptanceTest</acceptance.test>
     <integration.test>IntegrationTest</integration.test>
-    <exclude.integration.tests/>
-    <exclude.acceptance.tests/>
-    <jacoco.complete.report.filename>jacoco-all.exec</jacoco.complete.report.filename>
   </properties>
 
   <build>
