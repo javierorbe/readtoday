@@ -29,7 +29,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 final class SignUpUserTest {
 
   @Test
-  void shouldThrowExceptionIfUserAlreadyExists() throws ProfileFetchingFailed {
+  void shouldThrowExceptionIfUserAlreadyExists() {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
@@ -45,7 +45,7 @@ final class SignUpUserTest {
   }
 
   @Test
-  void shouldNotThrowExceptionIfUserDoesNotExist() throws ProfileFetchingFailed {
+  void shouldNotThrowExceptionIfUserDoesNotExist() {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
@@ -59,7 +59,7 @@ final class SignUpUserTest {
   }
 
   @Test
-  void shouldSaveUserInRepositoryIfUserDoesNotExist() throws Exception {
+  void shouldSaveUserInRepositoryIfUserDoesNotExist() {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);
@@ -75,7 +75,7 @@ final class SignUpUserTest {
   }
 
   @Test
-  void shouldThrowExceptionIfFailsGettingTheAccessToken() throws ProfileFetchingFailed {
+  void shouldThrowExceptionIfFailsGettingTheAccessToken() {
     AccessToken token = AccessTokenMother.random();
     EmailAddress email = EmailAddressMother.random();
     ProfileFetcher profileFetcher = mock(ProfileFetcher.class);

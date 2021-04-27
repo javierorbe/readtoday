@@ -62,6 +62,7 @@ final class SettingsGetControllerTest {
 
     // Then
     SettingsResponse entity = (SettingsResponse) response.getEntity();
+    assertEquals(userId, queryResponse.getUserId());
     assertEquals(queryResponse.getZoneId(), entity.getZoneId());
     assertEquals(queryResponse.getZoneId(), entity.getZoneId());
   }
