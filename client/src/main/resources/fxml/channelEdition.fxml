@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+  xmlns:fx="http://javafx.com/fxml/1">
+  <top>
+    <MenuBar BorderPane.alignment="CENTER">
+      <Menu mnemonicParsing="false" text="Account">
+        <MenuItem mnemonicParsing="false" onAction="#exitAdminMode" text="Exit Admin Mode"/>
+        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out"/>
+      </Menu>
+    </MenuBar>
+  </top>
+  <center>
+    <BorderPane>
+      <top>
+        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+          <items>
+            <Button mnemonicParsing="false" onAction="#createScene" text="Create channel"/>
+            <Button mnemonicParsing="false" onAction="#editScene" text="Edit Channel"/>
+          </items>
+        </ToolBar>
+      </top>
+      <center>
+        <SplitPane dividerPositions="0.5">
+          <BorderPane>
+            <center>
+              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <top>
+                  <HBox alignment="TOP_CENTER">
+                    <TextField fx:id="channelsByCategory" promptText="Category"/>
+                    <Button mnemonicParsing="false" onAction="#performSearch" text="Search">
+                      <HBox.margin>
+                        <Insets left="5.0"/>
+                      </HBox.margin>
+                    </Button>
+                    <BorderPane.margin>
+                      <Insets top="30.0"/>
+                    </BorderPane.margin>
+                  </HBox>
+                </top>
+                <center>
+                  <ListView fx:id="newChannelListView" prefHeight="200.0" prefWidth="200.0"
+                    BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+                    </BorderPane.margin>
+                  </ListView>
+                </center>
+                <bottom>
+                  <Button mnemonicParsing="false" onAction="#loadChannel" text="Edit"
+                    BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                      <Insets bottom="37.0"/>
+                    </BorderPane.margin>
+                  </Button>
+                </bottom>
+              </BorderPane>
+            </center>
+          </BorderPane>
+          <BorderPane>
+            <center>
+              <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <top>
+                  <HBox BorderPane.alignment="CENTER">
+                    <BorderPane.margin>
+                      <Insets top="20.0"/>
+                    </BorderPane.margin>
+                    <VBox alignment="CENTER_RIGHT" HBox.hgrow="NEVER">
+                      <HBox.margin>
+                        <Insets left="10.0"/>
+                      </HBox.margin>
+                      <Label contentDisplay="CENTER" prefHeight="25.0" text="Title:">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </Label>
+                      <Label prefHeight="25.0" text="RSS URL">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </Label>
+                      <Label prefHeight="25.0" text="Description">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </Label>
+                      <Label prefHeight="25.0" text="Image URL">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </Label>
+                      <Label text="Categories">
+                        <VBox.margin>
+                          <Insets bottom="5.0" left="10.0" top="5.0"/>
+                        </VBox.margin>
+                      </Label>
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS">
+                      <HBox.margin>
+                        <Insets/>
+                      </HBox.margin>
+                      <padding>
+                        <Insets left="10.0" right="10.0"/>
+                      </padding>
+                      <Label text="Edit Channel">
+                        <font>
+                          <Font size="18.0"/>
+                        </font>
+                      </Label>
+                      <TextField fx:id="title">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </TextField>
+                      <TextField fx:id="rssUrl">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </TextField>
+                      <TextField fx:id="description">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </TextField>
+                      <TextField fx:id="imageUrl">
+                        <VBox.margin>
+                          <Insets bottom="5.0" top="5.0"/>
+                        </VBox.margin>
+                      </TextField>
+                      <Button mnemonicParsing="false" onAction="#createCategory"
+                        text="Create Category"/>
+                    </VBox>
+                  </HBox>
+                </top>
+                <bottom>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0"
+                    BorderPane.alignment="CENTER">
+                    <Button mnemonicParsing="false" onAction="#saveChannel" text="Save">
+                      <HBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                      </HBox.margin>
+                    </Button>
+                  </HBox>
+                </bottom>
+                <center>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                    <children>
+                      <VBox fx:id="categorySelector" alignment="CENTER_LEFT" prefHeight="200.0"
+                        prefWidth="100.0">
+                        <VBox.margin>
+                          <Insets left="80.0"/>
+                        </VBox.margin>
+                      </VBox>
+                    </children>
+                  </VBox>
+                </center>
+              </BorderPane>
+            </center>
+          </BorderPane>
+        </SplitPane>
+      </center>
+    </BorderPane>
+
+
+  </center>
+</BorderPane>
