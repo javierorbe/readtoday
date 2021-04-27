@@ -18,6 +18,7 @@ import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByC
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
+import dev.team.readtoday.client.usecase.settings.get.FailedToGetSettingsEvent;
 import dev.team.readtoday.client.usecase.settings.get.SettingsReceivedEvent;
 import dev.team.readtoday.client.usecase.shared.response.CategoryResponse;
 import dev.team.readtoday.client.usecase.shared.response.PublicationResponse;
@@ -309,15 +310,18 @@ public final class HomeView implements ViewController, Initializable {
     settingsStage.show();
   }
 
-
-
+  @Subscribe
+  public void onFailedGetSettings(FailedToGetSettingsEvent event) {
+    AlertLauncher.info("Error getting your settings. Reason: " + event.getReason());
+  }
 
   @Subscribe
-  public void successfulReadLaterHandler(SuccessfulSaveReadLaterListEvent event){
+  public void successfulReadLaterHandler(SuccessfulSaveReadLaterListEvent event) {
     AlertLauncher.info("Publication was added to the read later list");
   }
+
   @Subscribe
-  public void FailedReadLaterHandler(SaveReadLaterListFailedEvent event){
+  public void FailedReadLaterHandler(SaveReadLaterListFailedEvent event) {
     AlertLauncher.info("Publication was not added to the read later list");
   }
 }
