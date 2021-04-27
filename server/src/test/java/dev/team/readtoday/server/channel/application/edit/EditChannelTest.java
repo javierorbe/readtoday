@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.channel.application;
+package dev.team.readtoday.server.channel.application.edit;
 
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import dev.team.readtoday.server.channel.application.edit.EditChannel;
 import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.channel.domain.ChannelMother;
 import dev.team.readtoday.server.channel.domain.ChannelNotFound;
