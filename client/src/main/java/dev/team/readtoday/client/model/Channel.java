@@ -16,11 +16,11 @@ public final class Channel implements Comparable<Channel> {
   private final ImmutableCollection<Category> categories;
 
   public Channel(String id,
-                 String name,
-                 String rssUrl,
-                 String description,
-                 String faviconImageUrl,
-                 Collection<Category> categories) {
+      String name,
+      String rssUrl,
+      String description,
+      String faviconImageUrl,
+      Collection<Category> categories) {
     this.id = id;
     this.name = name;
     this.description = description;
@@ -43,6 +43,14 @@ public final class Channel implements Comparable<Channel> {
 
   public String getFaviconImageUrl() {
     return faviconImageUrl.toString();
+  }
+
+  public String getRssUrl() {
+    return rssUrl.toString();
+  }
+
+  public String getDescription() {
+    return description;
   }
 
   public ImmutableCollection<Category> getCategories() {

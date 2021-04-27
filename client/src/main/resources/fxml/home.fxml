@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+  xmlns:fx="http://javafx.com/fxml/1">
   <top>
     <MenuBar BorderPane.alignment="CENTER">
       <Menu mnemonicParsing="false" text="Account">
-        <MenuItem mnemonicParsing="false" onAction="#goToAdmin" text="Admin Mode" />
-        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out" />
-        <MenuItem mnemonicParsing="false" onAction="#getSettings" text="Settings" />
+        <MenuItem mnemonicParsing="false" onAction="#goToAdmin" text="Admin Mode"/>
+        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out"/>
+        <MenuItem mnemonicParsing="false" onAction="#getSettings" text="Settings"/>
       </Menu>
     </MenuBar>
   </top>
@@ -18,80 +19,83 @@
     <BorderPane>
       <top>
         <ToolBar BorderPane.alignment="CENTER">
-          <Pane HBox.hgrow="ALWAYS" />
-          <TextField fx:id="channelsByCategory" promptText="Category" />
-          <Button mnemonicParsing="false" onAction="#performSearch" text="Search" />
-
-
+          <Pane HBox.hgrow="ALWAYS"/>
+          <TextField fx:id="channelsByCategory" promptText="Category"/>
+          <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>
         </ToolBar>
       </top>
       <center>
         <SplitPane dividerPositions="0.3" BorderPane.alignment="CENTER">
           <BorderPane>
             <center>
-              <ListView fx:id="channelListView" />
+              <ListView fx:id="channelListView"/>
             </center>
             <top>
               <VBox alignment="CENTER" BorderPane.alignment="CENTER">
                 <Label text="Filter by category:">
                   <VBox.margin>
-                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
+                    <Insets bottom="1.0" left="1.0" right="1.0" top="1.0"/>
                   </VBox.margin>
                 </Label>
                 <HBox>
-                  <ComboBox fx:id="channelCategorySelector" maxWidth="Infinity" HBox.hgrow="SOMETIMES">
+                  <ComboBox fx:id="channelCategorySelector" maxWidth="Infinity"
+                    HBox.hgrow="SOMETIMES">
                     <HBox.margin>
-                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
                     </HBox.margin>
                   </ComboBox>
-                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#unselectCategory" text="Clear">
+                  <Button minWidth="-Infinity" mnemonicParsing="false" onAction="#unselectCategory"
+                    text="Clear">
                     <HBox.margin>
-                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0"/>
                     </HBox.margin>
                   </Button>
                 </HBox>
                 <opaqueInsets>
-                  <Insets />
+                  <Insets/>
                 </opaqueInsets>
                 <BorderPane.margin>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
                 </BorderPane.margin>
               </VBox>
             </top>
-                  <bottom>
-                     <Button mnemonicParsing="false" onAction="#unsubscribe" text="Unsubscribe" BorderPane.alignment="CENTER" />
-                  </bottom>
+            <bottom>
+              <Button mnemonicParsing="false" onAction="#unsubscribe" text="Unsubscribe"
+                BorderPane.alignment="CENTER"/>
+            </bottom>
           </BorderPane>
           <BorderPane>
             <center>
-              <ListView fx:id="newChannelListView" BorderPane.alignment="CENTER" />
+              <ListView fx:id="newChannelListView" BorderPane.alignment="CENTER"/>
             </center>
-                  <bottom>
-                     <Button mnemonicParsing="false" onAction="#subscribe" text="Subscribe" BorderPane.alignment="CENTER" />
-                  </bottom>
+            <bottom>
+              <Button mnemonicParsing="false" onAction="#subscribe" text="Subscribe"
+                BorderPane.alignment="CENTER"/>
+            </bottom>
           </BorderPane>
         </SplitPane>
       </center>
-         <bottom>
-           <FlowPane alignment="CENTER" columnHalignment="CENTER">
-             <FlowPane.margin>
-               <Insets />
-             </FlowPane.margin>
-             <padding>
-               <Insets top="8.0" />
-             </padding>
-             <HBox spacing="10">
-                <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Subscriptions" textAlignment="CENTER" BorderPane.alignment="CENTER" />
-                <Button mnemonicParsing="false" onAction="#openReadLaterList" text="Read later" />
-             </HBox>
-           </FlowPane>
-         </bottom>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <padding>
-            <Insets bottom="8.0" left="8.0" right="8.0" />
-         </padding>
+      <bottom>
+        <FlowPane alignment="CENTER" columnHalignment="CENTER">
+          <FlowPane.margin>
+            <Insets/>
+          </FlowPane.margin>
+          <padding>
+            <Insets top="8.0"/>
+          </padding>
+          <HBox spacing="10">
+            <Button mnemonicParsing="false" onAction="#openSubsPublications" text="Subscriptions"
+              textAlignment="CENTER" BorderPane.alignment="CENTER"/>
+            <Button mnemonicParsing="false" onAction="#openReadLaterList" text="Read later"/>
+          </HBox>
+        </FlowPane>
+      </bottom>
+      <BorderPane.margin>
+        <Insets/>
+      </BorderPane.margin>
+      <padding>
+        <Insets bottom="8.0" left="8.0" right="8.0"/>
+      </padding>
     </BorderPane>
   </center>
 </BorderPane>

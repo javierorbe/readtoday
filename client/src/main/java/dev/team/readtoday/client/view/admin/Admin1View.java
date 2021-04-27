@@ -14,10 +14,15 @@ import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationEv
 import dev.team.readtoday.client.usecase.channel.create.events.ChannelCreationFailedEvent;
 import dev.team.readtoday.client.usecase.channel.create.events.ChannelSuccessfullyCreatedEvent;
 import dev.team.readtoday.client.usecase.channel.create.messages.ChannelCreationRequest;
+import dev.team.readtoday.client.usecase.channel.edit.events.ChannelEditedSuccessfully;
+import dev.team.readtoday.client.usecase.channel.edit.events.ChannelEditionFailed;
+import dev.team.readtoday.client.usecase.channel.edit.events.EditChannelEvent;
+import dev.team.readtoday.client.usecase.channel.edit.messages.EditChannelRequest;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategoryEvent;
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
+import dev.team.readtoday.client.view.home.ChannelCell;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +46,7 @@ import javafx.stage.Stage;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-public final class AdminView implements ViewController, Initializable {
+public final class Admin1View implements ViewController, Initializable {
 
   private final EventBus eventBus;
 
@@ -57,12 +62,18 @@ public final class AdminView implements ViewController, Initializable {
   private TextField imageUrl;
   @FXML
   private VBox categorySelector;
+  @FXML
+  private TextField channelsByCategory;
+  @FXML
+  private ListView<Channel> newChannelListView;
 
   private ObservableList<Node> observableCategories;
 
   private Map<CheckBox, String> checkBoxCategoryIdMap;
 
-  public AdminView(EventBus eventBus) {
+  private String channelId;
+
+  public Admin1View(EventBus eventBus) {
     this.eventBus = eventBus;
     eventBus.register(this);
     categoryCreationStage = new Stage();
@@ -75,17 +86,18 @@ public final class AdminView implements ViewController, Initializable {
     Objects.requireNonNull(description);
     Objects.requireNonNull(imageUrl);
     Objects.requireNonNull(categorySelector);
+    Objects.requireNonNull(newChannelListView);
   }
 
   @FXML
-  public void createChannel() {
+  public void saveChannel() {
     List<String> selectedCategoriesIds = observableCategories.stream()
         .map(node -> (CheckBox) node)
         .filter(CheckBox::isSelected)
         .map(checkBox -> checkBoxCategoryIdMap.get(checkBox))
         .collect(Collectors.toList());
 
-    ChannelCreationRequest request = new ChannelCreationRequest(
+    EditChannelRequest request = new EditChannelRequest(
         title.getText(),
         rssUrl.getText(),
         description.getText(),
@@ -93,7 +105,9 @@ public final class AdminView implements ViewController, Initializable {
         selectedCategoriesIds
     );
 
-    eventBus.post(new ChannelCreationEvent(request));
+    eventBus.post(new EditChannelEvent(channelId, request));
+
+
   }
 
   @FXML
@@ -130,13 +144,29 @@ public final class AdminView implements ViewController, Initializable {
     eventBus.post(new ChangeSceneEvent((SceneType.ADMIN1)));
   }
 
-  @Subscribe
-  public void onChannelSuccessfullyCreated(ChannelSuccessfullyCreatedEvent event) {
-    AlertLauncher.info("Channel was created");
+  @FXML
+  public void performSearch() {
+    String categoryName = channelsByCategory.getText();
+    eventBus.post(new SearchChannelsByCategoryEvent(categoryName));
+  }
+
+  @FXML
+  public void loadChannel() {
+    Channel channel = newChannelListView.getSelectionModel().getSelectedItem();
+    channelId = channel.getId();
+    title.setText(channel.getName());
+    rssUrl.setText(channel.getRssUrl());
+    description.setText(channel.getDescription());
+    imageUrl.setText(channel.getFaviconImageUrl());
   }
 
   @Subscribe
-  public void onChannelCreationFailedEvent(ChannelCreationFailedEvent event) {
+  public void onChannelSuccessfullyEdited(ChannelEditedSuccessfully event) {
+    AlertLauncher.info("Channel was modified");
+  }
+
+  @Subscribe
+  public void onChannelEditionFailed(ChannelEditionFailed event) {
     AlertLauncher.error("Channel creation failed", event.getReason());
   }
 
@@ -151,12 +181,21 @@ public final class AdminView implements ViewController, Initializable {
     });
   }
 
+  @Subscribe
+  public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
+    ObservableList<Channel> list =
+        FXCollections.observableList(new ArrayList<>(event.getChannels()));
+    Platform.runLater(() -> newChannelListView.setItems(list));
+
+  }
+
   private void updateCategorySelectorGUI(Map<CheckBox, String> map) {
     ObservableList<Node> children = categorySelector.getChildren();
     // Adds categories to gui
     children.setAll(map.keySet());
     observableCategories = children;
   }
+
 
   private Map<CheckBox, String> getCheckBoxCategoryIdMap(ImmutableCollection<Category> categories) {
     Map<CheckBox, String> categoriesIdByCheckbox = new HashMap<>();
@@ -172,3 +211,4 @@ public final class AdminView implements ViewController, Initializable {
     eventBus.post(new SearchAllCategoriesEvent());
   }
 }
+

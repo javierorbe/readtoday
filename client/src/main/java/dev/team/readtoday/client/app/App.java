@@ -8,6 +8,7 @@ import dev.team.readtoday.client.usecase.auth.signin.SuccessfulSignInEvent;
 import dev.team.readtoday.client.usecase.auth.signup.SuccessfulSignUpEvent;
 import dev.team.readtoday.client.usecase.shared.AuthTokenSupplier;
 import dev.team.readtoday.client.view.ViewController;
+import dev.team.readtoday.client.view.admin.Admin1View;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
@@ -52,7 +53,8 @@ public final class App extends Application implements AuthTokenSupplier {
     Map<SceneType, ViewController> controllers = Map.of(
         SceneType.AUTH, authView,
         SceneType.HOME, new HomeView(eventBus, Set.of()),
-        SceneType.ADMIN, new AdminView(eventBus)
+        SceneType.ADMIN, new AdminView(eventBus),
+        SceneType.ADMIN1, new Admin1View(eventBus)
     );
 
     sceneContainer = new SceneContainer(eventBus, controllers, () -> stage);
