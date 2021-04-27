@@ -10,6 +10,7 @@ import dev.team.readtoday.server.channel.domain.ChannelRepository;
 import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.bus.command.Command;
 import dev.team.readtoday.server.shared.domain.bus.command.CommandBus;
+import dev.team.readtoday.server.shared.infrastructure.PerformanceTest;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseAcceptanceTest;
 import org.databene.contiperf.PerfTest;
@@ -18,10 +19,12 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
+@Category(PerformanceTest.class)
 public class ChannelEditPerformanceTest extends BaseAcceptanceTest {
 
   private static AcceptanceTestAppContext context;
