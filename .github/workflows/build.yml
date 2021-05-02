@@ -40,16 +40,11 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
       - name: Create database schema
         run: mysql -h 127.0.0.1 --port 3306 -u ${{ secrets.DB_USER }} -p${{ secrets.DB_PASSWORD }} readtoday < server/src/main/sql/schema.sql
-      - name: Build with Maven (server)
+      - name: Build with Maven
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f ./server/pom.xml --batch-mode --update-snapshots verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-      - name: Build with Maven (client)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -f ./client/pom.xml --batch-mode --update-snapshots verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+        run: mvn --batch-mode --update-snapshots verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
       - name: Upload server coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
