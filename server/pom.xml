@@ -4,7 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.team.readtoday</groupId>
+  <parent>
+    <groupId>dev.team.readtoday</groupId>
+    <artifactId>readtoday-aggregate</artifactId>
+    <version>0.1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>readtoday-server</artifactId>
   <version>0.1.0</version>
 
@@ -17,11 +23,7 @@
     </j4performacetest.test>
     <integration.test>IntegrationTest</integration.test>
     <performance.test>PerformanceTest</performance.test>
-    <!-- SonarCloud settings -->
-    <sonar.organization>javierorbe</sonar.organization>
-    <sonar.projectKey>javierorbe_readtoday</sonar.projectKey>
-    <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
-    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.projectName>readtoday_server</sonar.projectName>
   </properties>
 
   <build>

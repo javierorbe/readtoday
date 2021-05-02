@@ -18,5 +18,8 @@
     <Logger name="org.jooq" level="info">
       <AppenderRef ref="Console"/>
     </Logger>
+    <Logger name="org.reflections" level="info">
+      <AppenderRef ref="Console"/>
+    </Logger>
   </Loggers>
 </Configuration>
