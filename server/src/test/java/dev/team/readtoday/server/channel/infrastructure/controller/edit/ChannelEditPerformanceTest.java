@@ -2,6 +2,7 @@ package dev.team.readtoday.server.channel.infrastructure.controller.edit;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CATEGORY;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL;
+import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CHANNEL_CATEGORIES;
 
 import dev.team.readtoday.server.channel.application.edit.EditChannelCommandMother;
 import dev.team.readtoday.server.channel.domain.Channel;
@@ -53,7 +54,7 @@ public class ChannelEditPerformanceTest extends BaseAcceptanceTest {
   }
 
   private static void clearRepositories() {
-    context.clearTables(CATEGORY, CHANNEL);
+    context.clearTables(CHANNEL_CATEGORIES, CATEGORY, CHANNEL);
   }
 
   @Test
