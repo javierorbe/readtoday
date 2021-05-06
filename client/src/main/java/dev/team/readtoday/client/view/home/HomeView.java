@@ -30,6 +30,7 @@ import dev.team.readtoday.client.usecase.subscription.search.events.SuccessfulMy
 import dev.team.readtoday.client.usecase.subscription.subscribe.SubscriptionRequestedEvent;
 import dev.team.readtoday.client.usecase.subscription.subscribe.SuccessfulSubscriptionEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionEvent;
+import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionFailedEvent;
 import dev.team.readtoday.client.usecase.subscription.unsubscribe.DeleteSubscriptionSuccessfulEvent;
 import dev.team.readtoday.client.view.AlertLauncher;
 import dev.team.readtoday.client.view.ViewController;
@@ -183,7 +184,8 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @FXML
-  public void openReadLaterList() { }
+  public void openReadLaterList() {
+  }
 
   @Subscribe
   public void onSearchResultReceived(SearchChannelsByCategorySuccessfullyEvent event) {
@@ -237,6 +239,12 @@ public final class HomeView implements ViewController, Initializable {
         FXCollections.observableList(new ArrayList<>(channelListView.getItems()));
     list.remove(event.getChannel());
     Platform.runLater(() -> channelListView.setItems(list));
+  }
+
+  @Subscribe
+  public void onFailedDeleteSubscription(DeleteSubscriptionFailedEvent event) {
+    AlertLauncher.info("Reason: " + event.getReason());
+
   }
 
   @Subscribe
