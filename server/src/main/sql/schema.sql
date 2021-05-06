@@ -47,10 +47,10 @@ CREATE TABLE subscription (
 );
 CREATE TABLE publication (
 	PRIMARY KEY(id),
-    id CHAR(36) NOT NULL,
+    id CHAR(255) NOT NULL,
     title CHAR(36) NOT NULL,
     descrip CHAR(255),
-    date VARCHAR(255), 
+    date VARCHAR(255),
 	link CHAR(36) NOT NULL
 );
 CREATE TABLE publication_categories (
@@ -74,7 +74,7 @@ INSERT INTO preference (pref_type)
 VALUES ('none'),
        ('daily'),
        ('weekly');
-       
+
 CREATE TABLE settings (
 	user_id CHAR(36) NOT NULL UNIQUE,
     pref_type VARCHAR(7) DEFAULT 'none',
