@@ -17,7 +17,7 @@ public final class SearchChannelsByCategory {
   private final SearchCategoryByName searchCategoryByName;
 
   public SearchChannelsByCategory(ChannelRepository repository,
-                                  SearchCategoryByName searchCategoryByName) {
+      SearchCategoryByName searchCategoryByName) {
     this.repository = repository;
     this.searchCategoryByName = searchCategoryByName;
   }
