@@ -16,24 +16,24 @@ import java.util.List;
 @Service
 public class SearchChannelsFromSubscriptions {
 
-    private final GetUserSubscriptions getUserSubscriptions;
-    private final SearchChannel searchChannel;
+  private final GetUserSubscriptions getUserSubscriptions;
+  private final SearchChannel searchChannel;
 
-    public SearchChannelsFromSubscriptions(GetUserSubscriptions getUserSubscriptions,
-                                           SearchChannel searchChannel) {
-        this.searchChannel = searchChannel;
-        this.getUserSubscriptions = getUserSubscriptions;
+  public SearchChannelsFromSubscriptions(GetUserSubscriptions getUserSubscriptions,
+      SearchChannel searchChannel) {
+    this.searchChannel = searchChannel;
+    this.getUserSubscriptions = getUserSubscriptions;
+  }
+
+  public Collection<Channel> search(UserId userId) {
+    Collection<Subscription> subscriptions = getUserSubscriptions.search(userId);
+    List<ChannelId> channelsId = new ArrayList<>();
+    Iterator<Subscription> iterator = subscriptions.iterator();
+
+    while (iterator.hasNext()) {
+      channelsId.add(iterator.next().getChannelId());
     }
+    return searchChannel.apply(channelsId);
 
-    public Collection<Channel> search(UserId userId) {
-        Collection<Subscription> subscriptions = getUserSubscriptions.search(userId);
-        List<ChannelId> channelsId = new ArrayList<>();
-        Iterator<Subscription> iterator = subscriptions.iterator();
-
-        while (iterator.hasNext()) {
-            channelsId.add(iterator.next().getChannelId());
-        }
-        return searchChannel.apply(channelsId);
-
-    }
+  }
 }
