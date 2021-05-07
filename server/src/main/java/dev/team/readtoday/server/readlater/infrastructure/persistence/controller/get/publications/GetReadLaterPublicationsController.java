@@ -22,7 +22,8 @@ import jakarta.ws.rs.core.Response.Status;
 @Path("readlater")
 public class GetReadLaterPublicationsController extends BaseController {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(GetReadLaterPublicationsController.class);
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(GetReadLaterPublicationsController.class);
 
   private final SearchReadLaterList searchReadLaterList;
   private final GetPublication getPublication;
@@ -49,13 +50,15 @@ public class GetReadLaterPublicationsController extends BaseController {
       }
 
       // Gets publications from the IDs
-      Collection<Publication> publicationList = new ArrayList<>();
+      Collection<Publication> publications = new ArrayList<>();
       for (PublicationId pubId : publicationIds) {
         Optional<Publication> publication = getPublication.get(pubId);
         if (publication.isPresent()) {
-          publicationList.add(publication.get());
+          publications.add(publication.get());
         }
       }
+      GetReadLaterPublicationsResponse publicationList =
+          new GetReadLaterPublicationsResponse(publications);
       return Response.ok(publicationList).build();
     } catch (NonExistingUser e) {
       LOGGER.error("User not found.");
