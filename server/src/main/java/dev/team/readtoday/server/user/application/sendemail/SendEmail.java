@@ -1,9 +1,8 @@
 package dev.team.readtoday.server.user.application.sendemail;
 
-import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 
-@Service
+// @Service
 public final class SendEmail {
 
   private final EmailSender emailSender;
