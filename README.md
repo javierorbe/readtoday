@@ -37,14 +37,19 @@ mvn exec:java
 mvn javafx:run
 ```
 
+## Working with docs
+
+* To generate doxygen reports: `mvn doxygen:report`
+* To copy generated html directory into docs folder: `mvn validate`
+* To remove generated target files including dir docs with html code: `mvn clean`
+
 ## Style Guides
 
 ### Udacity Commit Message Style Guide
 
 Commit messages should follow the
-[Udacity Git Commit Message Style Guide](https://udacity.github.io/git-styleguide/).
-Commit message style is checked (but not enforced) in development branches
-with a GitHub Action.
+[Udacity Git Commit Message Style Guide](https://udacity.github.io/git-styleguide/). Commit message
+style is checked (but not enforced) in development branches with a GitHub Action.
 
 Use *.gitmessage* template:
 
@@ -78,3 +83,4 @@ Software design concepts that have been considered when developing:
 - [JWT (JSON Web Tokens)](https://jwt.io/) for Token-Based Authentication.
 - [JUnit 5](https://junit.org/junit5/), [Mockito](https://site.mockito.org/)
   & [Cucumber](https://cucumber.io/) for testing.
+- [Doxygen](https://www.doxygen.nl/) for documentation.
