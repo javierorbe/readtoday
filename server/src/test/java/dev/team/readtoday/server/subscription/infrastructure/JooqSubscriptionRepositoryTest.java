@@ -19,6 +19,10 @@ import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,71 +35,92 @@ import org.junit.jupiter.api.TestMethodOrder;
 @Tag("IntegrationTest")
 final class JooqSubscriptionRepositoryTest extends BaseJooqIntegrationTest {
 
-    private static SubscriptionRepository subRepository;
-    private static UserRepository repositoryUser;
-    private static ChannelRepository repositoryChannel;
+  private static SubscriptionRepository subRepository;
+  private static UserRepository repositoryUser;
+  private static ChannelRepository repositoryChannel;
 
-    @BeforeAll
-    static void setup() {
-        start(SUBSCRIPTION, CHANNEL_CATEGORIES, CHANNEL, USER);
-        subRepository = getRepository(JooqSubscriptionRepository.class);
-        repositoryUser = getRepository(JooqUserRepository.class);
-        repositoryChannel = getRepository(JooqChannelRepository.class);
+  @BeforeAll
+  static void setup() {
+    start(SUBSCRIPTION, CHANNEL_CATEGORIES, CHANNEL, USER);
+    subRepository = getRepository(JooqSubscriptionRepository.class);
+    repositoryUser = getRepository(JooqUserRepository.class);
+    repositoryChannel = getRepository(JooqChannelRepository.class);
+  }
+
+  @AfterAll
+  static void clean() {
+    clearAndShutdown();
+  }
+
+  @Test
+  void shouldSaveSubscription() {
+    Subscription subscription = SubscriptionMother.random();
+
+    assertDoesNotThrow(() -> subRepository.save(subscription));
+  }
+
+  @Test
+  void shouldReturnAnExistingSubscription() {
+
+    User user = UserMother.random();
+    Channel channel = ChannelMother.random();
+    Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
+
+    repositoryChannel.save(channel);
+    repositoryUser.save(user);
+
+    Optional<Subscription> optSubscription =
+        subRepository
+            .getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+    if (optSubscription.isEmpty()) {
+      subRepository.save(originalSubscription);
+      optSubscription =
+          subRepository
+              .getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
+      assertTrue(optSubscription.isPresent());
+      Subscription subscription = optSubscription.get();
+
+      assertEquals(originalSubscription.getUserId(), subscription.getUserId());
+      assertEquals(originalSubscription.getChannelId(), subscription.getChannelId());
+    }
+  }
+
+  @Test
+  void shouldDeleteSubscription() {
+    Subscription subscription = SubscriptionMother.random();
+
+    assertDoesNotThrow(() -> subRepository.remove(subscription));
+  }
+
+  @Test
+  void shouldReturnUserSubscriptions() {
+    User user = UserMother.random();
+    Channel channel = ChannelMother.random();
+    repositoryUser.save(user);
+    repositoryChannel.save(channel);
+    List<Subscription> originalSubscriptions = new ArrayList<>();
+    originalSubscriptions.add(new Subscription(user.getId(), channel.getId()));
+    subRepository.save(originalSubscriptions.get(0));
+
+    Collection<Subscription> listSubscriptions =
+        subRepository.getAllByUserId(user.getId());
+
+    List<String> originalUserId = new ArrayList<>();
+    List<String> originalChannelId = new ArrayList<>();
+    for (Subscription subscription : originalSubscriptions) {
+      originalUserId.add(subscription.getUserId().toString());
+      originalChannelId.add(subscription.getChannelId().toString());
     }
 
-    @AfterAll
-    static void clean() {
-        clearAndShutdown();
+    List<String> realUserId = new ArrayList<>();
+    List<String> realChannelId = new ArrayList<>();
+    for (Subscription subscription : listSubscriptions) {
+      realUserId.add(subscription.getUserId().toString());
+      realChannelId.add(subscription.getChannelId().toString());
     }
 
-    @Test
-    void shouldSaveSubscription() {
-        Subscription subscription = SubscriptionMother.random();
+    assertEquals(originalUserId, realUserId);
+    assertEquals(originalChannelId, realChannelId);
 
-        assertDoesNotThrow(() -> subRepository.save(subscription));
-    }
-
-    @Test
-    void shouldReturnAnExistingSubscription() {
-
-        User user = UserMother.random();
-        Channel channel = ChannelMother.random();
-        Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
-
-        repositoryChannel.save(channel);
-        repositoryUser.save(user);
-
-        Optional<Subscription> optSubscription =
-                subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-        if(optSubscription.isEmpty()) {
-            subRepository.save(originalSubscription);
-            optSubscription =
-                    subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-            assertTrue(optSubscription.isPresent());
-            Subscription subscription = optSubscription.get();
-
-            assertEquals(originalSubscription.getUserId(), subscription.getUserId());
-            assertEquals(originalSubscription.getChannelId(), subscription.getChannelId());
-        }
-    }
-    @Test
-    void shouldDeleteSubscription() {
-        User user = UserMother.random();
-        Channel channel = ChannelMother.random();
-        Subscription originalSubscription = new Subscription(user.getId(), channel.getId());
-
-        repositoryChannel.save(channel);
-        repositoryUser.save(user);
-        Optional<Subscription> optSubscription =
-                subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-        subRepository.save(originalSubscription);
-
-        if(optSubscription.isPresent()){
-            subRepository.remove(originalSubscription);
-            optSubscription =
-                    subRepository.getFromId(originalSubscription.getUserId(), originalSubscription.getChannelId());
-            assertFalse(optSubscription.isPresent());
-
-        }
-    }
+  }
 }

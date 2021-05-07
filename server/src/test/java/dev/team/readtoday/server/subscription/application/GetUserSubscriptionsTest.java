@@ -25,16 +25,16 @@ public class GetUserSubscriptionsTest {
     Collection<ChannelId> channelIds = Stream.generate(ChannelId::random).limit(10L).toList();
     UserId userId = UserId.random();
     List<Subscription> expectedSubscriptions = new ArrayList<>();
-    for(ChannelId channelId: channelIds) {
-      expectedSubscriptions.add(new Subscription(userId,channelId));
+    for (ChannelId channelId : channelIds) {
+      expectedSubscriptions.add(new Subscription(userId, channelId));
     }
     when(repository.getAllByUserId(userId)).thenReturn(expectedSubscriptions);
     GetUserSubscriptions getUserSubscriptions = new GetUserSubscriptions(repository);
     Collection<Subscription> actualSubscriptions = getUserSubscriptions.search(userId);
 
     assertEquals(expectedSubscriptions, actualSubscriptions);
-    }
-
   }
+
+}
 
 
