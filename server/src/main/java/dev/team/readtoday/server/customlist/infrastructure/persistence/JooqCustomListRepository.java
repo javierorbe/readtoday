@@ -26,7 +26,6 @@ public class JooqCustomListRepository implements CustomListRepository {
         )
         .onDuplicateKeyUpdate()
         .set(CUSTOM_LIST.TITLE, customList.getTitle().toString())
-        .set(CUSTOM_LIST.USER_ID, customList.getTitle().toString())
         .execute();
   }
 }
