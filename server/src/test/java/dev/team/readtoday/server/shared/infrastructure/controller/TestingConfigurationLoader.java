@@ -16,7 +16,7 @@ enum TestingConfigurationLoader {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(TestingConfigurationLoader.class);
 
-  private static final String CONFIG_FILE = "config.toml";
+  private static final String CONFIG_FILE = "config-test.toml";
 
   static TomlParseResult load() {
     try {

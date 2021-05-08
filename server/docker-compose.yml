@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  app:
+    build: ${PWD}
+    ports:
+      - ${READTODAY_SERVER_PORT}:${READTODAY_SERVER_PORT}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${READTODAY_DB_DATABASE}
+      MYSQL_USER: ${READTODAY_DB_USER}
+      MYSQL_PASSWORD: ${READTODAY_DB_PASSWORD}
+    ports:
+      - 3306
+    volumes:
+      - ${PWD}/src/main/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10

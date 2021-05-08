@@ -1,5 +1,7 @@
 package dev.team.readtoday.server;
 
+import io.github.cdimascio.dotenv.Dotenv;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -16,10 +18,11 @@ public enum Main {
 
   public static void main(String[] args) {
     TomlTable config = ConfigurationLoader.load();
-    AppContext context = new AppContext(config);
+    Dotenv dotenv = loadDotenv();
+    AppContext context = new AppContext(config, dotenv);
 
     ResourceConfig jerseyConfig = new JerseyConfig(context);
-    URI baseUri = URI.create(config.getString("server"));
+    URI baseUri = buildBaseUri(config, dotenv);
     HttpServer server = GrizzlyHttpServerFactory.createHttpServer(baseUri, jerseyConfig, false);
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -35,5 +38,20 @@ public enum Main {
     } catch (IOException e) {
       LOGGER.error("Could not start the HTTP server.", e);
     }
+  }
+
+  private static URI buildBaseUri(TomlTable config, Dotenv dotenv) {
+    String uriTemplate = config.getString("server_uri");
+    String serverHost = dotenv.get("READTODAY_SERVER_HOST");
+    String serverPort = dotenv.get("READTODAY_SERVER_PORT");
+    return URI.create(String.format(uriTemplate, serverHost, serverPort));
+  }
+
+  private static Dotenv loadDotenv() {
+    File file = new File("./.env.local");
+    return Dotenv.configure()
+        .filename(file.exists() ? ".env.local" : ".env")
+        .ignoreIfMissing()
+        .load();
   }
 }

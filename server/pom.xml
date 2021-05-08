@@ -4,13 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>dev.team.readtoday</groupId>
-    <artifactId>readtoday-parent</artifactId>
-    <version>0.1.0</version>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
-
+  <groupId>dev.team.readtoday</groupId>
   <artifactId>readtoday-server</artifactId>
   <version>0.1.0</version>
 
@@ -226,6 +220,63 @@
         </configuration>
       </plugin>
       <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <mainClass>dev.team.readtoday.server.Main</mainClass>
+            </manifest>
+          </archive>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.2.4</version>
+        <configuration>
+          <filters>
+            <filter>
+              <artifact>*:*</artifact>
+              <excludes>
+                <exclude>META-INF/*.SF</exclude>
+                <exclude>META-INF/*.DSA</exclude>
+                <exclude>META-INF/*.RSA</exclude>
+              </excludes>
+            </filter>
+          </filters>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <finalName>${project.artifactId}-${project.version}-final</finalName>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>dev.team.readtoday.server.Main</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.0.0</version>
@@ -366,6 +417,13 @@
       <version>${cucumber.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- Performance testing -->
+    <dependency>
+      <groupId>org.databene</groupId>
+      <artifactId>contiperf</artifactId>
+      <version>2.3.4</version>
+      <scope>test</scope>
+    </dependency>
     <!-- Java Faker (fake data generator) -->
     <dependency>
       <groupId>com.github.javafaker</groupId>
@@ -422,8 +480,9 @@
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
-      <artifactId>jersey-media-json-binding</artifactId>
-      <version>3.0.1</version>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>3.0.2</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -488,12 +547,10 @@
       <artifactId>rome</artifactId>
       <version>1.15.0</version>
     </dependency>
-    <!-- Performance testing -->
     <dependency>
-      <groupId>org.databene</groupId>
-      <artifactId>contiperf</artifactId>
-      <version>2.3.4</version>
-      <scope>test</scope>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>dotenv-java</artifactId>
+      <version>2.2.0</version>
     </dependency>
   </dependencies>
 </project>
