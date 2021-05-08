@@ -83,3 +83,11 @@ CREATE TABLE settings (
     FOREIGN KEY (pref_type) REFERENCES preference (pref_type),
     PRIMARY KEY(user_id)
 );
+CREATE TABLE readlater (
+    title CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    publication_id CHAR(36) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY(user_id,publication_id)
+);
