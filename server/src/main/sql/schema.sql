@@ -100,7 +100,7 @@ CREATE TABLE settings
     PRIMARY KEY (user_id)
 );
 
-CREATE TABLE customList
+CREATE TABLE custom_list
 (
     PRIMARY KEY (id),
     id      CHAR(36)    NOT NULL,
