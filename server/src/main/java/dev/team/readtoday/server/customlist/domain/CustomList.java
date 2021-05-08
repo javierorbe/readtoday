@@ -1,40 +1,41 @@
 package dev.team.readtoday.server.customlist.domain;
 
+import dev.team.readtoday.server.shared.domain.CustomListId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import java.util.Collection;
 import java.util.Objects;
 
 public class CustomList {
-  private String listName;
-  private UserId userId;
-  private final Collection<PublicationId> publicationlist;
 
-  public CustomList(String listName, UserId userId,
-      Collection<PublicationId> publicationlist) {
-    this.listName = listName;
+  private final CustomListId id;
+  private final CustomListTitle title;
+  private final UserId userId;
+  private final Collection<PublicationId> publications;
+
+  public CustomList(CustomListId id,
+      CustomListTitle title, UserId userId,
+      Collection<PublicationId> publications) {
+    this.id = id;
+    this.title = title;
     this.userId = userId;
-    this.publicationlist = publicationlist;
+    this.publications = publications;
   }
 
-  public String getListName() {
-    return listName;
+  public CustomListId getId() {
+    return id;
+  }
+
+  public CustomListTitle getTitle() {
+    return title;
   }
 
   public UserId getUserId() {
     return userId;
   }
 
-  public Collection<PublicationId> getPublicationlist() {
-    return publicationlist;
-  }
-
-  public void setListName(String listName) {
-    this.listName = listName;
-  }
-
-  public void setUserId(UserId userId) {
-    this.userId = userId;
+  public Collection<PublicationId> getPublications() {
+    return publications;
   }
 
   @Override
@@ -42,15 +43,17 @@ public class CustomList {
     if (this == o) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (!(o instanceof CustomList that)) {
       return false;
     }
-    CustomList that = (CustomList) o;
-    return Objects.equals(userId, that.userId);
+    return Objects.equals(getId(), that.getId()) && Objects
+        .equals(getTitle(), that.getTitle()) && Objects
+        .equals(getUserId(), that.getUserId()) && Objects
+        .equals(getPublications(), that.getPublications());
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(userId);
+    return Objects.hash(getId(), getTitle(), getUserId(), getPublications());
   }
 }
