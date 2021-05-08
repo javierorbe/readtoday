@@ -1,5 +1,6 @@
 package dev.team.readtoday.server.customlist.infrastructure.controller.create;
 
+import dev.team.readtoday.server.customlist.application.CreateCustomListCommand;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.domain.bus.command.Command;
 import dev.team.readtoday.server.shared.domain.bus.command.CommandBus;
@@ -10,10 +11,8 @@ import dev.team.readtoday.server.user.domain.User;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +25,6 @@ public class CustomListCreationController extends BaseController {
 
   private final CommandBus commandBus;
   private final SearchUserById searchUserById;
-
-  @Context
-  private UriInfo uriInfo;
 
   @Autowired
   public CustomListCreationController(CommandBus commandBus, SearchUserById searchUserById) {
@@ -47,11 +43,12 @@ public class CustomListCreationController extends BaseController {
 
     commandBus.dispatch(command);
 
+    LOGGER.trace("Custom list was created successfully");
+
     return Response.ok().build();
   }
 
   private static Command createCustomListCommand(UserId userId, CustomListCreationRequest request) {
-    // TODO: Return CreateCustomListCommand
-    return null;
+    return new CreateCustomListCommand(request.getTitle(), userId.toString());
   }
 }
