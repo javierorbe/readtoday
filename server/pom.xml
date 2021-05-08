@@ -6,7 +6,7 @@
 
   <parent>
     <groupId>dev.team.readtoday</groupId>
-    <artifactId>readtoday-aggregate</artifactId>
+    <artifactId>readtoday-parent</artifactId>
     <version>0.1.0</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
@@ -23,7 +23,6 @@
     </j4performacetest.test>
     <integration.test>IntegrationTest</integration.test>
     <performance.test>PerformanceTest</performance.test>
-    <sonar.projectName>readtoday_server</sonar.projectName>
     <doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
   </properties>
 
