@@ -2,13 +2,6 @@ package dev.team.readtoday.server.user.infrastructure.controller.signin.performa
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.mockito.Mockito.mock;
-import org.databene.contiperf.PerfTest;
-import org.databene.contiperf.junit.ContiPerfRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.PerformanceTest;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
@@ -28,8 +21,12 @@ import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.WebTarget;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.databene.contiperf.PerfTest;
+import org.databene.contiperf.junit.ContiPerfRule;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-@RunWith(JUnit4.class)
 @Category(PerformanceTest.class)
 public class SignInPerformanceTest extends BaseAcceptanceTest {
 

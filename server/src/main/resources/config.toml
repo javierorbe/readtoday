@@ -1,10 +1,10 @@
-# ReadToday server base URI.
-server = "http://localhost:8080"
+# ReadToday server base URI template
+server_uri = "http://%s:%s"
 
-[oauth]
-# Google application client ID.
-client_id = ""
-# Google application client secret
-client_secret = ""
 # URI to which Google's authorization server sends a response.
-redirect_uri = "http://127.0.0.1:38492"
+oauth_redirect_uri = "http://127.0.0.1:38492"
+
+[jdbc]
+driver = "com.mysql.cj.jdbc.Driver"
+# JDBC URL template
+url = "jdbc:mysql://%s:%s/%s?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC"
