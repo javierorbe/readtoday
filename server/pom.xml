@@ -22,7 +22,6 @@
     <j4performacetest.test>dev.team.readtoday.server.shared.infrastructure.PerformanceTest
     </j4performacetest.test>
     <integration.test>IntegrationTest</integration.test>
-    <performance.test>PerformanceTest</performance.test>
     <doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
   </properties>
 
@@ -51,7 +50,7 @@
           <excludes>
             <exclude>**/*Cucumber*.java</exclude>
           </excludes>
-          <excludedGroups>${integration.test}</excludedGroups>
+          <excludedGroups>${integration.test}, ${j4performacetest.test}</excludedGroups>
         </configuration>
       </plugin>
       <!-- mvn verify -->
@@ -66,8 +65,7 @@
           <includes>
             <include>**/*</include>
           </includes>
-          <groups>${integration.test}, ${acceptance.test}, ${performance.test},
-            ${j4performacetest.test}
+          <groups>${integration.test}, ${acceptance.test}, ${j4performacetest.test}
           </groups>
         </configuration>
         <executions>
