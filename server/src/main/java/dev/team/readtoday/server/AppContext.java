@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
+import io.github.cdimascio.dotenv.Dotenv;
 import java.net.URI;
 import java.security.SecureRandom;
 import org.jooq.DSLContext;
@@ -18,11 +19,11 @@ final class AppContext extends AnnotationConfigApplicationContext {
 
   private final JooqConnectionBuilder jooq;
 
-  AppContext(TomlTable config) {
-    HikariConfig hikariConfig = new HikariConfig("/datasource.properties");
+  AppContext(TomlTable config, Dotenv dotenv) {
+    HikariConfig hikariConfig = buildHikariConfig(config, dotenv);
     jooq = new JooqConnectionBuilder(hikariConfig);
 
-    ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config);
+    ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config, dotenv);
 
     registerBean("jwtSigningAlg",
         Algorithm.class,
@@ -39,10 +40,10 @@ final class AppContext extends AnnotationConfigApplicationContext {
     super.close();
   }
 
-  private static ProfileFetcher buildGoogleProfileFetcher(TomlTable config) {
-    String googleClientId = config.getString("oauth.client_id");
-    String googleClientSecret = config.getString("oauth.client_secret");
-    URI googleOauthRedirect = URI.create(config.getString("oauth.redirect_uri"));
+  private static ProfileFetcher buildGoogleProfileFetcher(TomlTable config, Dotenv dotenv) {
+    String googleClientId = dotenv.get("READTODAY_GOOGLE_CLIENT_ID");
+    String googleClientSecret = dotenv.get("READTODAY_GOOGLE_CLIENT_SECRET");
+    URI googleOauthRedirect = URI.create(config.getString("oauth_redirect_uri"));
     return new GoogleProfileFetcher(googleClientId, googleClientSecret, googleOauthRedirect);
   }
 
@@ -51,5 +52,23 @@ final class AppContext extends AnnotationConfigApplicationContext {
     byte[] secret = new byte[SIGNING_SECRET_KEY_SIZE];
     random.nextBytes(secret);
     return Algorithm.HMAC256(secret);
+  }
+
+  private static HikariConfig buildHikariConfig(TomlTable config, Dotenv dotenv) {
+    HikariConfig hikariConfig = new HikariConfig();
+    hikariConfig.addDataSourceProperty("cachePrepStmts", true);
+    hikariConfig.addDataSourceProperty("prepStmtCacheSize", 250);
+    hikariConfig.addDataSourceProperty("prepStmtCacheSqlLimit", 2048);
+    String jdbcDriver = config.getString("jdbc.driver");
+    hikariConfig.setDriverClassName(jdbcDriver);
+    hikariConfig.setUsername(dotenv.get("READTODAY_DB_USER"));
+    hikariConfig.setPassword(dotenv.get("READTODAY_DB_PASSWORD"));
+    String jdbcUrlTemplate = config.getString("jdbc.url");
+    String dbHost = dotenv.get("READTODAY_DB_HOST");
+    String dbPort = dotenv.get("READTODAY_DB_PORT");
+    String database = dotenv.get("READTODAY_DB_DATABASE");
+    String jdbcUrl = String.format(jdbcUrlTemplate, dbHost, dbPort, database);
+    hikariConfig.setJdbcUrl(jdbcUrl);
+    return hikariConfig;
   }
 }
