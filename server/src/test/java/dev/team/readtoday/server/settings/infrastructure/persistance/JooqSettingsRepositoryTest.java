@@ -87,7 +87,7 @@ final class JooqSettingsRepositoryTest extends BaseJooqIntegrationTest {
 
   @Test
   void shouldReturnSettingsFromUser() {
-    TimeZone timeZone = TimeZone.fromString("Europe/Madrid");
+    TimeZone timeZone = TimeZone.fromString(ZoneId.systemDefault().toString());
     Settings settings = new Settings(user.getId(), NotificationPreference.NONE, timeZone);
 
     repositorySettings.save(settings);
