@@ -27,7 +27,7 @@ final class SearchSettingsTest {
     when(repository.getWithUserId(userId)).thenReturn(expectedSettings);
     SearchSettings searchSettings = new SearchSettings(repository);
     Optional<Settings> actualSettings = searchSettings.search(userId);
-
+    
     assertEquals(expectedSettings, actualSettings);
   }
 }
