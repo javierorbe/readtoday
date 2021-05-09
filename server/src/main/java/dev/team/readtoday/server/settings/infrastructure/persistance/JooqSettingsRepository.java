@@ -1,7 +1,13 @@
 package dev.team.readtoday.server.settings.infrastructure.persistance;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SETTINGS;
-
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
+import org.jooq.DSLContext;
+import org.jooq.Record2;
+import org.jooq.Result;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import dev.team.readtoday.server.settings.domain.NotificationPreference;
@@ -10,12 +16,6 @@ import dev.team.readtoday.server.settings.domain.SettingsRepository;
 import dev.team.readtoday.server.settings.domain.TimeZone;
 import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.shared.domain.UserId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import org.jooq.DSLContext;
-import org.jooq.Record2;
-import org.jooq.Result;
 
 @Service
 public class JooqSettingsRepository implements SettingsRepository {
@@ -53,5 +53,20 @@ public class JooqSettingsRepository implements SettingsRepository {
       settings.add(new Settings(userId, preference, timeZone));
     }
     return settings;
+  }
+
+  @Override
+  public Optional<Settings> getWithUserId(UserId userId) {
+    Record2<String, String> results = dsl.select(SETTINGS.PREF_TYPE, SETTINGS.TIMEZONE)
+        .from(SETTINGS).where(SETTINGS.USER_ID.eq(userId.toString())).fetchOne();
+
+    if (results == null) {
+      return Optional.empty();
+    }
+
+    NotificationPreference preference = PREFERENCES.inverse().get(results.value1());
+    TimeZone timeZone = TimeZone.fromString(results.value2());
+    return Optional.of(new Settings(userId, preference, timeZone));
+
   }
 }

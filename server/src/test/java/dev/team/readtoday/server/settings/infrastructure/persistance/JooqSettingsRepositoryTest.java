@@ -4,7 +4,17 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.SETTIN
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import dev.team.readtoday.server.settings.domain.NotificationPreference;
 import dev.team.readtoday.server.settings.domain.Settings;
 import dev.team.readtoday.server.settings.domain.SettingsRepository;
@@ -14,16 +24,6 @@ import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
 import dev.team.readtoday.server.user.domain.UserRepository;
 import dev.team.readtoday.server.user.infrastructure.persistence.JooqUserRepository;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 @Tag("IntegrationTest")
@@ -83,5 +83,20 @@ final class JooqSettingsRepositoryTest extends BaseJooqIntegrationTest {
     assertEquals(settings.getNotificationPreference(),
         listSettings.get(0).getNotificationPreference());
     assertEquals(settings.getTimeZone(), listSettings.get(0).getTimeZone());
+  }
+
+  @Test
+  void shouldReturnSettingsFromUser() {
+    Settings settings = new Settings(user.getId(), NotificationPreference.NONE,
+        TimeZone.fromString(ZoneId.systemDefault().toString()));
+
+    repositorySettings.save(settings);
+
+    Optional<Settings> opSettings = repositorySettings.getWithUserId(user.getId());
+
+    assertEquals(settings.getUserId(), opSettings.get().getUserId());
+    assertEquals(settings.getNotificationPreference(),
+        opSettings.get().getNotificationPreference());
+    assertEquals(settings.getTimeZone(), opSettings.get().getTimeZone());
   }
 }
