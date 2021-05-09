@@ -2,6 +2,7 @@ package dev.team.readtoday.server.user.infrastructure.controller.signin.performa
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static org.mockito.Mockito.mock;
+
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.PerformanceTest;
 import dev.team.readtoday.server.shared.infrastructure.controller.AcceptanceTestAppContext;
