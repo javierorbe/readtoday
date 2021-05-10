@@ -1,6 +1,7 @@
-package dev.team.readtoday.server.settings.application;
+package dev.team.readtoday.server.settings.application.search;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import java.time.ZoneId;
@@ -15,19 +16,33 @@ import dev.team.readtoday.server.settings.domain.TimeZone;
 import dev.team.readtoday.server.shared.domain.UserId;
 
 @TestMethodOrder(MethodOrderer.Random.class)
-final class SearchSettingsTest {
+final class SearchSettingsByUserTest {
 
   @Test
-  void shouldReturnSettings() {
+  void shouldReturnSettingsForUser() {
     SettingsRepository repository = mock(SettingsRepository.class);
     UserId userId = UserId.random();
     Optional<Settings> expectedSettings = Optional.of(new Settings(userId,
         NotificationPreference.NONE, TimeZone.fromString(ZoneId.systemDefault().toString())));
 
     when(repository.getWithUserId(userId)).thenReturn(expectedSettings);
-    SearchSettings searchSettings = new SearchSettings(repository);
+    SearchSettingsByUser searchSettings = new SearchSettingsByUser(repository);
     Optional<Settings> actualSettings = searchSettings.search(userId);
-    
+
     assertEquals(expectedSettings, actualSettings);
+  }
+
+  @Test
+  void shouldNotReturnSettingsForUser() {
+    SettingsRepository repository = mock(SettingsRepository.class);
+    UserId userId = UserId.random();
+    Optional<Settings> expectedSettings = Optional.of(new Settings(userId,
+        NotificationPreference.NONE, TimeZone.fromString(ZoneId.systemDefault().toString())));
+
+    when(repository.getWithUserId(userId)).thenReturn(expectedSettings);
+    SearchSettingsByUser searchSettings = new SearchSettingsByUser(repository);
+    Optional<Settings> actualSettings = searchSettings.search(UserId.random());
+
+    assertNotEquals(expectedSettings, actualSettings);
   }
 }
