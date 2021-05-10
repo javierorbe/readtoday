@@ -13,6 +13,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The CategoryCreationListener class listen for category creation events. When \ref
+ * events.CategoryCreationEvent "CategoryCreationEvent" event is received, a POST HTTP request to
+ * create a category will be sent to readtoday server.
+ * <p>
+ * If category is created successfully a \ref events.CategorySuccessfullyCreatedEvent
+ * "CategorySuccessfullyCreatedEvent" event will be posted, otherwise an \ref
+ * events.CategoryCreationFailedEvent "CategorySuccessfullyCreatedEvent" event will be posted by
+ * eventbus.
+ *
+ * @author Aldayr Ruiz
+ */
 @SubscribedComponent
 public final class CategoryCreationListener {
 
