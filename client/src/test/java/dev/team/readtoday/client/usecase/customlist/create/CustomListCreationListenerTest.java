@@ -27,6 +27,7 @@ public final class CustomListCreationListenerTest {
   private HttpResponse response;
   private CustomListCreationEvent createEvent;
   private EventBus eventBus;
+  private final String title = "CustomListTitle123";
 
   @BeforeEach
   void basicConf() {
@@ -35,27 +36,27 @@ public final class CustomListCreationListenerTest {
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
     when(factory.buildWithAuth("/custom-list")).thenReturn(requestBuilder);
     response = mock(HttpResponse.class);
+    eventBus = mock(EventBus.class);
 
     // Create edit event
-    CustomListCreationRequest request = mock(CustomListCreationRequest.class);
+    CustomListCreationRequest request = new CustomListCreationRequest(title);
     createEvent = new CustomListCreationEvent(request);
 
     // Put http request
-    when(requestBuilder.post(request)).thenReturn(response);
+    when(requestBuilder.post(createEvent.getRequest())).thenReturn(response);
   }
 
   @Test
   @DisplayName("CustomListCreatedSuccessfully event must be triggered")
   void shouldPostCustomListCreatedSuccessfully() {
-
     when(response.isStatusCreated()).thenReturn(true);
-    EventBus eventBus = mock(EventBus.class);
 
     CustomListCreationListener listener = new CustomListCreationListener(eventBus, factory);
 
     listener.onCustomListCreationRequestReceived(createEvent);
 
     // Assertions
+    assertEquals(createEvent.getRequest().getTitle(), title);
     var eventCaptor = ArgumentCaptor.forClass(CustomListCreatedSuccessfullyEvent.class);
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
@@ -67,7 +68,6 @@ public final class CustomListCreationListenerTest {
   void shouldPostCustomListCreationFailed() {
     // Post request + response ok + call listener
     when(response.isStatusCreated()).thenReturn(false);
-    EventBus eventBus = mock(EventBus.class);
     String reason = "Failed reason";
     when(response.getStatusReason()).thenReturn(reason);
 
@@ -76,6 +76,7 @@ public final class CustomListCreationListenerTest {
     listener.onCustomListCreationRequestReceived(createEvent);
 
     // Assertions
+    assertEquals(createEvent.getRequest().getTitle(), title);
     var eventCaptor = ArgumentCaptor.forClass(CustomListCreationFailedEvent.class);
     verify(eventBus).post(eventCaptor.capture());
     var event = eventCaptor.getValue();
