@@ -18,6 +18,7 @@ import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByC
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
+import dev.team.readtoday.client.usecase.readlater.get.SuccesfulGetReadLaterPublicationsEvent;
 import dev.team.readtoday.client.usecase.settings.get.FailedToGetSettingsEvent;
 import dev.team.readtoday.client.usecase.settings.get.SettingsReceivedEvent;
 import dev.team.readtoday.client.usecase.shared.response.CategoryResponse;
@@ -249,9 +250,23 @@ public final class HomeView implements ViewController, Initializable {
 
   @Subscribe
   public void onSuccessfulPublicationRequest(PublicationRequestSuccesfulEvent event) {
+
+    PublicationListWindow.open(eventBus, sortList(PublicationResponseToPublication(
+        event.getPublications())), "Subscriptions");
+  }
+
+  @Subscribe
+  public void onSuccessfulGetReadLaterPublications(SuccesfulGetReadLaterPublicationsEvent event) {
+
+    PublicationListWindow
+        .open(eventBus, PublicationResponseToPublication(event.getPublications()), "Read later");
+  }
+
+  private List<Publication> PublicationResponseToPublication(
+      Collection<PublicationResponse> publicationResponseList) {
     List<Publication> publications = new ArrayList<>();
 
-    for (PublicationResponse p : event.getPublications()) {
+    for (PublicationResponse p : publicationResponseList) {
       Set<Category> categories = new HashSet<>();
 
       for (CategoryResponse categoryResponse : p.getCategories()) {
@@ -260,8 +275,7 @@ public final class HomeView implements ViewController, Initializable {
       publications.add(new Publication(p.getId(), p.getTitle(),
           p.getDescription(), p.getDate(), p.getLink(), categories));
     }
-
-    PublicationListWindow.open(eventBus, sortList(publications));
+    return publications;
   }
 
 

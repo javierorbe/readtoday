@@ -39,7 +39,7 @@ final class PublicationListWindow implements ViewController {
     stage.setTitle(String.format("Publications of %s", channel.getName()));
   }
 
-  private PublicationListWindow(EventBus eventBus, List<Publication> publications) {
+  private PublicationListWindow(EventBus eventBus, List<Publication> publications, String title) {
     HashMap<Publication, Channel> map = new HashMap<>();
     VBox container = new VBox();
     ScrollPane root = new ScrollPane(container);
@@ -49,7 +49,7 @@ final class PublicationListWindow implements ViewController {
     container.getChildren().addAll(publicationNodes);
 
     stage.setScene(scene);
-    stage.setTitle("Subscriptions");
+    stage.setTitle(title);
   }
 
   /**
@@ -62,9 +62,9 @@ final class PublicationListWindow implements ViewController {
     });
   }
 
-  static void open(EventBus eventBus, List<Publication> publications) {
+  static void open(EventBus eventBus, List<Publication> publications, String title) {
     Platform.runLater(() -> {
-      PublicationListWindow window = new PublicationListWindow(eventBus, publications);
+      PublicationListWindow window = new PublicationListWindow(eventBus, publications, title);
       window.stage.show();
     });
   }
