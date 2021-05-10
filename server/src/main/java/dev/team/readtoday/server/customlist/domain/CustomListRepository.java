@@ -11,5 +11,6 @@ public interface CustomListRepository {
    * @param customList to create or update in database.
    */
   void save(CustomList customList);
+
   void addPublication(CustomListId customListId, PublicationId publicationId);
 }
