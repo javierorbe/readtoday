@@ -6,26 +6,53 @@
 
 ## Configuration
 
-To configure the applications, set the Google OAuth 2.0 credentials in the
-*config.toml* files ([on the server](/server/src/main/resources/config.toml)
-and [on the client](/client/src/main/resources/config.toml)). You can generate
-those credentials in the [Google Cloud Platform](https://console.cloud.google.com/apis/dashboard).
+### Server configuration
+
+The configuration variables are loaded from three different sources, in this order
+of preference:
+
+1. Environment variables
+2. ```.env.local``` file
+3. ```.env``` file
+
+The [.env.local](/server/.env.local) and [.env](/server/.env) files contain the
+configuration variables needed.
+
+The required Google OAuth credentials can be generated here: [Google Cloud Platform](https://console.cloud.google.com/apis/dashboard).
+
+### Client configuration
+
+Fill the [config.toml](/client/src/main/resources/config.toml) file.
 
 ## Building
 
-Building the server module requires MySQL to be active. The database must
-contain the ReadToday schema
-([server/src/main/sql/schema.sql](/server/src/main/sql/schema.sql)), in order
-to generate the jOOQ sources. The jOOQ sources are generated at compile time,
-but can also be generated with ```mvn jooq-codegen:generate```.
+The first step to compiling is generating the jOOQ sources. It requires the
+database to be running, and the schema to be created. The database schema can
+be created by running the [schema.sql](/server/src/main/sql/schema.sql) script.
+The jOOQ sources are  generated at compile time, but they can also be generated
+with ```mvn jooq-codegen:generate```.
 
-Build and execute all tests:
+Build and execute unit tests:
 
 ```
-mvn test
+mvn package
+```
+
+Build and execute all types of tests:
+
+```
+mvn verify
 ```
 
 ## Running the server
+
+### With Docker Compose
+
+```
+docker-compose up
+```
+
+### With Maven plugin
 
 ```
 mvn exec:java
