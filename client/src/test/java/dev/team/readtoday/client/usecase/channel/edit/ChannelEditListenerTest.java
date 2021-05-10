@@ -26,6 +26,7 @@ public final class ChannelEditListenerTest {
   private HttpRequestBuilderFactory factory;
   private HttpResponse response;
   private EditChannelEvent editEvent;
+  private EventBus eventBus;
 
   @BeforeEach
   void basicConf() {
@@ -34,6 +35,7 @@ public final class ChannelEditListenerTest {
     HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
     when(factory.buildWithAuth("/channels")).thenReturn(requestBuilder);
     response = mock(HttpResponse.class);
+    eventBus = mock(EventBus.class);
 
     // Create edit event
     EditChannelRequest request = mock(EditChannelRequest.class);
@@ -41,16 +43,14 @@ public final class ChannelEditListenerTest {
     editEvent = new EditChannelEvent(channelId, request);
 
     // Put http request
-    when(requestBuilder.put(channelId, request)).thenReturn(response);
+    when(requestBuilder.put(editEvent.getChannelId(), editEvent.getRequest())).thenReturn(response);
   }
 
   @Test
   @DisplayName("ChannelEditedSuccessfully event must be triggered")
   void shouldPostChannelEditedSuccessfully() {
     // Put request + response ok + call listener
-
     when(response.isStatusOk()).thenReturn(true);
-    EventBus eventBus = mock(EventBus.class);
 
     ChannelEditListener listener = new ChannelEditListener(eventBus, factory);
 
@@ -68,7 +68,6 @@ public final class ChannelEditListenerTest {
   void shouldPostChannelEditionFailed() {
     // Put request + response ok + call listener
     when(response.isStatusOk()).thenReturn(false);
-    EventBus eventBus = mock(EventBus.class);
     String reason = "Failed reason";
     when(response.getStatusReason()).thenReturn(reason);
 
