@@ -23,23 +23,21 @@ import org.mockito.ArgumentCaptor;
 @TestMethodOrder(MethodOrderer.Random.class)
 public final class ChannelEditListenerTest {
 
-  private final String channelId = "k19013k";
   private HttpRequestBuilderFactory factory;
-  private HttpRequestBuilder requestBuilder;
   private HttpResponse response;
-  private EditChannelRequest request;
   private EditChannelEvent editEvent;
 
   @BeforeEach
   void basicConf() {
     // Create Http path + auth
     factory = mock(HttpRequestBuilderFactory.class);
-    requestBuilder = mock(HttpRequestBuilder.class);
+    HttpRequestBuilder requestBuilder = mock(HttpRequestBuilder.class);
     when(factory.buildWithAuth("/channels")).thenReturn(requestBuilder);
     response = mock(HttpResponse.class);
 
     // Create edit event
-    request = mock(EditChannelRequest.class);
+    EditChannelRequest request = mock(EditChannelRequest.class);
+    String channelId = "k19013k";
     editEvent = new EditChannelEvent(channelId, request);
 
     // Put http request
@@ -50,7 +48,6 @@ public final class ChannelEditListenerTest {
   @DisplayName("ChannelEditedSuccessfully event must be triggered")
   void shouldPostChannelEditedSuccessfully() {
     // Put request + response ok + call listener
-    when(requestBuilder.put(channelId, request)).thenReturn(response);
 
     when(response.isStatusOk()).thenReturn(true);
     EventBus eventBus = mock(EventBus.class);
