@@ -64,7 +64,7 @@ CREATE TABLE publication
 
 CREATE TABLE publication_categories
 (
-    publication_id CHAR(36) NOT NULL,
+    publication_id CHAR(255) NOT NULL,
     category_id    CHAR(36) NOT NULL,
     FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE,
@@ -74,7 +74,7 @@ CREATE TABLE publication_categories
 CREATE TABLE readlater
 (
     user_id        CHAR(36) NOT NULL,
-    publication_id CHAR(36) NOT NULL,
+    publication_id CHAR(255) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (publication_id) REFERENCES publication (id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (user_id, publication_id)
@@ -107,4 +107,13 @@ CREATE TABLE custom_list
     title   VARCHAR(30) NOT NULL,
     user_id CHAR(36)    NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+CREATE TABLE custom_list_publications
+(
+    PRIMARY KEY(custom_list_id, publication_id),
+    custom_list_id CHAR(36) NOT NULL,
+    publication_id CHAR(255) NOT NULL,
+    FOREIGN KEY (custom_list_id) REFERENCES custom_list(id) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (publication_id) REFERENCES publication(id) ON DELETE RESTRICT ON UPDATE CASCADE
 );

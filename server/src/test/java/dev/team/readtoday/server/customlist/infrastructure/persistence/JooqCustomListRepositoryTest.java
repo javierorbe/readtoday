@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.customlist.domain.CustomListMother;
 import dev.team.readtoday.server.customlist.domain.CustomListRepository;
+import dev.team.readtoday.server.publication.domain.Publication;
+import dev.team.readtoday.server.publication.domain.PublicationMother;
 import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
 import dev.team.readtoday.server.user.domain.User;
 import dev.team.readtoday.server.user.domain.UserMother;
@@ -53,6 +55,13 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
     assertDoesNotThrow(() -> customListRepository.save(customList2));
   }
 
+  @Test
+  void shouldAddPublication() {
+    CustomList customList = CustomListMother.randomWithUser(user);
+    Publication publication = PublicationMother.random();
+
+    assertDoesNotThrow(() -> customListRepository.addPublication(customList.getId(),publication.getId()));
+  }
   @AfterAll
   static void afterAll() {
     clearAndShutdown();
