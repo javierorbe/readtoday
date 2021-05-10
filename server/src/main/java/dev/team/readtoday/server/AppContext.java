@@ -4,6 +4,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
+import dev.team.readtoday.server.user.application.sendemail.EmailSender;
+import dev.team.readtoday.server.user.infrastructure.email.SimpleMailSender;
 import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.net.URI;
@@ -24,14 +26,24 @@ final class AppContext extends AnnotationConfigApplicationContext {
     jooq = new JooqConnectionBuilder(hikariConfig);
 
     ProfileFetcher profileFetcher = buildGoogleProfileFetcher(config, dotenv);
+    EmailSender emailSender = buildEmailSender(dotenv);
 
     registerBean("jwtSigningAlg",
         Algorithm.class,
         AppContext::buildJwtSigningAlgorithm);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(DSLContext.class, jooq::getContext);
+    registerBean(EmailSender.class, () -> emailSender);
     scan(APP_PACKAGE);
     refresh();
+  }
+
+  private static EmailSender buildEmailSender(Dotenv dotenv) {
+    String host = dotenv.get("READTODAY_SMTP_HOST");
+    int port = Integer.parseInt(dotenv.get("READTODAY_SMTP_PORT"));
+    String username = dotenv.get("READTODAY_SMTP_USERNAME");
+    String password = dotenv.get("READTODAY_SMTP_PASSWORD");
+    return new SimpleMailSender(host, port, username, password);
   }
 
   @Override
