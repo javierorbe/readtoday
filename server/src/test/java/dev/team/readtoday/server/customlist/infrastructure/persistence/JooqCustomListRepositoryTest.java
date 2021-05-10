@@ -60,8 +60,10 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
     CustomList customList = CustomListMother.randomWithUser(user);
     Publication publication = PublicationMother.random();
 
-    assertDoesNotThrow(() -> customListRepository.addPublication(customList.getId(),publication.getId()));
+    assertDoesNotThrow(
+        () -> customListRepository.addPublication(customList.getId(), publication.getId()));
   }
+
   @AfterAll
   static void afterAll() {
     clearAndShutdown();

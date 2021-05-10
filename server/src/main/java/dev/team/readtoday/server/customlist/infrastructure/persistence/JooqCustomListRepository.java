@@ -36,7 +36,8 @@ public class JooqCustomListRepository implements CustomListRepository {
   @Override
   public void addPublication(CustomListId customListId,
       PublicationId publicationId) {
-    dsl.insertInto(CUSTOM_LIST_PUBLICATIONS, CUSTOM_LIST_PUBLICATIONS.CUSTOM_LIST_ID, CUSTOM_LIST_PUBLICATIONS.PUBLICATION_ID)
+    dsl.insertInto(CUSTOM_LIST_PUBLICATIONS, CUSTOM_LIST_PUBLICATIONS.CUSTOM_LIST_ID,
+        CUSTOM_LIST_PUBLICATIONS.PUBLICATION_ID)
         .values(customListId.toString(), publicationId.toString())
         .onDuplicateKeyIgnore().execute();
   }
