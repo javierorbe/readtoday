@@ -164,6 +164,9 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @FXML
+  public void goToMyLists() { eventBus.post(new ChangeSceneEvent(SceneType.LISTS));
+   }
+  @FXML
   public void unsubscribe() {
     if (channelListView.getSelectionModel().getSelectedItem() != null) {
       Channel channel = channelListView.getSelectionModel().getSelectedItem();

@@ -19,6 +19,8 @@
     <BorderPane>
       <top>
         <ToolBar BorderPane.alignment="CENTER">
+          <Button mnemonicParsing="false"  text="Home"/>
+          <Button mnemonicParsing="false" onAction="#goToMyLists" text="My lists"/>
           <Pane HBox.hgrow="ALWAYS"/>
           <TextField fx:id="channelsByCategory" promptText="Category"/>
           <Button mnemonicParsing="false" onAction="#performSearch" text="Search"/>

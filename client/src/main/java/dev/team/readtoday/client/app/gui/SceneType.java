@@ -4,7 +4,9 @@ public enum SceneType {
   AUTH("auth.fxml"),
   HOME("home.fxml"),
   ADMIN("channelCreation.fxml"),
-  ADMIN1("channelEdition.fxml");
+  ADMIN1("channelEdition.fxml"),
+  LISTS("myLists.fxml");
+
   private final String fxmlFile;
 
   SceneType(String fxmlFile) {
