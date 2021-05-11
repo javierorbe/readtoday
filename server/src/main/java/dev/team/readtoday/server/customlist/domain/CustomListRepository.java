@@ -6,11 +6,17 @@ import dev.team.readtoday.server.shared.domain.PublicationId;
 public interface CustomListRepository {
 
   /**
-   * Create or update a custom list in database.
+   * Create or update a custom list.
    *
-   * @param customList to create or update in database.
+   * @param customList to create or update.
    */
   void save(CustomList customList);
 
+  /**
+   * Add a publication to the custom list.
+   *
+   * @param customListId  id of the custom list.
+   * @param publicationId id of the publication that want to be added to the custom list.
+   */
   void addPublication(CustomListId customListId, PublicationId publicationId);
 }

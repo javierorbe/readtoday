@@ -3,6 +3,7 @@ package dev.team.readtoday.client.model;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.Set;
+import java.util.UUID;
 
 public final class Publication {
 

@@ -4,6 +4,11 @@
 [![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?color=373737&flag=server&label=Coverage%20%7C%20server)](https://app.codecov.io/gh/javierorbe/readtoday)
 [![Codecov](https://img.shields.io/codecov/c/github/javierorbe/readtoday?color=373737&flag=client&label=Coverage%20%7C%20client)](https://app.codecov.io/gh/javierorbe/readtoday)
 
+## Documentation
+
+- Server module: [https://readtoday.netlify.app/server/](https://readtoday.netlify.app/server/)
+- Client module: [https://readtoday.netlify.app/client/](https://readtoday.netlify.app/client/)
+
 ## Configuration
 
 ### Server configuration
@@ -63,12 +68,6 @@ mvn exec:java
 ```
 mvn javafx:run
 ```
-
-## Working with docs
-
-* To generate doxygen reports: `mvn doxygen:report`
-* To copy generated html directory into docs folder: `mvn validate`
-* To remove generated target files including dir docs with html code: `mvn clean`
 
 ## Style Guides
 
