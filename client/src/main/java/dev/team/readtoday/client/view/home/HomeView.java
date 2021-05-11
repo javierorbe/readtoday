@@ -18,6 +18,7 @@ import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByC
 import dev.team.readtoday.client.usecase.channel.search.events.SearchChannelsByCategorySuccessfullyEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
+import dev.team.readtoday.client.usecase.readlater.get.GetReadLaterPublicationsEvent;
 import dev.team.readtoday.client.usecase.readlater.get.SuccesfulGetReadLaterPublicationsEvent;
 import dev.team.readtoday.client.usecase.settings.get.FailedToGetSettingsEvent;
 import dev.team.readtoday.client.usecase.settings.get.SettingsReceivedEvent;
@@ -164,8 +165,10 @@ public final class HomeView implements ViewController, Initializable {
   }
 
   @FXML
-  public void goToMyLists() { eventBus.post(new ChangeSceneEvent(SceneType.LISTS));
-   }
+  public void goToMyLists() {
+    eventBus.post(new ChangeSceneEvent(SceneType.LISTS));
+  }
+
   @FXML
   public void unsubscribe() {
     if (channelListView.getSelectionModel().getSelectedItem() != null) {
@@ -189,6 +192,7 @@ public final class HomeView implements ViewController, Initializable {
 
   @FXML
   public void openReadLaterList() {
+    eventBus.post(new GetReadLaterPublicationsEvent());
   }
 
   @Subscribe
