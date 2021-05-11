@@ -3,8 +3,16 @@ package dev.team.readtoday.server.category.domain;
 import dev.team.readtoday.server.shared.domain.CategoryId;
 import java.util.Objects;
 
+/**
+ * Represents a category, ie. Sports, Entertainment, Football, Cars, etc.
+ * A \ref Channel "Channel" belongs to zero or more categories.
+ * A \ref Publication "Publication" belongs to zero or more categories.
+ */
 public final class Category {
 
+  /**
+   * Represents the id (UUID) of a category.
+   */
   private final CategoryId id;
   private final CategoryName name;
 
