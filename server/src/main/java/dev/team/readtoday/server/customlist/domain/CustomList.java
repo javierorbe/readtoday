@@ -6,11 +6,26 @@ import dev.team.readtoday.server.shared.domain.UserId;
 import java.util.Collection;
 import java.util.Objects;
 
+/**
+ * Represents a list that can be created by the user to store publications.
+ */
 public class CustomList {
 
+  /**
+   * Represents the id (UUID) of a custom list.
+   */
   private final CustomListId id;
+  /**
+   * Represents the title or name given by his owner.
+   */
   private final CustomListTitle title;
+  /**
+   * Represents the id of the user creator (owner) of the custom list.
+   */
   private final UserId userId;
+  /**
+   * Represents a collection of publication ids that belongs to the custom list.
+   */
   private final Collection<PublicationId> publications;
 
   public CustomList(CustomListId id,
