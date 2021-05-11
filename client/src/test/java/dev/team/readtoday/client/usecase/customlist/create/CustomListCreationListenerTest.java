@@ -49,7 +49,7 @@ public final class CustomListCreationListenerTest {
   @Test
   @DisplayName("CustomListCreatedSuccessfully event must be triggered")
   void shouldPostCustomListCreatedSuccessfully() {
-    when(response.isStatusCreated()).thenReturn(true);
+    when(response.isStatusOk()).thenReturn(true);
 
     CustomListCreationListener listener = new CustomListCreationListener(eventBus, factory);
 
