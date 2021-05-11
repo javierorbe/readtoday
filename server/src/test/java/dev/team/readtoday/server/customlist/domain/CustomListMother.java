@@ -20,20 +20,20 @@ public enum CustomListMother {
     );
   }
 
-  public static CustomList randomWithUser(User user) {
+  public static CustomList randomWithUser(UserId user) {
     return new CustomList(
         CustomListId.random(),
         new CustomListTitle(faker.bothify("custom ????")),
-        user.getId(),
+        user,
         Collections.emptyList()
     );
   }
 
-  public static CustomList randomWithIdAndUser(CustomListId id, User user) {
+  public static CustomList randomWithIdAndUser(CustomListId id, UserId user) {
     return new CustomList(
         id,
         new CustomListTitle(faker.bothify("custom ????")),
-        user.getId(),
+        user,
         Collections.emptyList()
     );
   }
