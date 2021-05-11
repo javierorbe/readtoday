@@ -16,19 +16,22 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
+      - name: Install Doxygen & Graphviz
+        run: |
+          sudo apt-get install -y doxygen
+          sudo apt-get install -y graphviz
       - name: Cache Maven packages
         uses: actions/cache@v2
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - name: Build with Maven (server)
+      - name: Run Doxygen (server)
         run: mvn -f ./server/pom.xml --batch-mode --update-snapshots doxygen:report
-      - name: Build with Maven (client)
+      - name: Run Doxygen (client)
         run: mvn -f ./client/pom.xml --batch-mode --update-snapshots doxygen:report
       - name: Prepare docs page
-        run: |
-          mvn -f ./pom.xml --batch-mode --update-snapshots resources:copy-resources@copy-doxygen-server resources:copy-resources@copy-doxygen-client
+        run: mvn -f ./pom.xml --batch-mode --update-snapshots resources:copy-resources@copy-doxygen-server resources:copy-resources@copy-doxygen-client
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
