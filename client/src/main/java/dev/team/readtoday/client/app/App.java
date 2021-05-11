@@ -12,6 +12,7 @@ import dev.team.readtoday.client.view.admin.Admin1View;
 import dev.team.readtoday.client.view.admin.AdminView;
 import dev.team.readtoday.client.view.auth.AuthView;
 import dev.team.readtoday.client.view.home.HomeView;
+import dev.team.readtoday.client.view.lists.MyListsView;
 import jakarta.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.Map;
@@ -54,7 +55,8 @@ public final class App extends Application implements AuthTokenSupplier {
         SceneType.AUTH, authView,
         SceneType.HOME, new HomeView(eventBus, Set.of()),
         SceneType.ADMIN, new AdminView(eventBus),
-        SceneType.ADMIN1, new Admin1View(eventBus)
+        SceneType.ADMIN1, new Admin1View(eventBus),
+        SceneType.LISTS, new MyListsView(eventBus)
     );
 
     sceneContainer = new SceneContainer(eventBus, controllers, () -> stage);

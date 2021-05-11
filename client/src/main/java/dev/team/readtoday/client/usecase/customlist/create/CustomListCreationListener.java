@@ -30,7 +30,7 @@ public final class CustomListCreationListener {
   public void onCustomListCreationRequestReceived(CustomListCreationEvent event) {
     LOGGER.trace("Sending custom list creation request");
     HttpResponse response = requestBuilder.post(event.getRequest());
-    if (response.isStatusCreated()) {
+    if (response.isStatusOk()) {
       LOGGER.trace("Custom list created successfully");
       eventBus.post(new CustomListCreatedSuccessfullyEvent());
     } else {

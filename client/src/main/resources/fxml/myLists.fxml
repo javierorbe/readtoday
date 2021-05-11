@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1"
+  xmlns:fx="http://javafx.com/fxml/1">
+  <top>
+    <MenuBar BorderPane.alignment="CENTER">
+      <Menu mnemonicParsing="false" text="Account">
+        <MenuItem mnemonicParsing="false" onAction="#goToAdmin" text="Admin Mode"/>
+        <MenuItem mnemonicParsing="false" onAction="#signOut" text="Sign Out"/>
+      </Menu>
+    </MenuBar>
+  </top>
+  <center>
+    <BorderPane>
+      <top>
+        <ToolBar BorderPane.alignment="CENTER">
+          <Button mnemonicParsing="false" onAction="#goToHome"  text="Home"/>
+          <Button mnemonicParsing="false"  text="My lists"/>
+          <Pane HBox.hgrow="ALWAYS"/>
+          <Button mnemonicParsing="false" onAction="#createList" text="New list"/>
+        </ToolBar>
+      </top>
+
+      <BorderPane.margin>
+        <Insets/>
+      </BorderPane.margin>
+      <padding>
+        <Insets bottom="8.0" left="8.0" right="8.0"/>
+      </padding>
+    </BorderPane>
+  </center>
+</BorderPane>
