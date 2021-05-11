@@ -4,7 +4,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.team.readtoday</groupId>
+  <parent>
+    <groupId>dev.team.readtoday</groupId>
+    <artifactId>readtoday-parent</artifactId>
+    <version>0.1.0</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
   <artifactId>readtoday-client</artifactId>
   <version>0.1.0</version>
 
@@ -12,7 +18,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <checkstyleViolationSeverity>error</checkstyleViolationSeverity>
     <integration.test>IntegrationTest</integration.test>
-    <doxygen.config.file>${basedir}/src/main/resources/Doxyfile</doxygen.config.file>
+    <doxygen.config.file>${project.basedir}/Doxyfile</doxygen.config.file>
   </properties>
 
   <build>
@@ -118,16 +124,6 @@
           <nohelp>true</nohelp>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <version>3.9.1</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>3.1.1</version>
-      </plugin>
       <!-- Doxygen -->
       <plugin>
         <groupId>com.soebes.maven.plugins</groupId>
@@ -137,57 +133,10 @@
           <configurationFile>${doxygen.config.file}</configurationFile>
         </configuration>
       </plugin>
-      <!-- Copy resources -->
-      <plugin>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>3.2.0</version>
-        <executions>
-          <execution>
-            <id>copy-resources</id>
-            <phase>validate</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>${basedir}/docs</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/target/doxygen/html</directory>
-                  <filtering>true</filtering>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <!-- Delete docs -->
-      <plugin>
-        <artifactId>maven-clean-plugin</artifactId>
-        <version>3.1.0</version>
-        <configuration>
-          <filesets>
-            <fileset>
-              <directory>${basedir}/docs</directory>
-            </fileset>
-          </filesets>
-        </configuration>
-      </plugin>
     </plugins>
   </build>
 
   <dependencies>
-    <!-- Plugin to copy resources files (docs) -->
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-resources-plugin</artifactId>
-      <version>3.2.0</version>
-    </dependency>
-    <!-- Plugin to remove files in project's directory (docs) -->
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-clean-plugin</artifactId>
-      <version>3.1.0</version>
-    </dependency>
     <!-- JUnit 5 -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
