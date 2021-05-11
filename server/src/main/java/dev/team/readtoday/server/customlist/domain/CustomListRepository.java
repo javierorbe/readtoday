@@ -1,7 +1,10 @@
 package dev.team.readtoday.server.customlist.domain;
 
+import dev.team.readtoday.server.readlater.domain.ReadLaterList;
 import dev.team.readtoday.server.shared.domain.CustomListId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
+import java.util.List;
+import java.util.Optional;
 
 public interface CustomListRepository {
 
@@ -19,4 +22,8 @@ public interface CustomListRepository {
    * @param publicationId id of the publication that want to be added to the custom list.
    */
   void addPublication(CustomListId customListId, PublicationId publicationId);
+
+  Optional<CustomList> getFromId(CustomListId customListId);
+
+  List<PublicationId> getPublications(CustomListId customListId);
 }
