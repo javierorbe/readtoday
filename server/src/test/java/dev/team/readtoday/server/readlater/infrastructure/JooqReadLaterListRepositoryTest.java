@@ -30,15 +30,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class JooqReadLaterListRepositoryTest extends BaseJooqIntegrationTest {
 
   private static ReadLaterListRespository readLaterListRepository;
-  private static UserRepository repositoryUser;
-  private static PublicationRepository publicationRepository;
 
   @BeforeAll
   static void setup() {
     start(READLATER, USER, PUBLICATION);
     readLaterListRepository = getRepository(JooqReadLaterRepository.class);
-    repositoryUser = getRepository(JooqUserRepository.class);
-    publicationRepository = getRepository(JooqPublicationRepository.class);
   }
 
   @AfterAll
@@ -60,6 +56,4 @@ public class JooqReadLaterListRepositoryTest extends BaseJooqIntegrationTest {
 
     assertDoesNotThrow(() -> readLaterListRepository.getByUserId(UserId.random()));
   }
-
-
 }

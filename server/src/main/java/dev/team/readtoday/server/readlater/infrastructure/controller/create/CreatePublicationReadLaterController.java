@@ -26,17 +26,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("readlater")
-public final class SavePublicationReadLaterController extends BaseController {
+public final class CreatePublicationReadLaterController extends BaseController {
 
   private static final Logger LOGGER = LoggerFactory
-      .getLogger(SavePublicationReadLaterController.class);
+      .getLogger(CreatePublicationReadLaterController.class);
 
   private final GetPublication getPublication;
   private final CreatePublication createPublication;
   private final AddPublication addPublication;
 
   @Autowired
-  public SavePublicationReadLaterController(GetPublication getPublication,
+  public CreatePublicationReadLaterController(GetPublication getPublication,
       CreatePublication createPublication,
       AddPublication addPublication) {
     this.getPublication = getPublication;
