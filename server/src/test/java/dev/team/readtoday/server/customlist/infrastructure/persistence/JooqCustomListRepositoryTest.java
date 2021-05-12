@@ -4,11 +4,13 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.tables.CustomList.CUSTOM_LIST;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
+import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.customlist.domain.CustomListMother;
 import dev.team.readtoday.server.customlist.domain.CustomListRepository;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.publication.domain.PublicationMother;
+import dev.team.readtoday.server.shared.domain.CustomListId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.persistence.BaseJooqIntegrationTest;
 import dev.team.readtoday.server.user.domain.User;
@@ -41,6 +43,7 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
     userr = UserMother.random();
     userRepository.save(userr);
   }
+
   /*
   @Test
   void shouldSaveCustomList() {
@@ -64,6 +67,16 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
 
     assertDoesNotThrow(
         () -> customListRepository.addPublication(customList.getId(), publication.getId()));
+  }
+
+  @Test
+  void shouldGetCustomList() {
+    assertDoesNotThrow(() -> customListRepository.getFromId(CustomListId.random()));
+  }
+
+  @Test
+  void shouldGetPublications() {
+    assertDoesNotThrow(() -> customListRepository.getPublications(CustomListId.random()));
   }
 
   @AfterAll
