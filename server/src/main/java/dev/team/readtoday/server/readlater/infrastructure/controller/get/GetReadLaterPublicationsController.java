@@ -1,11 +1,5 @@
 package dev.team.readtoday.server.readlater.infrastructure.controller.get;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import dev.team.readtoday.server.publication.application.get.GetPublication;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.readlater.application.SearchReadLaterList;
@@ -17,6 +11,12 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("readlater")
@@ -53,9 +53,7 @@ public class GetReadLaterPublicationsController extends BaseController {
       Collection<Publication> publications = new ArrayList<>();
       for (PublicationId pubId : publicationIds) {
         Optional<Publication> publication = getPublication.get(pubId);
-        if (publication.isPresent()) {
-          publications.add(publication.get());
-        }
+        publication.ifPresent(publications::add);
       }
       GetReadLaterPublicationsResponse publicationList =
           new GetReadLaterPublicationsResponse(publications);

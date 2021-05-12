@@ -1,11 +1,11 @@
 package dev.team.readtoday.server.readlater.infrastructure.controller.get;
 
-import java.util.Collection;
 import dev.team.readtoday.server.publication.domain.Publication;
+import java.util.Collection;
 
 public class GetReadLaterPublicationsResponse {
 
-  private Collection<Publication> publications;
+  private final Collection<Publication> publications;
 
   public GetReadLaterPublicationsResponse(Collection<Publication> publications) {
     this.publications = publications;
