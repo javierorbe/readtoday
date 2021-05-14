@@ -31,7 +31,10 @@ jobs:
       - name: Run Doxygen (client)
         run: mvn -f ./client/pom.xml --batch-mode --update-snapshots doxygen:report
       - name: Prepare docs page
-        run: mvn -f ./pom.xml --batch-mode --update-snapshots resources:copy-resources@copy-doxygen-server resources:copy-resources@copy-doxygen-client
+        run: |
+          cp -R ./server/target/doxygen/html/* ./docs/server
+          cp -R ./client/target/doxygen/html/* ./docs/client
+          mvn -f ./pom.xml --batch-mode --update-snapshots resources:copy-resources@copy-doxygen-server resources:copy-resources@copy-doxygen-client
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
         with:
