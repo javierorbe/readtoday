@@ -79,6 +79,10 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
     assertDoesNotThrow(() -> customListRepository.getPublications(CustomListId.random()));
   }
 
+  @Test
+  void shouldGetListsFromUser() {
+    assertDoesNotThrow(() -> customListRepository.getListsFromUser(UserId.random()));
+  }
   @AfterAll
   static void afterAll() {
     clearAndShutdown();
