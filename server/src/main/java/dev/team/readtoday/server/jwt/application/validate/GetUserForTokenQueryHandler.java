@@ -7,7 +7,7 @@ import dev.team.readtoday.server.shared.domain.bus.query.QueryHandler;
 
 @Service
 public final class GetUserForTokenQueryHandler
-    implements QueryHandler<GetUserForTokenQuery, GetUserForTokenCommandResponse> {
+    implements QueryHandler<GetUserForTokenQuery, GetUserForTokenQueryResponse> {
 
   private final GetUserForToken getUserForToken;
 
@@ -16,9 +16,9 @@ public final class GetUserForTokenQueryHandler
   }
 
   @Override
-  public GetUserForTokenCommandResponse handle(GetUserForTokenQuery query) {
+  public GetUserForTokenQueryResponse handle(GetUserForTokenQuery query) {
     JwtToken token = JwtToken.fromString(query.getJwtToken());
     UserId userId = getUserForToken.apply(token);
-    return new GetUserForTokenCommandResponse(userId);
+    return new GetUserForTokenQueryResponse(userId);
   }
 }
