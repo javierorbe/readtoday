@@ -2,22 +2,20 @@ package dev.team.readtoday.server.customlist.infrastructure.persistence;
 
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CUSTOM_LIST;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.CUSTOM_LIST_PUBLICATIONS;
-import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.READLATER;
 
-import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.customlist.domain.CustomListRepository;
 import dev.team.readtoday.server.customlist.domain.CustomListTitle;
-import dev.team.readtoday.server.readlater.domain.ReadLaterList;
 import dev.team.readtoday.server.shared.domain.CustomListId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.shared.domain.UserId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import org.jooq.DSLContext;
-import org.jooq.Record1;
 import org.jooq.Record2;
 import org.jooq.Record3;
 import org.jooq.Result;
@@ -87,6 +85,16 @@ public class JooqCustomListRepository implements CustomListRepository {
     return publicationIds;
   }
 
+  @Override
+  public Collection<CustomList> getListsFromUser(UserId userId) {
+    var result =
+        dsl.select(CUSTOM_LIST.ID, CUSTOM_LIST.TITLE, CUSTOM_LIST.USER_ID)
+            .from(CUSTOM_LIST)
+            .where(CUSTOM_LIST.USER_ID.eq(userId.toString())).fetch();
+
+    return result.stream().map(this::createCustomListFromResult).collect(Collectors.toSet());
+  }
+
   private CustomList createCustomListFromResult(Record3<String, String, String> result) {
     CustomListId customListId = CustomListId.fromString(result.getValue(CUSTOM_LIST.ID));
     CustomListTitle customListTitle = new CustomListTitle(result.getValue(CUSTOM_LIST.TITLE));
@@ -94,5 +102,6 @@ public class JooqCustomListRepository implements CustomListRepository {
 
     return new CustomList(customListId, customListTitle, userId, getPublications(customListId));
   }
+
 
 }
