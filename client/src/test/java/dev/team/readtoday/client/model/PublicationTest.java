@@ -6,10 +6,12 @@ import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+@Disabled
 @TestMethodOrder(MethodOrderer.Random.class)
 final class PublicationTest {
   
