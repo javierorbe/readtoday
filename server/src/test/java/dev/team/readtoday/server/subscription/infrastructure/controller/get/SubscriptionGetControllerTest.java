@@ -7,6 +7,8 @@ import static org.mockito.Mockito.when;
 import dev.team.readtoday.server.category.application.search.SearchCategory;
 import dev.team.readtoday.server.channel.application.SearchChannelsFromSubscriptions;
 import dev.team.readtoday.server.channel.domain.Channel;
+import dev.team.readtoday.server.channel.domain.ChannelMother;
+import dev.team.readtoday.server.shared.domain.ChannelId;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseControllerBridge;
@@ -20,7 +22,7 @@ import java.util.Collection;
 import org.junit.jupiter.api.Test;
 
 public class SubscriptionGetControllerTest {
-  /*
+
   @Test
   void shouldReturnOkIfSucceeded(){
     SearchChannelsFromSubscriptions searchChannelsFromSubscriptions = mock(SearchChannelsFromSubscriptions.class);
@@ -35,11 +37,12 @@ public class SubscriptionGetControllerTest {
     when(securityContext.getUserPrincipal()).thenReturn(userId::toString);
 
     Collection<Channel> channels = new ArrayList<>();
-    channels.add(mock(Channel.class));
+    ChannelId channelId = ChannelId.random();
+    Channel channel = ChannelMother.withId(channelId);
+    channels.add(channel);
     when(searchChannelsFromSubscriptions.search(userId)).thenReturn(channels);
 
-    Response response = mock(Response.class);
-    response = controller.getSubscription();
+    Response response = controller.getSubscription();
     assertEquals(Status.OK.getStatusCode(), response.getStatus());
-  }*/
+  }
 }
