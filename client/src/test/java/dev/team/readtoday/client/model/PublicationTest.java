@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 final class PublicationTest {
-  /*
+
   @Test
   void shouldBeShortedByName(){
     Collection<Publication> publications = Set.of(
@@ -26,5 +26,5 @@ final class PublicationTest {
     assertEquals(expectedOrder, sortedPublications);
   }
 
-   */
+
 }
