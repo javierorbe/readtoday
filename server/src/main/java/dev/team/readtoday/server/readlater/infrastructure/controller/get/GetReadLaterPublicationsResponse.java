@@ -1,17 +1,17 @@
 package dev.team.readtoday.server.readlater.infrastructure.controller.get;
 
-import dev.team.readtoday.server.publication.domain.Publication;
 import java.util.Collection;
+import dev.team.readtoday.server.publication.application.search.PublicationResponse;
 
 public class GetReadLaterPublicationsResponse {
 
-  private final Collection<Publication> publications;
+  private final Collection<PublicationResponse> publications;
 
-  public GetReadLaterPublicationsResponse(Collection<Publication> publications) {
+  public GetReadLaterPublicationsResponse(Collection<PublicationResponse> publications) {
     this.publications = publications;
   }
 
-  public Collection<Publication> getPublications() {
+  public Collection<PublicationResponse> getPublications() {
     return this.publications;
   }
 }

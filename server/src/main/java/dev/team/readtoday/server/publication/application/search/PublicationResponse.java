@@ -1,12 +1,12 @@
 package dev.team.readtoday.server.publication.application.search;
 
-import dev.team.readtoday.server.publication.domain.Publication;
-import dev.team.readtoday.server.publication.domain.PublicationDate;
-import dev.team.readtoday.server.shared.domain.StringValueObject;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import dev.team.readtoday.server.publication.domain.Publication;
+import dev.team.readtoday.server.publication.domain.PublicationDate;
+import dev.team.readtoday.server.shared.domain.StringValueObject;
 
 public final class PublicationResponse {
 
@@ -17,8 +17,8 @@ public final class PublicationResponse {
   private final String link;
   private final Set<CategoryResponse> categories;
 
-  PublicationResponse(Publication publication,
-                      Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
+  public PublicationResponse(Publication publication,
+      Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     id = publication.getId().toString();
     title = publication.getTitle().map(StringValueObject::toString).orElse(null);
     date = publication.getDate().map(PublicationDate::getDateTime).orElse(null);
@@ -52,7 +52,7 @@ public final class PublicationResponse {
   }
 
   public static List<PublicationResponse> fromDomain(List<Publication> publications,
-                                              Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
+      Collection<dev.team.readtoday.server.category.application.search.CategoryResponse> categories) {
     return publications.stream().map(pub -> new PublicationResponse(pub, categories)).toList();
   }
 }
