@@ -33,11 +33,13 @@ public class GetReadLaterPublicationsListener {
     HttpResponse response = requestBuilder.get();
 
     if (response.isStatusOk()) {
+      LOGGER.trace("Publication list recived.");
       GetReadLaterPublicationsResponse entity =
           response.getEntity(GetReadLaterPublicationsResponse.class);
       Collection<PublicationResponse> publicationList = entity.getPublications();
       eventBus.post(new SuccesfulGetReadLaterPublicationsEvent(publicationList));
     } else {
+      LOGGER.trace("Error reason: {}.", response.getStatusReason());
       eventBus.post(new FailedGetReadLaterPublicationsEvent(response.getStatusReason()));
     }
   }

@@ -1,19 +1,21 @@
 package dev.team.readtoday.server.readlater.infrastructure.controller.get;
 
+import dev.team.readtoday.server.category.application.search.CategoryResponse;
 import dev.team.readtoday.server.publication.application.get.GetPublication;
+import dev.team.readtoday.server.publication.application.search.PublicationResponse;
 import dev.team.readtoday.server.publication.domain.Publication;
 import dev.team.readtoday.server.readlater.application.SearchReadLaterList;
 import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseController;
 import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.RequiresAuth;
 import dev.team.readtoday.server.user.domain.NonExistingUser;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +52,13 @@ public class GetReadLaterPublicationsController extends BaseController {
       }
 
       // Gets publications from the IDs
-      Collection<Publication> publications = new ArrayList<>();
+      Collection<PublicationResponse> publications = new ArrayList<>();
+      Collection<CategoryResponse> categories = new ArrayList<>();
       for (PublicationId pubId : publicationIds) {
         Optional<Publication> publication = getPublication.get(pubId);
-        publication.ifPresent(publications::add);
+        if (publication.isPresent()) {
+          publications.add(new PublicationResponse(publication.get(), categories));
+        }
       }
       GetReadLaterPublicationsResponse publicationList =
           new GetReadLaterPublicationsResponse(publications);
