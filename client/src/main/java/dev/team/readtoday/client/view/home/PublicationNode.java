@@ -2,6 +2,7 @@ package dev.team.readtoday.client.view.home;
 
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Publication;
+import dev.team.readtoday.client.usecase.customlist.create.messages.CustomListCreationRequest;
 import dev.team.readtoday.client.usecase.readlater.ReadLaterRequest;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListRequestedEvent;
@@ -69,10 +70,14 @@ final class PublicationNode extends VBox {
     Button readLaterButton = new Button("Read Later");
     readLaterButton.setOnAction(this::readLaterHandler);
 
+    Button addlistButton = new Button("Add to list");
+    readLaterButton.setOnAction(this::customListHandler);
+
     getChildren().add(title);
     getChildren().add(description);
     getChildren().add(date);
     getChildren().add(readLaterButton);
+    getChildren().add(addlistButton);
 
     setPadding(new Insets(
         VERTICAL_SPACING,
@@ -99,5 +104,11 @@ final class PublicationNode extends VBox {
     SaveReadLaterListRequestedEvent saveEvent = new SaveReadLaterListRequestedEvent(request);
     eventBus.post(saveEvent);
     // TODO: Send an event to read later here
+  }
+
+  private void customListHandler(ActionEvent event){
+    LOGGER.trace("CustomList add was clicked");
+
+
   }
 }

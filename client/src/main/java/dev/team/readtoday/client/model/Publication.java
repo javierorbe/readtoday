@@ -2,10 +2,11 @@ package dev.team.readtoday.client.model;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-public final class Publication {
+public final class Publication implements Comparable<Publication>{
 
   private final String id;
   private final String title;
@@ -50,5 +51,27 @@ public final class Publication {
 
   public Set<Category> getCategories() {
     return Collections.unmodifiableSet(categories);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Publication that = (Publication) o;
+    return Objects.equals(id, that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(id);
+  }
+
+  @Override
+  public int compareTo(Publication o) {
+    return 0;
   }
 }
