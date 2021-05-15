@@ -3,8 +3,10 @@ package dev.team.readtoday.server.customlist.application;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.customlist.domain.CustomListRepository;
 import dev.team.readtoday.server.shared.domain.CustomListId;
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Optional;
 
+@Service
 public class SearchCustomList {
 
   private final CustomListRepository customListRepository;
