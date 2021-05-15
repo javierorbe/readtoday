@@ -5,7 +5,7 @@ public final class TestSignUpRequest {
   private final String accessToken;
   private final String username;
 
-  TestSignUpRequest(String accessToken, String username) {
+  public TestSignUpRequest(String accessToken, String username) {
     this.accessToken = accessToken;
     this.username = username;
   }
