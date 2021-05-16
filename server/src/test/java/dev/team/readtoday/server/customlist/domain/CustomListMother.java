@@ -2,8 +2,9 @@ package dev.team.readtoday.server.customlist.domain;
 
 import com.github.javafaker.Faker;
 import dev.team.readtoday.server.shared.domain.CustomListId;
+import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.UserId;
-import dev.team.readtoday.server.user.domain.User;
+import java.util.Arrays;
 import java.util.Collections;
 
 public enum CustomListMother {
@@ -35,6 +36,15 @@ public enum CustomListMother {
         new CustomListTitle(faker.bothify("custom ????")),
         user,
         Collections.emptyList()
+    );
+  }
+
+  public static CustomList withRandomPublications() {
+    return new CustomList(
+        CustomListId.random(),
+        new CustomListTitle(faker.bothify("custom ????")),
+        UserId.random(),
+        Arrays.asList(PublicationId.random(), PublicationId.random())
     );
   }
 }
