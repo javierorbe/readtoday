@@ -8,7 +8,7 @@ public class CustomListGetPublicationsRequest {
     return this.customListId;
   }
 
-  public void setPublicationId(String customListId) {
+  public void setCustomListId(String customListId) {
     this.customListId = customListId;
   }
 }

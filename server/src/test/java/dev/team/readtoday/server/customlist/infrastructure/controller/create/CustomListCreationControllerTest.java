@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.customlist.infrastructure.controller;
+package dev.team.readtoday.server.customlist.infrastructure.controller.create;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -6,8 +6,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import dev.team.readtoday.server.customlist.application.CreateCustomListCommand;
-import dev.team.readtoday.server.customlist.infrastructure.controller.create.CustomListCreationController;
-import dev.team.readtoday.server.customlist.infrastructure.controller.create.CustomListCreationRequest;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.domain.bus.command.CommandBus;
 import dev.team.readtoday.server.shared.infrastructure.controller.BaseControllerBridge;

@@ -1,11 +1,5 @@
 package dev.team.readtoday.server.customlist.infrastructure.controller.get;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import dev.team.readtoday.server.customlist.application.SearchCustomList;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.publication.application.get.GetPublication;
@@ -20,6 +14,12 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @RequiresAuth
 @Path("custom-list/get")
@@ -41,8 +41,8 @@ public class CustomListGetPublicationsController extends BaseController {
 
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response addPublicationToCustomList(CustomListGetPublicationsRequest request) {
-    LOGGER.trace("Recived publication get request for custom list {}", request.getCustomListId());
+  public Response getPublicationsOfCustomList(CustomListGetPublicationsRequest request) {
+    LOGGER.trace("Received publication get request for custom list {}", request.getCustomListId());
 
     try {
 
@@ -56,11 +56,9 @@ public class CustomListGetPublicationsController extends BaseController {
 
       Collection<PublicationId> publicationIds = result.get().getPublications();
       Collection<Publication> publications = new ArrayList<>();
-      for (PublicationId publicaitonId : publicationIds) {
-        Optional<Publication> optPublication = getPublication.get(publicaitonId);
-        if (optPublication.isPresent()) {
-          publications.add(optPublication.get());
-        }
+      for (PublicationId publicationId : publicationIds) {
+        Optional<Publication> optPublication = getPublication.get(publicationId);
+        optPublication.ifPresent(publications::add);
       }
 
       CustomListGetPublicationsResponse response =
