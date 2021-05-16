@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
@@ -74,20 +75,24 @@ public final class NotificationSender implements Runnable {
   }
 
   private void sendNotifications() {
-    ZoneId zoneId = getNotificationZoneId();
-    var settingsMap = getSettingsByNotificationPreference(zoneId.getId());
+    var zoneIds = getNotificationZoneIds();
+    for (ZoneId zoneId : zoneIds) {
+      var settingsMap = getSettingsByNotificationPreference(zoneId.getId());
 
-    LocalDate today = LocalDate.now(zoneId);
+      LocalDate today = LocalDate.now(zoneId);
 
-    if (isMonday(today)) {
-      sendNotificationsTo(getWeekly(settingsMap));
+      if (isMonday(today)) {
+        sendNotificationsTo(getWeekly(settingsMap));
+      }
+      sendNotificationsTo(getDaily(settingsMap));
     }
-    sendNotificationsTo(getDaily(settingsMap));
   }
 
-  private ZoneId getNotificationZoneId() {
-    // TODO
-    throw new UnsupportedOperationException("Not implemented, yet.");
+  private List<ZoneId> getNotificationZoneIds() {
+    return ZoneId.getAvailableZoneIds().stream()
+        .map(ZoneId::of)
+        .filter(zoneId -> ZonedDateTime.now(zoneId).getHour() == NOTIFICATION_SEND_HOUR)
+        .toList();
   }
 
   private void sendNotificationsTo(Iterable<SettingsQueryResponse> settingsList) {
