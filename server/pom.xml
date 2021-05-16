@@ -16,6 +16,11 @@
     <performance.test.category>dev.team.readtoday.server.shared.infrastructure.PerformanceTest</performance.test.category>
     <integration.test.tag>IntegrationTest</integration.test.tag>
     <doxygen.config.file>${project.basedir}/Doxyfile</doxygen.config.file>
+    <!-- SonarCloud settings -->
+    <sonar.projectKey>javierorbe_readtoday</sonar.projectKey>
+    <sonar.organization>javierorbe</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.projectName>readtoday_server</sonar.projectName>
   </properties>
 
   <build>
