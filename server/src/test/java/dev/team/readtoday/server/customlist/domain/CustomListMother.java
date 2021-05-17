@@ -21,20 +21,20 @@ public enum CustomListMother {
     );
   }
 
-  public static CustomList randomWithUser(UserId user) {
+  public static CustomList randomWithUserId(UserId userId) {
     return new CustomList(
         CustomListId.random(),
         new CustomListTitle(faker.bothify("custom ????")),
-        user,
+        userId,
         Collections.emptyList()
     );
   }
 
-  public static CustomList randomWithIdAndUser(CustomListId id, UserId user) {
+  public static CustomList randomWithIdAndUser(CustomListId id, UserId userId) {
     return new CustomList(
         id,
         new CustomListTitle(faker.bothify("custom ????")),
-        user,
+        userId,
         Collections.emptyList()
     );
   }
@@ -44,6 +44,15 @@ public enum CustomListMother {
         CustomListId.random(),
         new CustomListTitle(faker.bothify("custom ????")),
         UserId.random(),
+        Arrays.asList(PublicationId.random(), PublicationId.random())
+    );
+  }
+
+  public static CustomList withUserIdAndRandomPublications(UserId userId) {
+    return new CustomList(
+        CustomListId.random(),
+        new CustomListTitle(faker.bothify("custom ????")),
+        userId,
         Arrays.asList(PublicationId.random(), PublicationId.random())
     );
   }
