@@ -17,7 +17,7 @@ public final class SearchCategoryResponse implements QueryResponse {
     return categories;
   }
 
-  static SearchCategoryResponse fromDomain(Collection<Category> categories) {
+  public static SearchCategoryResponse fromDomain(Collection<Category> categories) {
     var serializedCategories = categories.stream().map(CategoryResponse::fromDomain).toList();
     return new SearchCategoryResponse(serializedCategories);
   }
