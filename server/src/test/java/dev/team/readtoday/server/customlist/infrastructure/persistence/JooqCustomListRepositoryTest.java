@@ -4,7 +4,6 @@ import static dev.team.readtoday.server.shared.infrastructure.jooq.Tables.USER;
 import static dev.team.readtoday.server.shared.infrastructure.jooq.tables.CustomList.CUSTOM_LIST;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
-import dev.team.readtoday.server.channel.domain.Channel;
 import dev.team.readtoday.server.customlist.domain.CustomList;
 import dev.team.readtoday.server.customlist.domain.CustomListMother;
 import dev.team.readtoday.server.customlist.domain.CustomListRepository;
@@ -62,7 +61,7 @@ final class JooqCustomListRepositoryTest extends BaseJooqIntegrationTest {
   */
   @Test
   void shouldAddPublication() {
-    CustomList customList = CustomListMother.randomWithUser(user);
+    CustomList customList = CustomListMother.randomWithUserId(user);
     Publication publication = PublicationMother.random();
 
     assertDoesNotThrow(
