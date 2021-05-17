@@ -10,6 +10,7 @@ import dev.team.readtoday.server.user.infrastructure.oauth.GoogleProfileFetcher;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.net.URI;
 import java.security.SecureRandom;
+import java.time.Clock;
 import org.jooq.DSLContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.tomlj.TomlTable;
@@ -34,6 +35,7 @@ final class AppContext extends AnnotationConfigApplicationContext {
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(DSLContext.class, jooq::getContext);
     registerBean(EmailSender.class, () -> emailSender);
+    registerBean(Clock.class, Clock::systemDefaultZone);
     scan(APP_PACKAGE);
     refresh();
   }
