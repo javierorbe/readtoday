@@ -31,7 +31,7 @@ public class SearchUserCustomListsController extends BaseController {
 
   @GET
   public Response searchUserCustomLists() {
-    LOGGER.trace("Search user's custom lists request recieved.");
+    LOGGER.trace("Search user's custom lists request received.");
 
     Collection<CustomList> customLists = searchListsFromUser.search(getRequestUserId());
     if (customLists.isEmpty()) {
