@@ -87,4 +87,8 @@ public final class ChannelCreationController extends BaseController {
         categories
     );
   }
+
+  public void setUriInfo(UriInfo uriInfo) {
+    this.uriInfo = uriInfo;
+  }
 }
