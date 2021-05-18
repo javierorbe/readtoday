@@ -17,14 +17,6 @@
   </top>
   <center>
     <BorderPane>
-      <top>
-        <ToolBar prefHeight="40.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-          <items>
-            <Button mnemonicParsing="false" onAction="#createScene" text="Create channel"/>
-            <Button mnemonicParsing="false" onAction="#editScene" text="Edit Channel"/>
-          </items>
-        </ToolBar>
-      </top>
       <center>
         <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
           <top>
@@ -69,11 +61,6 @@
                 <padding>
                   <Insets left="10.0" right="10.0"/>
                 </padding>
-                <Label text="Create Channel">
-                  <font>
-                    <Font size="18.0"/>
-                  </font>
-                </Label>
                 <TextField fx:id="title">
                   <VBox.margin>
                     <Insets bottom="5.0" top="5.0"/>
@@ -109,19 +96,36 @@
             </HBox>
           </bottom>
           <center>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-              <children>
+            <ScrollPane prefHeight="200.0" prefWidth="200.0" vbarPolicy="ALWAYS"
+              BorderPane.alignment="CENTER">
+              <content>
                 <VBox fx:id="categorySelector" alignment="CENTER_LEFT" prefHeight="200.0"
-                  prefWidth="100.0">
-                  <VBox.margin>
-                    <Insets left="80.0"/>
-                  </VBox.margin>
-                </VBox>
-              </children>
-            </VBox>
+                  prefWidth="100.0"/>
+              </content>
+            </ScrollPane>
           </center>
         </BorderPane>
       </center>
+      <top>
+        <VBox BorderPane.alignment="CENTER">
+          <children>
+            <ToolBar prefHeight="40.0" prefWidth="200.0">
+              <items>
+                <Button mnemonicParsing="false" onAction="#createScene" text="Create channel"/>
+                <Button mnemonicParsing="false" onAction="#editScene" text="Edit Channel"/>
+              </items>
+            </ToolBar>
+            <Label text="Create Channel">
+              <font>
+                <Font size="22.0"/>
+              </font>
+              <padding>
+                <Insets left="10.0"/>
+              </padding>
+            </Label>
+          </children>
+        </VBox>
+      </top>
     </BorderPane>
   </center>
 </BorderPane>
