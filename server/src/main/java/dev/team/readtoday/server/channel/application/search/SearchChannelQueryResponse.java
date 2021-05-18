@@ -17,7 +17,7 @@ public final class SearchChannelQueryResponse implements QueryResponse {
     return channels;
   }
 
-  static SearchChannelQueryResponse fromDomainObject(Collection<Channel> channels) {
+  public static SearchChannelQueryResponse fromDomainObject(Collection<Channel> channels) {
     var serializedChannels =
         channels.stream().map(ChannelResponse::fromDomainObject).toList();
     return new SearchChannelQueryResponse(serializedChannels);

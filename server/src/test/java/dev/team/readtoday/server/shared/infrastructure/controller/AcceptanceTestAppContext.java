@@ -11,6 +11,7 @@ import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
 import java.security.SecureRandom;
+import java.time.Clock;
 import org.jooq.DSLContext;
 import org.jooq.Table;
 import org.jooq.impl.DSL;
@@ -34,6 +35,7 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
     registerBean(SyndFeedInput.class, SyndFeedInput::new);
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(DSLContext.class, jooq::getContext);
+    registerBean(Clock.class, Clock::systemDefaultZone);
     scan(SERVER_PACKAGE);
     refresh();
   }

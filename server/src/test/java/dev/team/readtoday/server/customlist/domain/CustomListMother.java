@@ -2,8 +2,9 @@ package dev.team.readtoday.server.customlist.domain;
 
 import com.github.javafaker.Faker;
 import dev.team.readtoday.server.shared.domain.CustomListId;
+import dev.team.readtoday.server.shared.domain.PublicationId;
 import dev.team.readtoday.server.shared.domain.UserId;
-import dev.team.readtoday.server.user.domain.User;
+import java.util.Arrays;
 import java.util.Collections;
 
 public enum CustomListMother {
@@ -20,21 +21,39 @@ public enum CustomListMother {
     );
   }
 
-  public static CustomList randomWithUser(UserId user) {
+  public static CustomList randomWithUserId(UserId userId) {
     return new CustomList(
         CustomListId.random(),
         new CustomListTitle(faker.bothify("custom ????")),
-        user,
+        userId,
         Collections.emptyList()
     );
   }
 
-  public static CustomList randomWithIdAndUser(CustomListId id, UserId user) {
+  public static CustomList randomWithIdAndUser(CustomListId id, UserId userId) {
     return new CustomList(
         id,
         new CustomListTitle(faker.bothify("custom ????")),
-        user,
+        userId,
         Collections.emptyList()
+    );
+  }
+
+  public static CustomList withRandomPublications() {
+    return new CustomList(
+        CustomListId.random(),
+        new CustomListTitle(faker.bothify("custom ????")),
+        UserId.random(),
+        Arrays.asList(PublicationId.random(), PublicationId.random())
+    );
+  }
+
+  public static CustomList withUserIdAndRandomPublications(UserId userId) {
+    return new CustomList(
+        CustomListId.random(),
+        new CustomListTitle(faker.bothify("custom ????")),
+        userId,
+        Arrays.asList(PublicationId.random(), PublicationId.random())
     );
   }
 }
