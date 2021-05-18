@@ -72,6 +72,6 @@ public final class Publication implements Comparable<Publication>{
 
   @Override
   public int compareTo(Publication o) {
-    return 0;
+    return title.compareToIgnoreCase(o.title);
   }
 }
