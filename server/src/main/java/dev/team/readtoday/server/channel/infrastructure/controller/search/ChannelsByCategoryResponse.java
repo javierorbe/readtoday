@@ -10,7 +10,7 @@ public final class ChannelsByCategoryResponse {
   private final List<ChannelResponse> channels;
   private final List<CategoryResponse> categories;
 
-  ChannelsByCategoryResponse(Collection<Channel> channels,
+  public ChannelsByCategoryResponse(Collection<Channel> channels,
                                      Collection<Category> categories) {
     this.channels = ChannelResponse.fromChannels(channels);
     this.categories = CategoryResponse.fromCategories(categories);
