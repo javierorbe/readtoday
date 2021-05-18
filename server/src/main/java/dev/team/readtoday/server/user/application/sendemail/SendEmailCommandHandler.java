@@ -1,12 +1,13 @@
 package dev.team.readtoday.server.user.application.sendemail;
 
+import dev.team.readtoday.server.shared.domain.Service;
 import dev.team.readtoday.server.shared.domain.UserId;
 import dev.team.readtoday.server.shared.domain.bus.command.CommandHandler;
 import dev.team.readtoday.server.user.application.SearchUserById;
 import dev.team.readtoday.server.user.domain.EmailAddress;
 import dev.team.readtoday.server.user.domain.User;
 
-// @Service
+@Service
 public final class SendEmailCommandHandler implements CommandHandler<SendEmailCommand> {
 
   private final SendEmail sendEmail;
