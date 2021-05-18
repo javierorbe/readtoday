@@ -24,9 +24,24 @@ public interface CustomListRepository {
    */
   void addPublication(CustomListId customListId, PublicationId publicationId);
 
+  /**
+   * Returns a CustomList given a customlist id.
+   * @param customListId
+   * @return
+   */
   Optional<CustomList> getFromId(CustomListId customListId);
 
+  /**
+   * Returns a list of publications given a customlist id
+   * @param customListId
+   * @return
+   */
   List<PublicationId> getPublications(CustomListId customListId);
 
+  /**
+   * Returns a collection of customlist of the user
+   * @param userId
+   * @return
+   */
   Collection<CustomList> getListsFromUser(UserId userId);
 }
