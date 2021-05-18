@@ -13,7 +13,6 @@ import dev.team.readtoday.server.shared.infrastructure.controller.authfilter.Req
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.Response.Status;
 
 @RequiresAuth
 @Path("custom-list/search")
@@ -34,18 +33,12 @@ public class SearchUserCustomListsController extends BaseController {
     LOGGER.trace("Search user's custom lists request recieved.");
 
     Collection<CustomList> customLists = searchListsFromUser.search(getRequestUserId());
-    if (customLists.isEmpty()) {
-      LOGGER.trace("There are no custom lists for this user");
-      return response(Status.NOT_FOUND);
-    }
 
     Collection<CustomListResponse> customListResponses = new ArrayList<>();
     for (CustomList customList : customLists) {
       Collection<String> publicationsId = new ArrayList<>();
-      if (!customList.getPublications().isEmpty()) {
-        for (PublicationId id : customList.getPublications()) {
-          publicationsId.add(id.toString());
-        }
+      for (PublicationId id : customList.getPublications()) {
+        publicationsId.add(id.toString());
       }
       CustomListResponse custom = new CustomListResponse(customList.getId().toString(),
           customList.getTitle().toString(), customList.getUserId().toString(), publicationsId);
