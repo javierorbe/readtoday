@@ -50,22 +50,21 @@ public class CategoryCreationController extends BaseController {
       return response(Status.FORBIDDEN);
     }
 
-    try {
-      CategoryId categoryId = CategoryId.random();
-      CategoryName categoryName = new CategoryName(request.getName());
-      createCategory.create(categoryId, categoryName);
-      URI location = buildResourceLocation(categoryId);
-      LOGGER.debug("Successful category creation request: {}", categoryId);
-      return Response.created(location).build();
-    } catch (RuntimeException e) {
-      LOGGER.debug("Error creating the category.", e);
-      return response(Status.BAD_REQUEST);
-    }
+    CategoryId categoryId = CategoryId.random();
+    CategoryName categoryName = new CategoryName(request.getName());
+    createCategory.create(categoryId, categoryName);
+    URI location = buildResourceLocation(categoryId);
+    LOGGER.debug("Successful category creation request: {}", categoryId);
+    return Response.created(location).build();
   }
 
   private URI buildResourceLocation(CategoryId categoryId) {
     UriBuilder uriBuilder = uriInfo.getAbsolutePathBuilder();
     uriBuilder.path(categoryId.toString());
     return uriBuilder.build();
+  }
+
+  public void setUriInfo(UriInfo uriInfo) {
+    this.uriInfo = uriInfo;
   }
 }
