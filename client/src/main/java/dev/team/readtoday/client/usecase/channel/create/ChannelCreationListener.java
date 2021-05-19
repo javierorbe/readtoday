@@ -13,6 +13,18 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * The ChannelCreationListener class listens for channel creation events. When \ref
+ * events.ChannelCreationEvent "ChannelCreationEvent" event is received, a POST HTTP request to
+ * create a channel will be sent to readtoday server.
+ * <p>
+ * If channel is created successfully a \ref events.ChannelSuccessfullyCreatedEvent
+ * "ChannelSuccessfullyCreatedEvent" event will be posted, otherwise an \ref
+ * events.ChannelCreationFailedEvent "ChannelCreationFailedEvent" event will be posted by
+ * eventbus.
+ *
+ * @author ikerrodriguez
+ */
 @SubscribedComponent
 public final class ChannelCreationListener {
 
