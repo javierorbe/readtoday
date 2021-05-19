@@ -39,7 +39,7 @@ public final class UnsubscribeController extends BaseController {
 
         try {
             ChannelId channelId = ChannelId.fromString(channelIdStr);
-            deleteSubscription.delete(userId, channelId);
+            deleteSubscription.post(userId, channelId);
             LOGGER.trace("Successful unsubscription request.");
             return response(Status.NO_CONTENT);
         } catch (SubscriptionNotFound e) {
