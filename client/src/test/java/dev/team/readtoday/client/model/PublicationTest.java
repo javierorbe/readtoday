@@ -11,10 +11,10 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-@Disabled
+
 @TestMethodOrder(MethodOrderer.Random.class)
 final class PublicationTest {
-  
+
   @Test
   void shouldBeShortedByName(){
     Collection<Publication> publications = Set.of(
@@ -24,7 +24,7 @@ final class PublicationTest {
     ImmutableList<Publication> sortedPublications = ImmutableList.sortedCopyOf(publications);
 
     ImmutableList<Publication> expectedOrder = ImmutableList.sortedCopyOf(
-        (c1, c2) -> c1.getTitle().compareToIgnoreCase(c2.getTitle()), publications);
+        (c1, c2 ) -> c1.getTitle().compareToIgnoreCase(c2.getTitle()), publications);
     assertEquals(expectedOrder, sortedPublications);
   }
 
