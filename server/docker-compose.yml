@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   app:
-    build: ${PWD}
+    build: .
     ports:
       - ${READTODAY_SERVER_PORT}:${READTODAY_SERVER_PORT}
     restart: unless-stopped
@@ -20,7 +20,7 @@ services:
     ports:
       - 3306
     volumes:
-      - ${PWD}/src/main/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./src/main/sql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     healthcheck:
       test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
       timeout: 20s
