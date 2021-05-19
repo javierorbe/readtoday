@@ -1,4 +1,4 @@
-package dev.team.readtoday.server.category.infrastructure;
+package dev.team.readtoday.server.category.infrastructure.persistence;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
