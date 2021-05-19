@@ -2,18 +2,12 @@ package dev.team.readtoday.client.view.home;
 
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Publication;
-import dev.team.readtoday.client.usecase.customlist.create.messages.CustomListCreationRequest;
 import dev.team.readtoday.client.usecase.readlater.ReadLaterRequest;
-import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListRequestedEvent;
-import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
-import dev.team.readtoday.client.view.AlertLauncher;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -26,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apache.commons.text.StringEscapeUtils;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,14 +63,14 @@ final class PublicationNode extends VBox {
     Button readLaterButton = new Button("Read Later");
     readLaterButton.setOnAction(this::readLaterHandler);
 
-    Button addlistButton = new Button("Add to list");
-    readLaterButton.setOnAction(this::customListHandler);
+    Button addListButton = new Button("Add to list");
+    addListButton.setOnAction(this::customListHandler);
 
     getChildren().add(title);
     getChildren().add(description);
     getChildren().add(date);
     getChildren().add(readLaterButton);
-    getChildren().add(addlistButton);
+    getChildren().add(addListButton);
 
     setPadding(new Insets(
         VERTICAL_SPACING,
@@ -98,17 +91,19 @@ final class PublicationNode extends VBox {
     String description = publication.getDescription();
     OffsetDateTime date = publication.getDate();
     String link = publication.getLink();
-    Collection<String> categories = publication.getCategories().stream().map(Category::getId).collect(
-        Collectors.toList());
-    ReadLaterRequest request = new ReadLaterRequest(publicationId, title, description, date, link, categories);
+    Collection<String> categories = publication.getCategories().stream().map(Category::getId)
+        .collect(
+            Collectors.toList());
+    ReadLaterRequest request = new ReadLaterRequest(publicationId, title, description, date, link,
+        categories);
     SaveReadLaterListRequestedEvent saveEvent = new SaveReadLaterListRequestedEvent(request);
     eventBus.post(saveEvent);
-    // TODO: Send an event to read later here
   }
 
-  private void customListHandler(ActionEvent event){
+  private void customListHandler(ActionEvent event) {
     LOGGER.trace("CustomList add was clicked");
-
+    // TODO: Open a window or something to select the custom list to add the publication.
+    //  the events related to add a publication to a custom list is wrong.
 
   }
 }
