@@ -1,11 +1,13 @@
-package dev.team.readtoday.server.settings.application.search;
+package dev.team.readtoday.server.settings.application.findbytimezone;
 
+import dev.team.readtoday.server.shared.domain.Service;
 import java.util.Collection;
 import dev.team.readtoday.server.settings.domain.Settings;
 import dev.team.readtoday.server.settings.domain.SettingsRepository;
 import dev.team.readtoday.server.settings.domain.TimeZone;
 
-public class SearchSettingsByTimeZone {
+@Service
+public final class SearchSettingsByTimeZone {
 
   private final SettingsRepository repository;
 
