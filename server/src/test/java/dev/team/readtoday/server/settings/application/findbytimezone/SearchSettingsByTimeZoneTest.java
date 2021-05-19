@@ -1,20 +1,21 @@
-package dev.team.readtoday.server.settings.application.search;
+package dev.team.readtoday.server.settings.application.findbytimezone;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import dev.team.readtoday.server.settings.domain.NotificationPreference;
+import dev.team.readtoday.server.settings.domain.Settings;
+import dev.team.readtoday.server.settings.domain.SettingsRepository;
+import dev.team.readtoday.server.settings.domain.TimeZone;
+import dev.team.readtoday.server.shared.domain.UserId;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import dev.team.readtoday.server.settings.domain.NotificationPreference;
-import dev.team.readtoday.server.settings.domain.Settings;
-import dev.team.readtoday.server.settings.domain.SettingsRepository;
-import dev.team.readtoday.server.settings.domain.TimeZone;
-import dev.team.readtoday.server.shared.domain.UserId;
 
 @TestMethodOrder(MethodOrderer.Random.class)
 public class SearchSettingsByTimeZoneTest {
