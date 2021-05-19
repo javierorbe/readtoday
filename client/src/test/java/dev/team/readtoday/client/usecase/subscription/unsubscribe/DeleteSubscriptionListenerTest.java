@@ -31,7 +31,7 @@ public class DeleteSubscriptionListenerTest {
     Channel channel = new Channel("1", "Test", "https://www.test.com/", "Testing",
         "https://www.test.com/", new ArrayList<>());
     when(requestBuilder.withParam("channelId", channel.getId())).thenReturn(requestBuilder);
-    when(requestBuilder.delete(any())).thenReturn(response);
+    when(requestBuilder.post(any())).thenReturn(response);
     when(response.isStatusNoContent()).thenReturn(true);
     EventBus eventBus = mock(EventBus.class);
     DeleteSubscriptionListener listener = new DeleteSubscriptionListener(eventBus, factory);
@@ -56,7 +56,7 @@ public class DeleteSubscriptionListenerTest {
     Channel channel = new Channel("1", "Test", "https://www.test.com/", "Testing",
         "https://www.test.com/", new ArrayList<>());
     when(requestBuilder.withParam("channelId", channel.getId())).thenReturn(requestBuilder);
-    when(requestBuilder.delete(any())).thenReturn(response);
+    when(requestBuilder.post(any())).thenReturn(response);
     when(response.isStatusNoContent()).thenReturn(false);
     String reason = "Failed reason";
     when(response.getStatusReason()).thenReturn(reason);
