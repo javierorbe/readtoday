@@ -18,4 +18,21 @@ public final class TimeZone {
   public String toString() {
     return zoneId.getId();
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if ((o == null) || (getClass() != o.getClass())) {
+      return false;
+    }
+    TimeZone timeZone = (TimeZone) o;
+    return zoneId.equals(timeZone.zoneId);
+  }
+
+  @Override
+  public int hashCode() {
+    return zoneId.hashCode();
+  }
 }
