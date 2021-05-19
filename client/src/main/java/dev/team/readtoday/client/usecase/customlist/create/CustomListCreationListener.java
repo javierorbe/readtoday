@@ -12,7 +12,18 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * The CustomListCreationListener class listens for customlist creation events. When \ref
+ * events.CustomListCreationEvent "CustomListCreationEvent" event is received, a POST HTTP request to
+ * create a customlist will be sent to readtoday server.
+ * <p>
+ * If customlist is created successfully a \ref events.CustomListCreatedSuccessfullyEvent
+ * "CustomListCreatedSuccessfullyEvent" event will be posted, otherwise an \ref
+ * events.CustomListCreatedFailedEvent "CustomListCreatedFailedEvent" event will be posted by
+ * eventbus.
+ *
+ * @author ikerrodriguez
+ */
 @SubscribedComponent
 public final class CustomListCreationListener {
 
