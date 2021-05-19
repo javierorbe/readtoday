@@ -8,8 +8,10 @@ import com.zaxxer.hikari.HikariConfig;
 import dev.team.readtoday.server.jwt.application.get.GetJwtToken;
 import dev.team.readtoday.server.jwt.domain.JwtToken;
 import dev.team.readtoday.server.shared.domain.UserId;
+import dev.team.readtoday.server.shared.infrastructure.email.DummyEmailSender;
 import dev.team.readtoday.server.shared.infrastructure.persistence.JooqConnectionBuilder;
 import dev.team.readtoday.server.user.application.profile.ProfileFetcher;
+import dev.team.readtoday.server.user.application.sendemail.EmailSender;
 import java.security.SecureRandom;
 import java.time.Clock;
 import org.jooq.DSLContext;
@@ -25,7 +27,6 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
   private final JooqConnectionBuilder jooq;
 
   public AcceptanceTestAppContext(ProfileFetcher profileFetcher) {
-
     HikariConfig hikariConfig = new HikariConfig("/datasource-test.properties");
     jooq = new JooqConnectionBuilder(hikariConfig);
 
@@ -36,6 +37,7 @@ public final class AcceptanceTestAppContext extends AnnotationConfigApplicationC
     registerBean(ProfileFetcher.class, () -> profileFetcher);
     registerBean(DSLContext.class, jooq::getContext);
     registerBean(Clock.class, Clock::systemDefaultZone);
+    registerBean(EmailSender.class, DummyEmailSender::new);
     scan(SERVER_PACKAGE);
     refresh();
   }
