@@ -55,11 +55,11 @@ CREATE TABLE subscription
 CREATE TABLE publication
 (
     PRIMARY KEY (id),
-    id      CHAR(255) NOT NULL,
-    title   CHAR(36)  NOT NULL,
-    descrip CHAR(255),
+    id      VARCHAR(255) NOT NULL,
+    title   VARCHAR(255)  NOT NULL,
+    descrip VARCHAR(255),
     date    VARCHAR(255),
-    link    CHAR(36)  NOT NULL
+    link    VARCHAR(255)  NOT NULL
 );
 
 CREATE TABLE publication_categories

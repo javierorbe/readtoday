@@ -2,18 +2,12 @@ package dev.team.readtoday.client.view.home;
 
 import dev.team.readtoday.client.model.Category;
 import dev.team.readtoday.client.model.Publication;
-import dev.team.readtoday.client.usecase.customlist.create.messages.CustomListCreationRequest;
 import dev.team.readtoday.client.usecase.readlater.ReadLaterRequest;
-import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListFailedEvent;
 import dev.team.readtoday.client.usecase.readlater.SaveReadLaterListRequestedEvent;
-import dev.team.readtoday.client.usecase.readlater.SuccessfulSaveReadLaterListEvent;
-import dev.team.readtoday.client.view.AlertLauncher;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -26,7 +20,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.apache.commons.text.StringEscapeUtils;
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +64,7 @@ final class PublicationNode extends VBox {
     readLaterButton.setOnAction(this::readLaterHandler);
 
     Button addlistButton = new Button("Add to list");
-    readLaterButton.setOnAction(this::customListHandler);
+    addlistButton.setOnAction(this::customListHandler);
 
     getChildren().add(title);
     getChildren().add(description);
